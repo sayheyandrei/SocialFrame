@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="application-name" content="SocialFrame">
+    <title>SocialFrame — конструктор изображений для соцсетей</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto&family=Open+Sans&family=Lato&family=Oswald&family=Montserrat&family=Playfair+Display&family=PT+Sans&family=Raleway&family=Source+Sans+3&family=Nunito&family=Poppins&family=Rubik&family=Manrope&family=Comfortaa&family=Jost&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #0f0f12;
+            color: #e4e4e7;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 72px;
+            min-width: 72px;
+            background: #18181b;
+            border-right: 1px solid #27272a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 8px;
+        }
+
+        .sidebar-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #71717a;
+            margin-bottom: 8px;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 10px;
+            background: #27272a;
+            color: #a1a1aa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #3f3f46;
+            color: #fff;
+        }
+
+        .social-btn.active {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .social-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .sidebar-divider {
+            width: 32px;
+            height: 1px;
+            background: #27272a;
+            margin: 8px 0;
+        }
+
+        .size-select-wrap {
+            width: 100%;
+            padding: 0 14px;
+            margin-top: auto;
+        }
+
+        .size-select-wrap label {
+            display: block;
+            font-size: 10px;
+            color: #71717a;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .size-select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #3f3f46;
+            background: #27272a;
+            color: #e4e4e7;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .size-select option {
+            background: #18181b;
+            color: #e4e4e7;
+        }
+
+        /* ========== MAIN ========== */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .main-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #27272a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .main-header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fafafa;
+        }
+
+        .main-header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #27272a;
+            color: #e4e4e7;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #3f3f46;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ========== CANVAS AREA ========== */
+        .canvas-wrap {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+            min-height: 200px;
+        }
+
+        .result-container {
+            position: relative;
+            background: #27272a;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .result-container .bg-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .result-container .overlay-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .result-container .overlay-layer .draggable-item {
+            position: absolute;
+            pointer-events: auto;
+            cursor: move;
+            touch-action: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+        }
+
+        .result-container .overlay-layer .draggable-item img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .result-container .overlay-layer .text-item {
+            position: absolute;
+            pointer-events: auto;
+            cursor: move;
+            padding: 8px 12px;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            white-space: pre-wrap;
+            word-break: break-word;
+            user-select: none;
+        }
+
+        .result-container .overlay-layer .text-item.selected {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* ========== PREVIEW ROW ========== */
+        .preview-row {
+            padding: 16px 24px 24px;
+            border-top: 1px solid #27272a;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .preview-card {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            border: 2px dashed #3f3f46;
+            background: #18181b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .preview-card:hover {
+            border-color: #52525b;
+            background: #27272a;
+        }
+
+        .preview-card.has-image {
+            border-style: solid;
+            border-color: #3b82f6;
+        }
+
+        .preview-card .preview-label {
+            font-size: 11px;
+            color: #71717a;
+            margin-top: 4px;
+        }
+
+        .preview-card.has-image .preview-label {
+            color: #a1a1aa;
+        }
+
+        .preview-card .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            inset: 0;
+        }
+
+        .preview-card .btn-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 2;
+            display: none;
+        }
+
+        .preview-card.has-image .btn-remove {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-card .btn-remove:hover {
+            background: #ef4444;
+        }
+
+        .btn-add-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            border: 2px dashed #3f3f46;
+            background: #18181b;
+            color: #71717a;
+            font-size: 24px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-add-preview:hover:not(:disabled) {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-add-preview:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-text-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-text {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #3f3f46;
+            background: #27272a;
+            color: #e4e4e7;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-text:hover {
+            background: #3f3f46;
+        }
+
+        .font-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #3f3f46;
+            background: #27272a;
+            color: #e4e4e7;
+            font-size: 12px;
+            min-width: 160px;
+            cursor: pointer;
+        }
+
+        /* ========== MODALS ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #18181b;
+            border-radius: 12px;
+            border: 1px solid #27272a;
+            padding: 24px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow: auto;
+        }
+
+        .modal h3 {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .modal input[type="text"],
+        .modal textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #3f3f46;
+            background: #27272a;
+            color: #e4e4e7;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .modal textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <span class="sidebar-title">Сеть</span>
+        <button type="button" class="social-btn" data-network="instagram" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </button>
+        <button type="button" class="social-btn" data-network="facebook" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </button>
+        <button type="button" class="social-btn" data-network="twitter" title="X (Twitter)" aria-label="X">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </button>
+        <button type="button" class="social-btn" data-network="linkedin" title="LinkedIn" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </button>
+        <div class="sidebar-divider"></div>
+        <div class="size-select-wrap">
+            <label for="sizeSelect">Размер</label>
+            <select id="sizeSelect" class="size-select" aria-label="Выбор размера материала"></select>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="main-header">
+            <h1 id="canvasTitle">Выберите сеть и размер</h1>
+            <div class="main-header-actions">
+                <button type="button" class="btn btn-secondary" id="clearBtn" disabled>Очистить</button>
+                <button type="button" class="btn btn-primary" id="downloadBtn" disabled>Скачать</button>
+            </div>
+        </header>
+
+        <div class="canvas-wrap">
+            <div class="result-container" id="resultContainer">
+                <div class="bg-layer" id="bgLayer"></div>
+                <div class="overlay-layer" id="overlayLayer"></div>
+            </div>
+        </div>
+
+        <div class="preview-row">
+            <div class="preview-card" id="previewBackground" data-type="background" title="Фон">
+                <span class="preview-label">Фон</span>
+                <img class="preview-img" id="previewBackgroundImg" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeBackground" aria-label="Удалить фон">×</button>
+            </div>
+            <div class="preview-card" id="previewImage1" data-type="image" data-index="0" title="Картинка 1">
+                <span class="preview-label">Картинка 1</span>
+                <img class="preview-img" id="previewImage1Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage0" aria-label="Удалить">×</button>
+            </div>
+            <div class="preview-card preview-card-hidden" id="previewImage2" data-type="image" data-index="1" title="Картинка 2" style="display: none;">
+                <span class="preview-label">Картинка 2</span>
+                <img class="preview-img" id="previewImage2Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage1" aria-label="Удалить">×</button>
+            </div>
+            <div class="preview-card preview-card-hidden" id="previewImage3" data-type="image" data-index="2" style="display: none;">
+                <span class="preview-label">Картинка 3</span>
+                <img class="preview-img" id="previewImage3Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage2" aria-label="Удалить">×</button>
+            </div>
+            <div class="preview-card preview-card-hidden" id="previewImage4" data-type="image" data-index="3" style="display: none;">
+                <span class="preview-label">Картинка 4</span>
+                <img class="preview-img" id="previewImage4Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage3" aria-label="Удалить">×</button>
+            </div>
+            <div class="preview-card preview-card-hidden" id="previewImage5" data-type="image" data-index="4" style="display: none;">
+                <span class="preview-label">Картинка 5</span>
+                <img class="preview-img" id="previewImage5Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage4" aria-label="Удалить">×</button>
+            </div>
+            <div class="preview-card preview-card-hidden" id="previewImage6" data-type="image" data-index="5" style="display: none;">
+                <span class="preview-label">Картинка 6</span>
+                <img class="preview-img" id="previewImage6Img" alt="" style="display: none;">
+                <button type="button" class="btn-remove" id="removeImage5" aria-label="Удалить">×</button>
+            </div>
+            <button type="button" class="btn-add-preview" id="btnAddPreview" title="Добавить превью" aria-label="Добавить превью">+</button>
+            <div class="btn-text-wrap">
+                <button type="button" class="btn-text" id="btnAddText" title="Добавить текст">
+                    <span>Текст</span>
+                </button>
+                <select id="fontSelect" class="font-select" aria-label="Шрифт для текста">
+                    <option value="Inter">Inter</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Oswald">Oswald</option>
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Playfair Display">Playfair Display</option>
+                    <option value="PT Sans">PT Sans</option>
+                </select>
+            </div>
+        </div>
+    </main>
+
+    <input type="file" id="fileBackground" accept="image/*">
+    <input type="file" id="fileImage" accept="image/*">
+
+    <div class="modal-overlay" id="textModal">
+        <div class="modal">
+            <h3>Добавить текст</h3>
+            <textarea id="textInput" placeholder="Введите текст..."></textarea>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="textModalCancel">Отмена</button>
+                <button type="button" class="btn btn-primary" id="textModalOk">Добавить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

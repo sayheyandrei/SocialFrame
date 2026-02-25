@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DESIGN TOKENS (theme) — стили как в проекте Презентации
+   DESIGN TOKENS (theme)
    ========================================================================== */
 :root {
     --app-bg: #f4f4f5;
@@ -24,7 +24,7 @@
     --panel-bottom: 24px;
 }
 
-/* заблокированные элементы — курсор default */
+/* Disabled elements — default cursor */
 button:disabled,
 input:disabled,
 [disabled],
@@ -48,7 +48,7 @@ body.theme-dark {
     --app-shadow-tabs: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Иконки поворота в панелях: без фона в обеих темах, по ховеру — акцентный синий */
+/* Rotation icons in panels: no background in both themes, accent blue on hover */
 .shape-toolbar-rotation-icon,
 .text-toolbar-rotation-icon {
     background: transparent;
@@ -103,7 +103,7 @@ body.theme-dark .selection-frame-rotation-handle:hover svg {
     color: var(--app-accent);
 }
 
-/* Dark theme: инпуты — серый фон, светлосерая рамка; hover/focus — акцентная рамка */
+/* Dark theme: inputs — gray bg, light gray border; hover/focus — accent border */
 body.theme-dark .input,
 body.theme-dark .select {
     background: var(--app-surface-hover);
@@ -133,7 +133,7 @@ body.theme-dark .modal textarea:focus {
     background: var(--app-surface-hover);
 }
 
-/* Dark theme: фон холста как у контейнера, рамка холста чуть светлее */
+/* Dark theme: canvas bg matches container, canvas border slightly lighter */
 body.theme-dark .result-container {
     background: var(--app-surface);
     border-color: #52525b;
@@ -166,7 +166,7 @@ body.theme-dark .result-container {
 }
 
 /* ==========================================================================
-   TYPOGRAPHY (как в Презентации)
+   TYPOGRAPHY
    ========================================================================== */
 .text-label-m { font-size: 14px; font-weight: 500; line-height: 1.4; }
 .text-label-xs { font-size: 12px; font-weight: 500; line-height: 1.4; }
@@ -175,7 +175,7 @@ body.theme-dark .result-container {
 .text-header-2 { font-size: 18px; font-weight: 600; line-height: 1.3; }
 
 /* ==========================================================================
-   COMPONENT: Input / Select (единый)
+   COMPONENT: Input / Select (unified)
    ========================================================================== */
 .input,
 .select {
@@ -239,7 +239,7 @@ body {
 }
 
 /* ==========================================================================
-   COMPONENT: Button Primary (главная кнопка)
+   COMPONENT: Button Primary
    ========================================================================== */
 .btn-primary {
     background: var(--app-accent);
@@ -251,7 +251,7 @@ body {
 }
 
 /* ==========================================================================
-   COMPONENT: Button Secondary (второстепенная кнопка)
+   COMPONENT: Button Secondary
    ========================================================================== */
 .btn-secondary {
     background: var(--app-surface-hover);
@@ -263,7 +263,7 @@ body {
     background: var(--app-border);
 }
 
-/* Harmonize — как в Thumbnail (радужный градиент) */
+/* Harmonize — rainbow gradient */
 .btn-harmonize.btn-secondary {
     color: #fff;
     position: relative;
@@ -310,7 +310,7 @@ body.theme-dark #resetFiltersBtn.harmonize-active {
 }
 
 /* ==========================================================================
-   COMPONENT: Button Light (для вкладок / переключателей)
+   COMPONENT: Button Light (tabs / toggles)
    ========================================================================== */
 .btn-light {
     background: transparent;
@@ -400,7 +400,7 @@ body.theme-dark .switch-thumb {
 }
 
 /* ==========================================================================
-   COMPONENT: Panel (базовый контейнер)
+   COMPONENT: Panel (base container)
    ========================================================================== */
 .panel,
 .sidebar-panel {
@@ -410,7 +410,7 @@ body.theme-dark .switch-thumb {
 }
 
 /* ==========================================================================
-   COMPONENT: Panel Left (левая панель)
+   COMPONENT: Panel Left
    ========================================================================== */
 .sidebar-left {
     position: fixed;
@@ -434,7 +434,7 @@ body.theme-dark .switch-thumb {
     object-fit: contain;
 }
 
-/* светлая тема — показываем тёмный лого; тёмная тема — светлый лого */
+/* Light theme: dark logo; dark theme: light logo */
 body:not(.theme-dark) .sidebar-logo-light {
     display: none;
 }
@@ -456,7 +456,7 @@ body.theme-dark .sidebar-logo-dark {
 }
 
 /* ==========================================================================
-   Custom size panel (под аккордеоном соцсетей)
+   Custom size panel (below networks accordion)
    ========================================================================== */
 .custom-size-panel {
     margin-top: 40px;
@@ -485,7 +485,7 @@ body.theme-dark .sidebar-logo-dark {
 }
 
 /* ==========================================================================
-   COMPONENT: Menu Item — пункты соцсетей
+   COMPONENT: Menu Item — network items
    ========================================================================== */
 .accordion-header {
     height: 40px;
@@ -565,7 +565,7 @@ body.theme-dark .sidebar-logo-dark {
 }
 
 /* ==========================================================================
-   COMPONENT: Menu Subitem — пункты размеров
+   COMPONENT: Menu Subitem — size items
    ========================================================================== */
 .accordion-subitem {
     height: 40px;
@@ -627,7 +627,7 @@ body.theme-dark .sidebar-logo-dark {
     color: var(--app-accent);
 }
 
-/* Тёмная тема — меню */
+/* Dark theme — menu */
 body.theme-dark .accordion-header {
     color: #ffffff;
 }
@@ -678,7 +678,7 @@ body.theme-dark .shape-toolbar-inner {
     background: var(--app-panel-bg);
 }
 
-/* Accordion — раскрытие (заголовок соцсети уже стилизован выше) */
+/* Accordion — expand/collapse (network header styled above) */
 
 .accordion-icon {
     display: flex;
@@ -737,7 +737,7 @@ body.theme-dark .shape-toolbar-inner {
 }
 
 /* ==========================================================================
-   COMPONENT: Panel Right (правая панель — слои)
+   COMPONENT: Panel Right (layers panel)
    ========================================================================== */
 .sidebar-right {
     position: fixed;
@@ -807,7 +807,7 @@ body.theme-dark .shape-toolbar-inner {
     width: 100%;
 }
 
-/* Layer row — строка слоя */
+/* Layer row */
 .layer-row {
     display: flex;
     align-items: center;
@@ -936,7 +936,7 @@ body.theme-dark .shape-toolbar-inner {
     color: #ef4444;
 }
 
-/* Floating text toolbar — по ширине контента, над блоком текста с отступом 16pt */
+/* Floating text toolbar — content width, above text block with 16pt offset */
 .text-float-toolbar {
     position: fixed;
     width: auto;
@@ -965,7 +965,7 @@ body.theme-dark .shape-toolbar-inner {
     flex-shrink: 0;
 }
 
-/* Размер шрифта: инпут с кнопками − и + внутри */
+/* Font size: input with − and + buttons inside */
 .text-toolbar-size {
     display: flex;
     align-items: center;
@@ -1033,7 +1033,7 @@ body.theme-dark .shape-toolbar-inner {
 }
 
 body.theme-dark .text-font-select {
-    /* Тот же шеврон, один: цвет под тёмную тему (светлый) */
+    /* Same chevron, dark theme color (light) */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
@@ -1044,7 +1044,7 @@ body.theme-dark .text-font-select {
     gap: 6px;
 }
 
-/* Кнопка-превью цвета текста — как у шейпа по размеру (28px), круглая, без ховера */
+/* Text color preview button — 28px like shape, round, no hover bg */
 .text-color-trigger {
     width: 28px;
     height: 28px;
@@ -1061,7 +1061,7 @@ body.theme-dark .text-font-select {
     line-height: 0;
 }
 
-/* Обёртка кастомного колор-пикера */
+/* Custom color picker wrapper */
 .color-picker-wrap {
     position: relative;
 }
@@ -1302,10 +1302,10 @@ body.theme-dark .text-font-select {
 }
 
 /* ==========================================================================
-   COMPONENT: Tabs (вкладки)
+   COMPONENT: Tabs
    ========================================================================== */
 /* ==========================================================================
-   COMPONENT: Canvas tools (курсор, рука, масштаб, рамка)
+   COMPONENT: Canvas tools (cursor, pan, zoom, fit)
    ========================================================================== */
 .canvas-tools-wrap {
     position: fixed;
@@ -1367,7 +1367,7 @@ body.theme-dark .text-font-select {
 }
 
 /* ==========================================================================
-   COMPONENT: Tabs (вкладки)
+   COMPONENT: Tabs
    ========================================================================== */
 .theme-tabs-wrap {
     position: fixed;
@@ -1536,7 +1536,7 @@ body.theme-dark .shape-menu-popover {
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
-/* Download menu — ширина под кнопку */
+/* Download menu — width matches button */
 .download-menu-wrap {
     position: relative;
 }
@@ -1669,7 +1669,7 @@ body.theme-dark .shape-menu-item[data-shape="arrow"] svg path {
     stroke: var(--shape-stroke);
 }
 
-/* Shape float toolbar — стиль как у текстовой панели */
+/* Shape float toolbar — same style as text toolbar */
 .shape-float-toolbar {
     display: none;
     position: fixed;
@@ -1805,7 +1805,7 @@ body.theme-dark .shape-menu-item[data-shape="arrow"] svg path {
     color: var(--app-text);
 }
 
-/* Shape Bezier corner handles — поверх шейпа в режиме редактирования точек */
+/* Shape Bezier corner handles — above shape in point-edit mode */
 .result-container .overlay-layer .shape-item {
     overflow: visible;
     transform-origin: center center;
@@ -1834,7 +1834,7 @@ body.shape-bezier-mode .overlay-layer .shape-item {
     z-index: 2;
 }
 
-/* Точки концов линии/стрелки — синие, как у углов шейпов */
+/* Line/arrow endpoint dots — blue, same as shape corners */
 .shape-line-endpoint-handles {
     position: absolute;
     pointer-events: none;
@@ -1878,7 +1878,7 @@ body.theme-dark .shape-line-rotation-handle:hover {
     color: var(--app-accent);
 }
 
-/* Точки углов — 12×12px, белый фон, красный бордер 4px снаружи */
+/* Corner points — 12×12px, white bg, red 4px border outside */
 .shape-bezier-dot {
     position: absolute;
     width: 12px;
@@ -1902,7 +1902,7 @@ body.theme-dark .shape-bezier-dot {
     box-shadow: 0 0 0 4px #FF0000, 0 0 0 6px var(--app-surface);
 }
 
-/* Ручки Безье на концах линий — 12×12px, красный фон, белый бордер 4px снаружи */
+/* Bezier handles at line ends — 12×12px, red bg, white 4px border outside */
 .shape-bezier-handle-dot {
     position: absolute;
     width: 12px;
@@ -1929,7 +1929,7 @@ body.theme-dark .shape-bezier-dot {
     overflow: visible;
 }
 
-/* Линии Безье — 2px в экранных пикселях (non-scaling-stroke), пунктир, красные */
+/* Bezier lines — 2px screen pixels (non-scaling-stroke), dashed, red */
 .shape-bezier-guides-svg .shape-bezier-guide-line {
     stroke: #FF0000;
     stroke-width: 2px;
@@ -2010,7 +2010,7 @@ body.theme-dark .shape-bezier-dot {
     animation-duration: 0s !important;
 }
 
-/* Над холстом, не скейлится, всегда 10px */
+/* Above canvas, does not scale, always 10px */
 .canvas-size-label {
     position: absolute;
     left: 0;
@@ -2063,7 +2063,7 @@ body.theme-dark .canvas-wrap {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    /* Обрезка по границе контейнера — overflow на .canvas-wrap */
+    /* Clip to container boundary — overflow on .canvas-wrap */
 }
 
 .canvas-stage {
@@ -2222,7 +2222,7 @@ body:not(.theme-dark) .result-container {
 .selection-frame .resize-handle.handle-sw { bottom: calc(-4px / var(--controls-scale, 1)); left: calc(-4px / var(--controls-scale, 1)); top: auto; cursor: nesw-resize; }
 .selection-frame .resize-handle.handle-w  { left: calc(-3px / var(--controls-scale, 1)); cursor: ew-resize; }
 
-/* Зона ховера у угла — захватывает и угол, и иконку поворота, чтобы по иконке можно было кликнуть */
+/* Corner hover zone — covers both corner and rotation icon for clicking */
 .selection-frame-corner-zone {
     position: absolute;
     width: calc(52px / var(--controls-scale, 1));
@@ -2234,7 +2234,7 @@ body:not(.theme-dark) .result-container {
 .selection-frame-corner-zone.handle-se { bottom: calc(-28px / var(--controls-scale, 1)); right: calc(-28px / var(--controls-scale, 1)); top: auto; left: auto; }
 .selection-frame-corner-zone.handle-sw { bottom: calc(-28px / var(--controls-scale, 1)); left: calc(-28px / var(--controls-scale, 1)); top: auto; }
 
-/* Ручки и иконка внутри зоны — позиции относительно зоны (0,0 = угол рамки) */
+/* Handles and icon inside zone — positions relative to zone (0,0 = frame corner) */
 .selection-frame-corner-zone .resize-handle.handle-nw { top: calc(24px / var(--controls-scale, 1)); left: calc(24px / var(--controls-scale, 1)); }
 .selection-frame-corner-zone .resize-handle.handle-ne { top: calc(24px / var(--controls-scale, 1)); right: calc(24px / var(--controls-scale, 1)); left: auto; }
 .selection-frame-corner-zone .resize-handle.handle-se { bottom: calc(24px / var(--controls-scale, 1)); right: calc(24px / var(--controls-scale, 1)); top: auto; left: auto; }
@@ -2245,7 +2245,7 @@ body:not(.theme-dark) .result-container {
 .selection-frame-corner-zone .selection-frame-rotation-handle.handle-se { bottom: calc(14px / var(--controls-scale, 1)); right: calc(14px / var(--controls-scale, 1)); top: auto; left: auto; transform: translate(50%, 50%); }
 .selection-frame-corner-zone .selection-frame-rotation-handle.handle-sw { bottom: calc(14px / var(--controls-scale, 1)); left: calc(14px / var(--controls-scale, 1)); top: auto; transform: translate(-50%, 50%); }
 
-/* Иконка поворота только у того угла, на который ховер; со сдвигом по диагонали от угла; клик по иконке — поворот, по углу — скейл */
+/* Rotation icon at hovered corner; offset diagonally; click icon — rotate, corner — scale */
 .selection-frame-rotation-handle {
     position: absolute;
     width: calc(24px / var(--controls-scale, 1));
@@ -2262,7 +2262,7 @@ body:not(.theme-dark) .result-container {
     transition: opacity 0.15s ease, color 0.15s ease;
 }
 
-/* Смещение от угла по диагонали наружу ~14px */
+/* Offset from corner diagonally outward ~14px */
 .selection-frame-rotation-handle.handle-nw { top: 0; left: 0; transform: translate(calc(-50% - 14px), calc(-50% - 14px)); }
 .selection-frame-rotation-handle.handle-ne { top: 0; right: 0; left: auto; transform: translate(calc(50% + 14px), calc(-50% - 14px)); }
 .selection-frame-rotation-handle.handle-se { bottom: 0; right: 0; top: auto; left: auto; transform: translate(calc(50% + 14px), calc(50% + 14px)); }
@@ -2273,7 +2273,7 @@ body:not(.theme-dark) .result-container {
     height: calc(16px / var(--controls-scale, 1));
 }
 
-/* Иконки поворота всегда видны при выделении шейпа/текста, чтобы по ним можно было кликнуть */
+/* Rotation icons always visible when shape/text selected for clicking */
 .selection-frame.has-rotation.visible .selection-frame-rotation-handle {
     pointer-events: auto;
     opacity: 1;

@@ -673,7 +673,7 @@
             var baseW = el ? (parseFloat(el.style.width) || el.offsetWidth) : null;
             var baseH = el ? (parseFloat(el.style.height) || el.offsetHeight) : null;
             var scale = data.scale || 1;
-            /* сохраняем визуальный размер (база × scale), чтобы масштаб колёсиком не терялся при смене размера */
+            /* Preserve visual size (base × scale) so wheel zoom is not lost on size change */
             var w = baseW != null && !isNaN(baseW) ? baseW * scale : null;
             var h = baseH != null && !isNaN(baseH) ? baseH * scale : null;
             var idx = overlayImagesData.length;
@@ -2202,7 +2202,7 @@
                             el.dataset.aspectRatio = String(w / h);
                         }
                     }
-                    /* Ограничиваем по холсту только картинки; текст и шейпы можно выносить за край */
+                    /* Constrain to canvas only for images; text and shapes can extend beyond */
                     if (state.size && isFramedImage(el)) {
                         l = Math.max(0, Math.min(state.size.w - w, l));
                         t = Math.max(0, Math.min(state.size.h - h, t));
@@ -2565,7 +2565,7 @@
                     finalLeft = snapped.left;
                     finalTop = snapped.top;
                 }
-                /* Текст и шейпы можно перемещать за край холста, как картинки */
+                /* Text and shapes can be moved beyond canvas edge, like images */
                 if (sh) {
                     if (isPathBased) {
                         sh.cx = finalLeft + W / 2;
@@ -4148,7 +4148,7 @@
         var fitW = Math.max(0, canvasViewport.clientWidth - margin);
         var fitH = Math.max(0, canvasViewport.clientHeight - margin);
 
-        // Не трогаем transform и размеры stage, пока нет стабильных fitW/fitH
+        // Do not touch transform and stage size until fitW/fitH are stable
         if (fitW <= 0 || fitH <= 0) {
             requestAnimationFrame(requestViewportUpdate);
             return;
@@ -5431,7 +5431,7 @@
                     finalLeft = snapped.left;
                     finalTop = snapped.top;
                 }
-                /* Текст можно перемещать за край холста, как картинки */
+                /* Text can be moved beyond canvas edge, like images */
                 el.style.left = finalLeft + 'px';
                 el.style.top = finalTop + 'px';
                 updateGuidesLayer(snapped.guides);

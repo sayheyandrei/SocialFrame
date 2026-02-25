@@ -1,0 +1,721 @@
+{
+  "socialNetworks": {
+    "instagram": {
+      "name": "Instagram",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1080,
+          "label": "Post square 1080×1080"
+        },
+        {
+          "w": 1080,
+          "h": 1350,
+          "label": "Post portrait 1080×1350 (4:5)"
+        },
+        {
+          "w": 1080,
+          "h": 566,
+          "label": "Post landscape 1080×566"
+        },
+        {
+          "w": 1080,
+          "h": 1920,
+          "label": "Stories/Reels 1080×1920"
+        }
+      ]
+    },
+    "facebook": {
+      "name": "Facebook",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1080,
+          "label": "Квадрат 1080×1080"
+        },
+        {
+          "w": 1080,
+          "h": 1359,
+          "label": "Вертикаль 1080×1359"
+        },
+        {
+          "w": 1080,
+          "h": 566,
+          "label": "Горизонталь 1080×566"
+        },
+        {
+          "w": 1080,
+          "h": 1920,
+          "label": "Reels/Stories 1080×1920"
+        },
+        {
+          "w": 820,
+          "h": 360,
+          "label": "Page cover 820×360"
+        }
+      ]
+    },
+    "twitter": {
+      "name": "X (Twitter)",
+      "sizes": [
+        {
+          "w": 1280,
+          "h": 720,
+          "label": "Горизонталь 1280×720"
+        },
+        {
+          "w": 720,
+          "h": 1280,
+          "label": "Вертикаль 720×1280"
+        },
+        {
+          "w": 720,
+          "h": 720,
+          "label": "Квадрат 720×720"
+        },
+        {
+          "w": 1500,
+          "h": 500,
+          "label": "Header 1500×500"
+        }
+      ]
+    },
+    "linkedin": {
+      "name": "LinkedIn",
+      "sizes": [
+        {
+          "w": 1200,
+          "h": 1200,
+          "label": "Квадрат 1200×1200"
+        },
+        {
+          "w": 720,
+          "h": 900,
+          "label": "Вертикаль 720×900"
+        },
+        {
+          "w": 1200,
+          "h": 627,
+          "label": "Link preview 1200×627"
+        },
+        {
+          "w": 4200,
+          "h": 700,
+          "label": "Company cover 4200×700"
+        },
+        {
+          "w": 1584,
+          "h": 396,
+          "label": "Profile banner 1584×396"
+        }
+      ]
+    },
+    "tiktok": {
+      "name": "TikTok",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1920,
+          "label": "Video 1080×1920"
+        }
+      ]
+    },
+    "youtube": {
+      "name": "YouTube",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1920,
+          "label": "Shorts 1080×1920"
+        },
+        {
+          "w": 2560,
+          "h": 1440,
+          "label": "Channel banner 2560×1440"
+        }
+      ]
+    },
+    "pinterest": {
+      "name": "Pinterest",
+      "sizes": [
+        {
+          "w": 1000,
+          "h": 1500,
+          "label": "Standard pin 1000×1500"
+        }
+      ]
+    },
+    "snapchat": {
+      "name": "Snapchat",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1920,
+          "label": "Story/Ads 1080×1920"
+        }
+      ]
+    },
+    "threads": {
+      "name": "Threads",
+      "sizes": [
+        {
+          "w": 1080,
+          "h": 1080,
+          "label": "Square 1080×1080"
+        },
+        {
+          "w": 1080,
+          "h": 1350,
+          "label": "Portrait 1080×1350"
+        }
+      ]
+    }
+  },
+  "safeZones": {
+    "facebook": {
+      "820x360": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.444,
+          "width": 0.244,
+          "height": 0.556,
+          "shape": "rect",
+          "label": "Аватар"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 90,
+            "top": 24,
+            "right": 90,
+            "bottom": 24
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1080x566": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 43.2,
+            "y": 22.64,
+            "w": 56.6,
+            "h": 56.6
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.86,
+          "width": 1,
+          "height": 0.14,
+          "shape": "rect",
+          "label": "Контролы"
+        }
+      ],
+      "1080x1080": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 43.2,
+            "y": 43.2,
+            "w": 108,
+            "h": 108
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.86,
+          "width": 1,
+          "height": 0.14,
+          "shape": "rect",
+          "label": "Контролы"
+        }
+      ],
+      "1080x1359": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 43.2,
+            "y": 54.36,
+            "w": 108,
+            "h": 108
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.86,
+          "width": 1,
+          "height": 0.14,
+          "shape": "rect",
+          "label": "Контролы"
+        }
+      ],
+      "1080x1920": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.9,
+          "width": 1,
+          "height": 0.1,
+          "shape": "rect",
+          "label": "Ответ"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 35,
+            "top": 320,
+            "right": 35,
+            "bottom": 320
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        },
+        {
+          "type": "top",
+          "left": 0,
+          "top": 0,
+          "width": 1,
+          "height": 0.06,
+          "shape": "rect",
+          "label": "Прогресс"
+        }
+      ]
+    },
+    "instagram": {
+      "1080x566": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 60,
+            "top": 40,
+            "right": 60,
+            "bottom": 40
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1080x1080": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 60,
+            "top": 60,
+            "right": 60,
+            "bottom": 60
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1080x1350": [
+        {
+          "type": "guide",
+          "rectPx": {
+            "x": 0,
+            "y": 135,
+            "w": 1080,
+            "h": 1080
+          },
+          "label": "Preview in profile (square)",
+          "shape": "rect"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 80,
+            "top": 80,
+            "right": 80,
+            "bottom": 80
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1080x1920": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.9,
+          "width": 1,
+          "height": 0.1,
+          "shape": "rect",
+          "label": "Ответ"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 35,
+            "top": 320,
+            "right": 35,
+            "bottom": 320
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        },
+        {
+          "type": "top",
+          "left": 0,
+          "top": 0,
+          "width": 1,
+          "height": 0.06,
+          "shape": "rect",
+          "label": "Прогресс"
+        }
+      ]
+    },
+    "linkedin": {
+      "720x900": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 28.8,
+            "y": 36,
+            "w": 72,
+            "h": 72
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.84,
+          "width": 1,
+          "height": 0.16,
+          "shape": "rect",
+          "label": "Контролы"
+        }
+      ],
+      "1200x627": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 60,
+            "top": 60,
+            "right": 60,
+            "bottom": 60
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1200x1200": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 48,
+            "y": 48,
+            "w": 120,
+            "h": 120
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.84,
+          "width": 1,
+          "height": 0.16,
+          "shape": "rect",
+          "label": "Контролы"
+        }
+      ],
+      "1584x396": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 80,
+            "top": 24,
+            "right": 80,
+            "bottom": 24
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "4200x700": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 210,
+            "top": 35,
+            "right": 210,
+            "bottom": 35
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    },
+    "pinterest": {
+      "1000x1500": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 50,
+            "top": 50,
+            "right": 50,
+            "bottom": 150
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    },
+    "snapchat": {
+      "1080x1920": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.9,
+          "width": 1,
+          "height": 0.1,
+          "shape": "rect",
+          "label": "Bottom UI"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 64,
+            "top": 250,
+            "right": 64,
+            "bottom": 250
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        },
+        {
+          "type": "top",
+          "left": 0,
+          "top": 0,
+          "width": 1,
+          "height": 0.1,
+          "shape": "rect",
+          "label": "Top UI"
+        }
+      ]
+    },
+    "threads": {
+      "1080x1080": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 60,
+            "top": 60,
+            "right": 60,
+            "bottom": 60
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "1080x1350": [
+        {
+          "type": "guide",
+          "rectPx": {
+            "x": 0,
+            "y": 135,
+            "w": 1080,
+            "h": 1080
+          },
+          "label": "Square preview",
+          "shape": "rect"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 80,
+            "top": 80,
+            "right": 80,
+            "bottom": 80
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    },
+    "tiktok": {
+      "1080x1920": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.8,
+          "width": 1,
+          "height": 0.2,
+          "shape": "rect",
+          "label": "Caption"
+        },
+        {
+          "type": "bottom",
+          "left": 0.78,
+          "top": 0,
+          "width": 0.22,
+          "height": 1,
+          "shape": "rect",
+          "label": "Right UI"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 120,
+            "top": 131,
+            "right": 120,
+            "bottom": 367
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    },
+    "twitter": {
+      "720x720": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 28.8,
+            "y": 28.8,
+            "w": 86.4,
+            "h": 86.4
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.82,
+          "width": 1,
+          "height": 0.18,
+          "shape": "rect",
+          "label": "Действия"
+        }
+      ],
+      "720x1280": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 28.8,
+            "y": 51.2,
+            "w": 86.4,
+            "h": 86.4
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.82,
+          "width": 1,
+          "height": 0.18,
+          "shape": "rect",
+          "label": "Действия"
+        }
+      ],
+      "1280x720": [
+        {
+          "type": "avatar",
+          "rectPx": {
+            "x": 51.2,
+            "y": 28.8,
+            "w": 86.4,
+            "h": 86.4
+          },
+          "shape": "circle",
+          "label": "Юзерпик"
+        },
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.82,
+          "width": 1,
+          "height": 0.18,
+          "shape": "rect",
+          "label": "Действия"
+        }
+      ],
+      "1500x500": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.2,
+          "width": 0.267,
+          "height": 0.8,
+          "shape": "rect",
+          "label": "Аватар"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 150,
+            "top": 50,
+            "right": 150,
+            "bottom": 50
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    },
+    "youtube": {
+      "1080x1920": [
+        {
+          "type": "bottom",
+          "left": 0,
+          "top": 0.76,
+          "width": 1,
+          "height": 0.24,
+          "shape": "rect",
+          "label": "Bottom"
+        },
+        {
+          "type": "bottom",
+          "left": 0.78,
+          "top": 0,
+          "width": 0.22,
+          "height": 1,
+          "shape": "rect",
+          "label": "Right UI"
+        },
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 50,
+            "top": 150,
+            "right": 150,
+            "bottom": 450
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ],
+      "2560x1440": [
+        {
+          "type": "safeArea",
+          "insetsPx": {
+            "left": 507,
+            "top": 509,
+            "right": 507,
+            "bottom": 508
+          },
+          "label": "Safe area",
+          "shape": "rect"
+        }
+      ]
+    }
+  }
+}

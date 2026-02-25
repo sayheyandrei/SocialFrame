@@ -1,553 +1,276 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="application-name" content="SocialFrame">
-    <title>SocialFrame — конструктор изображений для соцсетей</title>
+    <title>SocialFrame — social image builder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto&family=Open+Sans&family=Lato&family=Oswald&family=Montserrat&family=Playfair+Display&family=PT+Sans&family=Raleway&family=Source+Sans+3&family=Nunito&family=Poppins&family=Rubik&family=Manrope&family=Comfortaa&family=Jost&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto&family=Open+Sans&family=Lato&family=Oswald&family=Montserrat&family=Playfair+Display&family=PT+Sans&family=Raleway&family=Source+Sans+3&family=Nunito&family=Poppins&family=Rubik&family=Manrope&family=Comfortaa&family=Jost&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background: #0f0f12;
-            color: #e4e4e7;
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
-        }
-
-        /* ========== SIDEBAR ========== */
-        .sidebar {
-            width: 72px;
-            min-width: 72px;
-            background: #18181b;
-            border-right: 1px solid #27272a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 0;
-            gap: 8px;
-        }
-
-        .sidebar-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #71717a;
-            margin-bottom: 8px;
-        }
-
-        .social-btn {
-            width: 44px;
-            height: 44px;
-            border: none;
-            border-radius: 10px;
-            background: #27272a;
-            color: #a1a1aa;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .social-btn:hover {
-            background: #3f3f46;
-            color: #fff;
-        }
-
-        .social-btn.active {
-            background: #3b82f6;
-            color: #fff;
-        }
-
-        .social-btn svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .sidebar-divider {
-            width: 32px;
-            height: 1px;
-            background: #27272a;
-            margin: 8px 0;
-        }
-
-        .size-select-wrap {
-            width: 100%;
-            padding: 0 14px;
-            margin-top: auto;
-        }
-
-        .size-select-wrap label {
-            display: block;
-            font-size: 10px;
-            color: #71717a;
-            margin-bottom: 6px;
-            text-align: center;
-        }
-
-        .size-select {
-            width: 100%;
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid #3f3f46;
-            background: #27272a;
-            color: #e4e4e7;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .size-select option {
-            background: #18181b;
-            color: #e4e4e7;
-        }
-
-        /* ========== MAIN ========== */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .main-header {
-            padding: 16px 24px;
-            border-bottom: 1px solid #27272a;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .main-header h1 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #fafafa;
-        }
-
-        .main-header-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border-radius: 8px;
-            border: none;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s, opacity 0.2s;
-        }
-
-        .btn-primary {
-            background: #3b82f6;
-            color: #fff;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: #2563eb;
-        }
-
-        .btn-secondary {
-            background: #27272a;
-            color: #e4e4e7;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: #3f3f46;
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* ========== CANVAS AREA ========== */
-        .canvas-wrap {
-            flex: 1;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: auto;
-            min-height: 200px;
-        }
-
-        .result-container {
-            position: relative;
-            background: #27272a;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-        }
-
-        .result-container .bg-layer {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .result-container .overlay-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .result-container .overlay-layer .draggable-item {
-            position: absolute;
-            pointer-events: auto;
-            cursor: move;
-            touch-action: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform-origin: center center;
-        }
-
-        .result-container .overlay-layer .draggable-item img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .result-container .overlay-layer .text-item {
-            position: absolute;
-            pointer-events: auto;
-            cursor: move;
-            padding: 8px 12px;
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            white-space: pre-wrap;
-            word-break: break-word;
-            user-select: none;
-        }
-
-        .result-container .overlay-layer .text-item.selected {
-            outline: 2px solid #3b82f6;
-            outline-offset: 2px;
-        }
-
-        /* ========== PREVIEW ROW ========== */
-        .preview-row {
-            padding: 16px 24px 24px;
-            border-top: 1px solid #27272a;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .preview-card {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            border: 2px dashed #3f3f46;
-            background: #18181b;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.2s, background 0.2s;
-        }
-
-        .preview-card:hover {
-            border-color: #52525b;
-            background: #27272a;
-        }
-
-        .preview-card.has-image {
-            border-style: solid;
-            border-color: #3b82f6;
-        }
-
-        .preview-card .preview-label {
-            font-size: 11px;
-            color: #71717a;
-            margin-top: 4px;
-        }
-
-        .preview-card.has-image .preview-label {
-            color: #a1a1aa;
-        }
-
-        .preview-card .preview-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            position: absolute;
-            inset: 0;
-        }
-
-        .preview-card .btn-remove {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 20px;
-            height: 20px;
-            border: none;
-            border-radius: 6px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            font-size: 12px;
-            cursor: pointer;
-            z-index: 2;
-            display: none;
-        }
-
-        .preview-card.has-image .btn-remove {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .preview-card .btn-remove:hover {
-            background: #ef4444;
-        }
-
-        .btn-add-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            border: 2px dashed #3f3f46;
-            background: #18181b;
-            color: #71717a;
-            font-size: 24px;
-            cursor: pointer;
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .btn-add-preview:hover:not(:disabled) {
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-
-        .btn-add-preview:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .btn-text-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-text {
-            padding: 10px 16px;
-            border-radius: 8px;
-            border: 1px solid #3f3f46;
-            background: #27272a;
-            color: #e4e4e7;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-text:hover {
-            background: #3f3f46;
-        }
-
-        .font-select {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #3f3f46;
-            background: #27272a;
-            color: #e4e4e7;
-            font-size: 12px;
-            min-width: 160px;
-            cursor: pointer;
-        }
-
-        /* ========== MODALS ========== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal {
-            background: #18181b;
-            border-radius: 12px;
-            border: 1px solid #27272a;
-            padding: 24px;
-            max-width: 90vw;
-            max-height: 80vh;
-            overflow: auto;
-        }
-
-        .modal h3 {
-            margin-bottom: 16px;
-            font-size: 16px;
-        }
-
-        .modal input[type="text"],
-        .modal textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid #3f3f46;
-            background: #27272a;
-            color: #e4e4e7;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .modal textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 16px;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <aside class="sidebar">
-        <span class="sidebar-title">Сеть</span>
-        <button type="button" class="social-btn" data-network="instagram" title="Instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </button>
-        <button type="button" class="social-btn" data-network="facebook" title="Facebook" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </button>
-        <button type="button" class="social-btn" data-network="twitter" title="X (Twitter)" aria-label="X">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </button>
-        <button type="button" class="social-btn" data-network="linkedin" title="LinkedIn" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </button>
-        <div class="sidebar-divider"></div>
-        <div class="size-select-wrap">
-            <label for="sizeSelect">Размер</label>
-            <select id="sizeSelect" class="size-select" aria-label="Выбор размера материала"></select>
+    <div id="app-tooltip" class="app-tooltip" role="tooltip" aria-hidden="true"></div>
+    <aside class="sidebar-left">
+        <div class="sidebar-left-logo">
+            <img src="src/logo-dark.svg" alt="" class="sidebar-logo sidebar-logo-dark" height="32">
+            <img src="src/logo-light.svg" alt="" class="sidebar-logo sidebar-logo-light" height="32">
+        </div>
+        <div class="sidebar-panel-left">
+            <div class="accordion" id="socialNetworksAccordion" role="list"></div>
+            <div class="custom-size-panel">
+                <div class="custom-size-panel__inputs">
+                    <input type="text" class="input custom-size-input" id="customWidth" placeholder="Width" inputmode="numeric" aria-label="Width">
+                    <input type="text" class="input custom-size-input" id="customHeight" placeholder="Height" inputmode="numeric" aria-label="Height">
+                </div>
+                <button type="button" class="btn btn-primary" id="customCreateBtn" disabled>Create</button>
+            </div>
         </div>
     </aside>
 
+    <div class="canvas-tools-wrap" id="canvasToolsWrap">
+        <div class="canvas-tools">
+            <button type="button" class="canvas-tool-btn active" id="canvasToolCursor" data-tool="cursor" data-tooltip="Select" aria-label="Select"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M9.80282 4.62973L15.8364 6.99069C19.3164 8.35243 21.0564 9.03329 20.9987 10.1133C20.941 11.1934 19.1251 11.6886 15.4933 12.6791C14.412 12.974 13.8713 13.1215 13.4964 13.4963C13.1215 13.8712 12.9741 14.4119 12.6791 15.4933C11.6887 19.125 11.1934 20.9409 10.1134 20.9986C9.03335 21.0563 8.35249 19.3163 6.99075 15.8363L4.62979 9.80276C3.20411 6.15934 2.49127 4.33764 3.41448 3.41442C4.3377 2.49121 6.15941 3.20405 9.80282 4.62973Z" /></svg></button>
+            <button type="button" class="canvas-tool-btn" id="canvasToolHand" data-tool="hand" data-tooltip="Pan" aria-label="Pan"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 9.5V14.1667C20.5 16.34 20.5 17.4267 20.1689 18.2918C19.6627 19.6148 18.6207 20.6601 17.3019 21.1679C16.4395 21.5 15.3562 21.5 13.1896 21.5C12.0534 21.5 11.4853 21.5 10.9566 21.3834C10.1499 21.2056 9.40001 20.8294 8.77419 20.2888C8.36398 19.9344 8.02311 19.4785 7.34137 18.5667L4.33738 14.5487C3.8758 13.9314 3.88907 13.0789 4.36965 12.4763C4.99772 11.6888 6.16877 11.6237 6.8797 12.3369L8.5011 13.9634V10.5V6C8.5011 5.17157 9.17267 4.5 10.0011 4.5C10.8295 4.5 11.5011 5.17157 11.5011 6M11.5011 6V4C11.5011 3.17157 12.1727 2.5 13.0011 2.5C13.8295 2.5 14.5011 3.17157 14.5011 4V6M11.5011 6V10.5M14.5011 6C14.5011 5.17157 15.1727 4.5 16.0011 4.5C16.8295 4.5 17.5011 5.17157 17.5011 6V8M14.5011 6V10.5M20.5011 10.5V8C20.5011 7.17157 19.8295 6.5 19.0011 6.5C18.1727 6.5 17.5011 7.17157 17.5011 8M17.5011 8V10.5" /></svg></button>
+            <button type="button" class="canvas-tool-btn" id="canvasZoomMinus" data-tooltip="Zoom out" aria-label="Zoom out"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
+            <span class="canvas-zoom-value" id="canvasZoomValue">100%</span>
+            <button type="button" class="canvas-tool-btn" id="canvasZoomPlus" data-tooltip="Zoom in" aria-label="Zoom in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V16M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
+            <button type="button" class="canvas-tool-btn" id="canvasToolFrame" data-tooltip="Fit to view" aria-label="Fit to view"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2V4M22 20H20M16.5 20H10C7.17157 20 5.75736 20 4.87868 19.1213C4 18.2426 4 16.8284 4 14V7.5" /><path d="M20 22L20 12C20 8.22877 20 6.34315 18.8284 5.17158C17.6569 4 15.7712 4 12 4L2 4" /></svg></button>
+        </div>
+    </div>
+
+    <div class="theme-tabs-wrap">
+        <div class="theme-tabs">
+            <span class="theme-tabs-slider" id="themeTabsSlider" aria-hidden="true"></span>
+            <button type="button" id="themeLight" data-tooltip="Light theme" aria-label="Light theme"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" />
+                    <path
+                        d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714" />
+                </svg></button>
+            <button type="button" id="themeDark" data-tooltip="Dark theme" aria-label="Dark theme"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path
+                        d="M21.5 14.0784C20.3003 14.7189 18.9301 15.0821 17.4751 15.0821C12.7491 15.0821 8.91792 11.2509 8.91792 6.52485C8.91792 5.06986 9.28105 3.69968 9.92163 2.5C5.66765 3.49698 2.5 7.31513 2.5 11.8731C2.5 17.1899 6.8101 21.5 12.1269 21.5C16.6849 21.5 20.503 18.3324 21.5 14.0784Z" />
+                </svg></button>
+        </div>
+    </div>
+
     <main class="main">
         <header class="main-header">
-            <h1 id="canvasTitle">Выберите сеть и размер</h1>
+            <h1 id="canvasTitle">Select network and size</h1>
             <div class="main-header-actions">
-                <button type="button" class="btn btn-secondary" id="clearBtn" disabled>Очистить</button>
-                <button type="button" class="btn btn-primary" id="downloadBtn" disabled>Скачать</button>
+                <div class="main-header-actions-left">
+                    <div class="safe-zones-switch-wrap">
+                        <span class="switch-label">Safe zones</span>
+                        <button type="button" class="switch" id="safeZonesBtn" role="switch" aria-checked="false" data-tooltip="Safe zones" aria-label="Safe zones">
+                            <span class="switch-thumb"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="header-icon-btn" id="undoBtn" data-tooltip="Undo" aria-label="Undo" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8H15C18.3137 8 21 10.6863 21 14C21 17.3137 18.3137 20 15 20H11" /><path d="M7 4L5.8462 4.87652C3.94873 6.31801 3 7.03875 3 8C3 8.96125 3.94873 9.68199 5.8462 11.1235L7 12" /></svg>
+                    </button>
+                    <button type="button" class="header-icon-btn" id="redoBtn" data-tooltip="Redo" aria-label="Redo" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8H9C5.68629 8 3 10.6863 3 14C3 17.3137 5.68629 20 9 20H13" /><path d="M17 4L18.1538 4.87652C20.0513 6.31801 21 7.03875 21 8C21 8.96125 20.0513 9.68199 18.1538 11.1235L17 12" /></svg>
+                    </button>
+                </div>
+                <div class="main-header-actions-center">
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddBackground" title="Background">Background</button>
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddImage" title="Image">Image</button>
+                    <div class="shape-menu-wrap">
+                        <button type="button" class="btn btn-secondary btn-header-center" id="btnShape" title="Shape" aria-haspopup="true" aria-expanded="false">Shape</button>
+                        <div class="shape-menu-popover" id="shapeMenuPopover" role="menu" aria-hidden="true">
+                            <div class="shape-menu-grid" id="shapeMenuGrid"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddText" title="Text">Text</button>
+                </div>
+                <div class="main-header-actions-right">
+                    <button type="button" class="btn btn-secondary btn-harmonize" id="harmonizeBtn" disabled>Harmonize</button>
+                    <button type="button" class="btn btn-secondary" id="resetFiltersBtn" style="display: none;" disabled>Undo harmony</button>
+                    <button type="button" class="btn btn-secondary" id="clearBtn" disabled>Clear</button>
+                    <div class="download-menu-wrap">
+                        <button type="button" class="btn btn-primary btn-download-full" id="downloadBtn" disabled aria-haspopup="true" aria-expanded="false">Download</button>
+                        <div class="download-menu-popover" id="downloadMenuPopover" role="menu" aria-hidden="true">
+                            <button type="button" class="download-menu-item" data-format="png">PNG <span class="download-menu-count" id="downloadMenuCountPng">0</span></button>
+                            <button type="button" class="download-menu-item" data-format="jpg">JPG <span class="download-menu-count" id="downloadMenuCountJpg">0</span></button>
+                            <button type="button" class="download-menu-item" data-format="pdf">PDF</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <div class="canvas-wrap">
-            <div class="result-container" id="resultContainer">
-                <div class="bg-layer" id="bgLayer"></div>
-                <div class="overlay-layer" id="overlayLayer"></div>
+        <div class="canvas-wrap" id="canvasWrap">
+            <div class="canvas-viewport" id="canvasViewport">
+                <div class="canvas-stage" id="canvasStage">
+                <div class="canvas-size-label" id="canvasSizeLabel" data-export-ignore></div>
+                <div class="canvas-scaler" id="canvasScaler">
+                    <div class="result-container" id="resultContainer">
+                        <div class="bg-layer" id="bgLayer"></div>
+                        <div class="overlay-layer" id="overlayLayer"></div>
+                        <div class="guides-layer" id="guidesLayer" data-export-ignore></div>
+                        <div class="safe-zones-layer" id="safeZonesLayer" data-export-ignore></div>
+                        <div class="harmonize-overlay" id="harmonizeOverlay" aria-hidden="true"></div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="text-float-toolbar" id="textFloatToolbar" data-export-ignore>
+                <div class="text-float-toolbar-inner">
+                    <div class="text-toolbar-font-wrap">
+                        <select id="textFontSelect" class="text-font-select select" aria-label="Font"></select>
+                    </div>
+                    <div class="text-toolbar-size input">
+                        <button type="button" class="text-toolbar-size-btn" id="textSizeDown" data-tooltip="Decrease font size" aria-label="-">−</button>
+                        <input type="text" class="text-toolbar-size-input" id="textSizeValue" value="24" inputmode="numeric" maxlength="3" aria-label="Font size">
+                        <button type="button" class="text-toolbar-size-btn" id="textSizeUp" data-tooltip="Increase font size" aria-label="+">+</button>
+                    </div>
+                    <div class="color-picker-wrap">
+                        <input type="hidden" id="textColorInput" value="#2563eb">
+                        <button type="button" class="text-color-trigger" id="textColorTrigger" data-tooltip="Text color" aria-label="Text color"></button>
+                        <div class="color-picker-popover" id="colorPickerPopover">
+                            <div class="color-picker-presets" id="colorPickerPresets"></div>
+                            <div class="color-picker-main">
+                                <div class="color-picker-sv" id="colorPickerSv">
+                                    <div class="color-picker-sv-hue" id="colorPickerSvHue"></div>
+                                    <div class="color-picker-sv-white"></div>
+                                    <div class="color-picker-sv-black"></div>
+                                    <div class="color-picker-sv-cursor" id="colorPickerSvCursor"></div>
+                                </div>
+                                <div class="color-picker-hue" id="colorPickerHue">
+                                    <div class="color-picker-hue-cursor" id="colorPickerHueCursor"></div>
+                                </div>
+                            </div>
+                            <div class="color-picker-footer">
+                                <input type="text" class="color-picker-hex input" id="colorPickerHex" maxlength="7" placeholder="#000000">
+                            </div>
+                            <div class="color-picker-opacity-wrap">
+                                <label class="color-picker-opacity-label" for="colorPickerOpacity">Opacity</label>
+                                <div class="color-picker-opacity-row">
+                                    <input type="range" class="color-picker-opacity-slider" id="colorPickerOpacity" min="0" max="100" value="100" aria-label="Opacity">
+                                    <span class="color-picker-opacity-value" id="colorPickerOpacityValue">100%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-toolbar-sep" aria-hidden="true"></div>
+                    <button type="button" class="text-toolbar-btn" id="textBold" data-tooltip="Bold" aria-label="Bold"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M5 6C5 4.58579 5 3.87868 5.43934 3.43934C5.87868 3 6.58579 3 8 3H12.5789C15.0206 3 17 5.01472 17 7.5C17 9.98528 15.0206 12 12.5789 12H5V6Z" />
+                            <path
+                                d="M12.4286 12H13.6667C16.0599 12 18 14.0147 18 16.5C18 18.9853 16.0599 21 13.6667 21H8C6.58579 21 5.87868 21 5.43934 20.5607C5 20.1213 5 19.4142 5 18V12" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textItalic" data-tooltip="Italic"
+                        aria-label="Italic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M12 4H19" />
+                            <path d="M8 20L16 4" />
+                            <path d="M5 20H12" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textUnderline" data-tooltip="Underline"
+                        aria-label="Underline"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M5.5 3V11.5C5.5 15.0899 8.41015 18 12 18C15.5899 18 18.5 15.0899 18.5 11.5V3" />
+                            <path d="M3 21H21" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textUppercase" data-tooltip="Uppercase"
+                        aria-label="Uppercase"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path
+                                d="M10.5714 21H5.42857M8 3V21M8 3C6.81082 3 5.28326 3.12265 4.06709 3.24346C3.55271 3.29456 3.29552 3.32011 3.06788 3.41021C2.59438 3.59763 2.21271 4.00855 2.06906 4.48556C2 4.71489 2 4.97659 2 5.5M8 3C8.60727 3 9.30278 3.03198 10 3.07938" />
+                            <path
+                                d="M18.5706 21H13.4277M15.9992 3V21M15.9992 3C17.1883 3 18.7159 3.12265 19.9321 3.24346C20.4465 3.29456 20.7036 3.32011 20.9313 3.41021C21.4048 3.59763 21.7865 4.00855 21.9301 4.48556C21.9992 4.71489 21.9992 4.97659 21.9992 5.5M15.9992 3C15.3921 3 14.6968 3.03196 13.9999 3.07933" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textAlignLeft" data-tooltip="Align left"
+                        aria-label="Align left"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M3 3H21" />
+                            <path d="M3 9H11" />
+                            <path d="M3 15H21" />
+                            <path d="M3 21H11" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textAlignCenter" data-tooltip="Align center"
+                        aria-label="Align center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M3 3H21" />
+                            <path d="M8 9H16" />
+                            <path d="M3 15H21" />
+                            <path d="M8 21H16" />
+                        </svg></button>
+                    <button type="button" class="text-toolbar-btn" id="textAlignRight" data-tooltip="Align right"
+                        aria-label="Align right"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                            height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M3 3H21" />
+                            <path d="M13 9H21" />
+                            <path d="M3 15H21" />
+                            <path d="M13 21H21" />
+                        </svg></button>
+                    <div class="text-toolbar-sep" aria-hidden="true"></div>
+                    <span class="text-toolbar-rotation-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.0092 2V5.13219C20.0092 5.42605 19.6418 5.55908 19.4537 5.33333C17.6226 3.2875 14.9617 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12" /></svg></span>
+                    <div class="text-toolbar-size input text-toolbar-rotation">
+                        <button type="button" class="text-toolbar-size-btn" id="textRotationDown" data-tooltip="Decrease rotation" aria-label="-">−</button>
+                        <span class="text-toolbar-rotation-wrap"><input type="text" class="text-toolbar-size-input" id="textRotationValue" value="0" inputmode="numeric" maxlength="4" aria-label="Rotation"><span class="text-toolbar-degree">°</span></span>
+                        <button type="button" class="text-toolbar-size-btn" id="textRotationUp" data-tooltip="Increase rotation" aria-label="+">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="shape-float-toolbar" id="shapeFloatToolbar" data-export-ignore>
+            <div class="shape-toolbar-inner">
+                <div class="shape-toolbar-fill-wrap">
+                    <input type="hidden" id="shapeFillInput" value="#2563eb">
+                    <button type="button" class="shape-color-trigger" id="shapeFillTrigger" data-tooltip="Fill color" aria-label="Fill color"></button>
+                </div>
+                <div class="shape-toolbar-sep" aria-hidden="true"></div>
+                <div class="shape-toolbar-border-wrap">
+                    <input type="hidden" id="shapeBorderInput" value="#2563eb">
+                    <button type="button" class="shape-color-trigger shape-color-trigger-border" id="shapeBorderTrigger" data-tooltip="Border color" aria-label="Border color"></button>
+                </div>
+                <div class="text-toolbar-size input shape-toolbar-stroke">
+                    <button type="button" class="text-toolbar-size-btn" id="shapeStrokeDown" data-tooltip="Decrease border width" aria-label="-">−</button>
+                    <input type="text" class="text-toolbar-size-input" id="shapeStrokeValue" value="0" inputmode="numeric" maxlength="3" aria-label="Border width">
+                    <button type="button" class="text-toolbar-size-btn" id="shapeStrokeUp" data-tooltip="Increase border width" aria-label="+">+</button>
+                </div>
+                <div class="shape-toolbar-sep" aria-hidden="true"></div>
+                <span class="shape-toolbar-rotation-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.0092 2V5.13219C20.0092 5.42605 19.6418 5.55908 19.4537 5.33333C17.6226 3.2875 14.9617 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12" /></svg></span>
+                <div class="text-toolbar-size input shape-toolbar-rotation">
+                    <button type="button" class="text-toolbar-size-btn" id="shapeRotationDown" data-tooltip="Decrease rotation" aria-label="-">−</button>
+                    <span class="shape-toolbar-rotation-wrap"><input type="text" class="text-toolbar-size-input" id="shapeRotationValue" value="0" inputmode="numeric" maxlength="4" aria-label="Rotation"><span class="shape-toolbar-degree">°</span></span>
+                    <button type="button" class="text-toolbar-size-btn" id="shapeRotationUp" data-tooltip="Increase rotation" aria-label="+">+</button>
+                </div>
+                <div class="shape-toolbar-sep" aria-hidden="true"></div>
+                <button type="button" class="shape-toolbar-btn" id="shapeBezierBtn" data-tooltip="Edit points" aria-label="Edit points" title="Edit points"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4C16 4 13.9792 8.0416 12 12C10.0208 15.9584 8 20 3 20" /><path d="M21 20C21 21.1046 20.1046 22 19 22C17.8954 22 17 21.1046 17 20C17 18.8954 17.8954 18 19 18C20.1046 18 21 18.8954 21 20Z" fill="currentColor" /><path d="M10 20H12M15 20L17 20M17 20C17 21.1046 17.8954 22 19 22C20.1046 22 21 21.1046 21 20C21 18.8954 20.1046 18 19 18C17.8954 18 17 18.8954 17 20Z" /><path d="M7 4C7 5.10457 6.10457 6 5 6C3.89543 6 3 5.10457 3 4C3 2.89543 3.89543 2 5 2C6.10457 2 7 2.89543 7 4Z" fill="currentColor" /><path d="M12 4H14M7 4L9 4M7 4C7 5.10457 6.10457 6 5 6C3.89543 6 3 5.10457 3 4C3 2.89543 3.89543 2 5 2C6.10457 2 7 2.89543 7 4Z" /></svg></button>
             </div>
         </div>
-
-        <div class="preview-row">
-            <div class="preview-card" id="previewBackground" data-type="background" title="Фон">
-                <span class="preview-label">Фон</span>
-                <img class="preview-img" id="previewBackgroundImg" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeBackground" aria-label="Удалить фон">×</button>
-            </div>
-            <div class="preview-card" id="previewImage1" data-type="image" data-index="0" title="Картинка 1">
-                <span class="preview-label">Картинка 1</span>
-                <img class="preview-img" id="previewImage1Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage0" aria-label="Удалить">×</button>
-            </div>
-            <div class="preview-card preview-card-hidden" id="previewImage2" data-type="image" data-index="1" title="Картинка 2" style="display: none;">
-                <span class="preview-label">Картинка 2</span>
-                <img class="preview-img" id="previewImage2Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage1" aria-label="Удалить">×</button>
-            </div>
-            <div class="preview-card preview-card-hidden" id="previewImage3" data-type="image" data-index="2" style="display: none;">
-                <span class="preview-label">Картинка 3</span>
-                <img class="preview-img" id="previewImage3Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage2" aria-label="Удалить">×</button>
-            </div>
-            <div class="preview-card preview-card-hidden" id="previewImage4" data-type="image" data-index="3" style="display: none;">
-                <span class="preview-label">Картинка 4</span>
-                <img class="preview-img" id="previewImage4Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage3" aria-label="Удалить">×</button>
-            </div>
-            <div class="preview-card preview-card-hidden" id="previewImage5" data-type="image" data-index="4" style="display: none;">
-                <span class="preview-label">Картинка 5</span>
-                <img class="preview-img" id="previewImage5Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage4" aria-label="Удалить">×</button>
-            </div>
-            <div class="preview-card preview-card-hidden" id="previewImage6" data-type="image" data-index="5" style="display: none;">
-                <span class="preview-label">Картинка 6</span>
-                <img class="preview-img" id="previewImage6Img" alt="" style="display: none;">
-                <button type="button" class="btn-remove" id="removeImage5" aria-label="Удалить">×</button>
-            </div>
-            <button type="button" class="btn-add-preview" id="btnAddPreview" title="Добавить превью" aria-label="Добавить превью">+</button>
-            <div class="btn-text-wrap">
-                <button type="button" class="btn-text" id="btnAddText" title="Добавить текст">
-                    <span>Текст</span>
-                </button>
-                <select id="fontSelect" class="font-select" aria-label="Шрифт для текста">
-                    <option value="Inter">Inter</option>
-                    <option value="Roboto">Roboto</option>
-                    <option value="Open Sans">Open Sans</option>
-                    <option value="Lato">Lato</option>
-                    <option value="Oswald">Oswald</option>
-                    <option value="Montserrat">Montserrat</option>
-                    <option value="Playfair Display">Playfair Display</option>
-                    <option value="PT Sans">PT Sans</option>
-                </select>
-            </div>
         </div>
     </main>
 
+    <aside class="sidebar-right">
+        <div class="layers-panel-inner">
+            <div class="layers-list" id="layersList" role="list"></div>
+        </div>
+    </aside>
+
     <input type="file" id="fileBackground" accept="image/*">
     <input type="file" id="fileImage" accept="image/*">
-
-    <div class="modal-overlay" id="textModal">
-        <div class="modal">
-            <h3>Добавить текст</h3>
-            <textarea id="textInput" placeholder="Введите текст..."></textarea>
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" id="textModalCancel">Отмена</button>
-                <button type="button" class="btn btn-primary" id="textModalOk">Добавить</button>
-            </div>
-        </div>
-    </div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>

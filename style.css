@@ -1,0 +1,2455 @@
+/* ==========================================================================
+   DESIGN TOKENS (theme) — стили как в проекте Презентации
+   ========================================================================== */
+:root {
+    --app-bg: #f4f4f5;
+    --app-surface: #ffffff;
+    --app-surface-hover: #e4e4e7;
+    --app-border: #d4d4d8;
+    --app-text: #18181b;
+    --app-text-muted: #71717a;
+    --app-accent: #2563eb;
+    --app-accent-hover: #1d4ed8;
+    --app-radius: 8px;
+    --app-radius-sm: 6px;
+    --app-radius-panel: 12px;
+    --app-radius-canvas: 12px;
+    --app-radius-btn: 9999px;
+    --app-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --app-shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --app-shadow-panel-soft: 0 12px 40px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+    --app-shadow-tabs: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --app-transition: 0.3s ease;
+    --input-radius: 8px;
+    --panel-bottom: 24px;
+}
+
+/* заблокированные элементы — курсор default */
+button:disabled,
+input:disabled,
+[disabled],
+.disabled {
+    cursor: default;
+}
+
+body.theme-dark {
+    --app-bg: #09090b;
+    --app-surface: #18181b;
+    --app-surface-hover: #27272a;
+    --app-panel-bg: #27272a;
+    --app-border: #3f3f46;
+    --app-text: #fafafa;
+    --app-text-muted: #a1a1aa;
+    --app-accent: #3b82f6;
+    --app-accent-hover: #60a5fa;
+    --app-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --app-shadow-panel: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --app-shadow-panel-soft: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1);
+    --app-shadow-tabs: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Иконки поворота в панелях: без фона в обеих темах, по ховеру — акцентный синий */
+.shape-toolbar-rotation-icon,
+.text-toolbar-rotation-icon {
+    background: transparent;
+}
+.shape-toolbar-rotation-icon:hover,
+.text-toolbar-rotation-icon:hover {
+    color: var(--app-accent);
+}
+.shape-toolbar-rotation-icon:hover svg,
+.text-toolbar-rotation-icon:hover svg {
+    color: var(--app-accent);
+}
+.selection-frame-rotation-handle:hover {
+    color: var(--app-accent);
+}
+.selection-frame-rotation-handle:hover svg {
+    color: var(--app-accent);
+}
+body.theme-dark .shape-toolbar-rotation-icon,
+body.theme-dark .text-toolbar-rotation-icon {
+    background: transparent;
+    color: var(--app-text);
+}
+body.theme-dark .shape-toolbar-rotation-icon:hover,
+body.theme-dark .text-toolbar-rotation-icon:hover {
+    color: var(--app-accent);
+}
+body.theme-dark .shape-toolbar-rotation-icon svg,
+body.theme-dark .text-toolbar-rotation-icon svg {
+    color: inherit;
+}
+body.theme-dark .shape-toolbar-icon {
+    background: var(--app-surface-hover);
+    border-radius: 50%;
+    color: #fff;
+}
+body.theme-dark .shape-toolbar-icon svg {
+    color: #fff;
+}
+body.theme-dark .selection-frame-rotation-handle {
+    background: var(--app-panel-bg, #27272a);
+    color: var(--app-text);
+    border-color: var(--app-border);
+}
+body.theme-dark .selection-frame-rotation-handle:hover {
+    color: var(--app-accent);
+}
+body.theme-dark .selection-frame-rotation-handle svg {
+    color: inherit;
+}
+body.theme-dark .selection-frame-rotation-handle:hover svg {
+    color: var(--app-accent);
+}
+
+/* Dark theme: инпуты — серый фон, светлосерая рамка; hover/focus — акцентная рамка */
+body.theme-dark .input,
+body.theme-dark .select {
+    background: var(--app-surface-hover);
+    border-color: #71717a;
+}
+body.theme-dark .input:hover,
+body.theme-dark .select:hover {
+    border-color: var(--app-accent);
+}
+body.theme-dark .input:focus,
+body.theme-dark .select:focus {
+    border-color: var(--app-accent);
+    background: var(--app-surface-hover);
+}
+body.theme-dark .modal input[type="text"],
+body.theme-dark .modal textarea {
+    background: var(--app-surface-hover);
+    border-color: #71717a;
+}
+body.theme-dark .modal input[type="text"]:hover,
+body.theme-dark .modal textarea:hover {
+    border-color: var(--app-accent);
+}
+body.theme-dark .modal input[type="text"]:focus,
+body.theme-dark .modal textarea:focus {
+    border-color: var(--app-accent);
+    background: var(--app-surface-hover);
+}
+
+/* Dark theme: фон холста как у контейнера, рамка холста чуть светлее */
+body.theme-dark .result-container {
+    background: var(--app-surface);
+    border-color: #52525b;
+}
+
+/* ==========================================================================
+   Custom tooltip (dark style)
+   ========================================================================== */
+.app-tooltip {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    padding: 8px 12px;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+}
+
+.app-tooltip.visible {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY (как в Презентации)
+   ========================================================================== */
+.text-label-m { font-size: 14px; font-weight: 500; line-height: 1.4; }
+.text-label-xs { font-size: 12px; font-weight: 500; line-height: 1.4; }
+.text-button-m { font-size: 14px; font-weight: 500; }
+.text-header-1 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.text-header-2 { font-size: 18px; font-weight: 600; line-height: 1.3; }
+
+/* ==========================================================================
+   COMPONENT: Input / Select (единый)
+   ========================================================================== */
+.input,
+.select {
+    background: #ffffff;
+    border: 1px solid var(--app-border);
+    border-radius: var(--input-radius);
+    color: var(--app-text);
+    font-size: 14px;
+    transition: border-color var(--app-transition);
+}
+
+.input:focus,
+.select:focus {
+    outline: none;
+    border-color: var(--app-accent);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+body {
+    background: var(--app-bg);
+    color: var(--app-text);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+}
+
+/* ==========================================================================
+   COMPONENT: Button (base)
+   ========================================================================== */
+.btn {
+    height: 40px;
+    padding: 0 24px;
+    border-radius: var(--app-radius-btn);
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--app-transition), color var(--app-transition), border-color var(--app-transition), opacity var(--app-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:disabled {
+    background: var(--app-surface-hover);
+    color: var(--app-text-muted);
+    opacity: 1;
+    cursor: default;
+}
+
+/* ==========================================================================
+   COMPONENT: Button Primary (главная кнопка)
+   ========================================================================== */
+.btn-primary {
+    background: var(--app-accent);
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--app-accent-hover);
+}
+
+/* ==========================================================================
+   COMPONENT: Button Secondary (второстепенная кнопка)
+   ========================================================================== */
+.btn-secondary {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+    border: none;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--app-border);
+}
+
+/* Harmonize — как в Thumbnail (радужный градиент) */
+.btn-harmonize.btn-secondary {
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    transition: opacity 0.4s ease;
+}
+
+.btn-harmonize.btn-secondary:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn-harmonize.btn-secondary:disabled {
+    cursor: default;
+    background: var(--app-surface-hover);
+    color: var(--app-text-muted);
+}
+
+.btn-harmonize.btn-secondary:not(:disabled) {
+    background: linear-gradient(90deg, #ff4545, #ffe229, #89eb20, #0fc8ed, #ff6cda, #ff4545);
+    background-size: 1000% 100%;
+    animation: rainbow-move 240s linear infinite;
+    color: #fff;
+}
+
+body.theme-dark .btn-harmonize.btn-secondary:disabled {
+    background: var(--app-surface-hover);
+    color: var(--app-text-muted);
+    opacity: 1;
+}
+
+#resetFiltersBtn.harmonize-active {
+    color: #000;
+}
+
+body.theme-dark #resetFiltersBtn,
+body.theme-dark #resetFiltersBtn.harmonize-active {
+    color: #fff;
+}
+
+@keyframes rainbow-move {
+    0% { background-position: 0% 0; }
+    100% { background-position: 1000% 0; }
+}
+
+/* ==========================================================================
+   COMPONENT: Button Light (для вкладок / переключателей)
+   ========================================================================== */
+.btn-light {
+    background: transparent;
+    color: var(--app-text-muted);
+}
+
+.btn-light:hover:not(:disabled) {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.btn-light.active,
+.btn-light.on {
+    background: var(--app-surface-hover);
+    color: var(--app-accent);
+}
+
+body.theme-dark .btn-light.on {
+    background: #fff;
+    color: #0d0d0f;
+}
+
+body.theme-dark .btn-light.off {
+    background: var(--app-surface-hover);
+    color: var(--app-text-muted);
+}
+
+/* ==========================================================================
+   COMPONENT: Switch (Safe zones)
+   ========================================================================== */
+.safe-zones-switch-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 32px;
+}
+
+.switch-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--app-text);
+}
+
+.switch {
+    position: relative;
+    width: 40px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: var(--app-surface-hover);
+    cursor: pointer;
+    transition: background var(--app-transition);
+    flex-shrink: 0;
+}
+
+.switch.on {
+    background: var(--app-accent);
+}
+
+body.theme-dark .switch {
+    background: #27272a;
+}
+
+body.theme-dark .switch.on {
+    background: var(--app-accent);
+}
+
+.switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform var(--app-transition);
+    pointer-events: none;
+}
+
+.switch.on .switch-thumb {
+    transform: translateX(16px);
+}
+
+body.theme-dark .switch-thumb {
+    background: #ffffff;
+}
+
+/* ==========================================================================
+   COMPONENT: Panel (базовый контейнер)
+   ========================================================================== */
+.panel,
+.sidebar-panel {
+    background: var(--app-surface);
+    border-radius: var(--app-radius-panel);
+    padding: 16px;
+}
+
+/* ==========================================================================
+   COMPONENT: Panel Left (левая панель)
+   ========================================================================== */
+.sidebar-left {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 20;
+}
+
+.sidebar-left-logo {
+    margin-bottom: 24px;
+}
+
+.sidebar-logo {
+    height: 32pt;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* светлая тема — показываем тёмный лого; тёмная тема — светлый лого */
+body:not(.theme-dark) .sidebar-logo-light {
+    display: none;
+}
+
+body.theme-dark .sidebar-logo-dark {
+    display: none;
+}
+
+.sidebar-panel-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-panel-left .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ==========================================================================
+   Custom size panel (под аккордеоном соцсетей)
+   ========================================================================== */
+.custom-size-panel {
+    margin-top: 40px;
+    background: var(--app-surface);
+    border-radius: var(--app-radius-panel);
+    padding: 16px;
+    box-shadow: var(--app-shadow-panel-soft);
+}
+
+.custom-size-panel__inputs {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.custom-size-input {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    padding: 0 10px;
+}
+
+.custom-size-panel .btn {
+    width: 100%;
+}
+
+/* ==========================================================================
+   COMPONENT: Menu Item — пункты соцсетей
+   ========================================================================== */
+.accordion-header {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: none !important;
+    background: transparent;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--app-transition), color var(--app-transition);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 8px;
+    gap: 10px;
+}
+
+.accordion-header:hover {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.accordion-item.open .accordion-header {
+    background: #000000;
+    color: #ffffff;
+}
+
+.accordion-header-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accordion-header-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.menu-item {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: var(--app-radius-btn);
+    border: none;
+    background: transparent;
+    color: var(--app-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--app-transition), color var(--app-transition);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.menu-item:hover {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.menu-item.active {
+    background: var(--app-accent);
+    color: #ffffff;
+}
+
+.accordion-header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ==========================================================================
+   COMPONENT: Menu Subitem — пункты размеров
+   ========================================================================== */
+.accordion-subitem {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 0;
+    border: none !important;
+    background: transparent;
+    color: #000000;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: color var(--app-transition);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.accordion-subitem-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+.size-ready-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--app-transition), visibility var(--app-transition);
+}
+
+.size-ready-icon.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.size-ready-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.accordion-subitem:hover {
+    background: transparent;
+    color: var(--app-accent);
+}
+
+.accordion-subitem.active {
+    background: transparent;
+    color: var(--app-accent);
+}
+
+/* Тёмная тема — меню */
+body.theme-dark .accordion-header {
+    color: #ffffff;
+}
+
+body.theme-dark .accordion-header:hover {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+body.theme-dark .accordion-item.open .accordion-header {
+    background: var(--app-surface);
+    color: var(--app-text);
+    border: none !important;
+}
+
+body.theme-dark .accordion-subitem {
+    color: var(--app-text);
+}
+
+body.theme-dark .accordion-subitem:hover,
+body.theme-dark .accordion-subitem.active {
+    color: var(--app-accent);
+}
+
+body.theme-dark .canvas-tools-wrap,
+body.theme-dark .canvas-tools {
+    background: var(--app-panel-bg);
+    border-radius: 8px;
+}
+
+body.theme-dark .canvas-tool-btn {
+    border-radius: 8px;
+}
+
+body.theme-dark .canvas-tool-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--app-text);
+}
+
+body.theme-dark .canvas-tool-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--app-text);
+}
+
+body.theme-dark .layers-panel-inner,
+body.theme-dark .text-float-toolbar-inner,
+body.theme-dark .shape-toolbar-inner {
+    background: var(--app-panel-bg);
+}
+
+/* Accordion — раскрытие (заголовок соцсети уже стилизован выше) */
+
+.accordion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--app-border);
+    transition: color var(--app-transition);
+}
+
+.accordion-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.accordion-icon .icon-minus { display: none; }
+.accordion-icon .icon-plus { display: block; }
+
+.accordion-item.open .accordion-icon {
+    color: #ffffff;
+}
+
+.accordion-item.open .accordion-icon .icon-plus { display: none; }
+.accordion-item.open .accordion-icon .icon-minus { display: block; }
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.accordion-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.accordion-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-left: 12px;
+    padding-top: 0;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease, padding-top 0.3s ease, margin-top 0.3s ease;
+}
+
+.accordion-item.open .accordion-body {
+    max-height: 400px;
+    opacity: 1;
+    padding-top: 4px;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   COMPONENT: Panel Right (правая панель — слои)
+   ========================================================================== */
+.sidebar-right {
+    position: fixed;
+    top: 24px;
+    bottom: var(--panel-bottom);
+    right: 24px;
+    width: 280px;
+    z-index: 20;
+}
+
+.layers-panel-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--app-surface);
+    border-radius: var(--app-radius-panel);
+    padding: 16px;
+    padding-bottom: 24px;
+    box-shadow: var(--app-shadow-panel-soft);
+}
+
+.layers-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-bottom: 12px;
+}
+
+.layers-actions .btn {
+    flex: 1;
+}
+
+.layers-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 0;
+    position: relative;
+}
+
+.layer-row .btn-layer-up.disabled,
+.layer-row .btn-layer-down.disabled {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+}
+
+.layers-bg-section {
+    margin-bottom: 24px;
+}
+
+.layers-overlay-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.layers-footer {
+    flex-shrink: 0;
+    padding-top: 16px;
+    margin-top: auto;
+}
+
+.layers-footer .btn-primary {
+    width: 100%;
+}
+
+/* Layer row — строка слоя */
+.layer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: transparent;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background var(--app-transition);
+    user-select: none;
+    min-height: 40px;
+}
+
+.layer-row:hover {
+    background: var(--app-surface-hover);
+}
+
+.layer-row.selected {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.layer-row.selected .layer-label {
+    color: var(--app-text);
+}
+
+.layer-row .layer-preview {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--app-radius-sm);
+    background: var(--app-border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--app-text-muted);
+}
+
+.layer-row .layer-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.layer-row .layer-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.layer-row .btn-layer-up,
+.layer-row .btn-layer-down {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--app-text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layer-row .btn-layer-up:hover:not(.disabled),
+.layer-row .btn-layer-down:hover:not(.disabled) {
+    opacity: 1;
+    background: var(--app-surface-hover);
+    color: var(--app-accent);
+}
+
+.layer-row.selected .btn-layer-up,
+.layer-row.selected .btn-layer-down {
+    color: var(--app-text-muted);
+}
+
+.layer-row.selected .btn-layer-up:hover:not(.disabled),
+.layer-row.selected .btn-layer-down:hover:not(.disabled) {
+    background: var(--app-border);
+    color: var(--app-accent);
+}
+
+.layer-row .btn-remove {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+}
+
+.layer-row .btn-remove:hover {
+    opacity: 1;
+    background: transparent;
+    color: #ef4444;
+}
+
+.layer-row .btn-remove svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.layer-row.selected .btn-remove {
+    color: var(--app-text-muted);
+}
+
+.layer-row.selected .btn-remove:hover {
+    background: transparent;
+    color: #ef4444;
+}
+
+/* Floating text toolbar — по ширине контента, над блоком текста с отступом 16pt */
+.text-float-toolbar {
+    position: fixed;
+    width: auto;
+    z-index: 9999;
+    pointer-events: auto;
+    display: none;
+}
+
+.text-float-toolbar.visible {
+    display: block;
+}
+
+.text-float-toolbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 6px 12px 6px 6px;
+    background: var(--app-surface);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.text-float-toolbar-inner .text-toolbar-btn svg,
+.text-float-toolbar-inner .text-color-trigger {
+    flex-shrink: 0;
+}
+
+/* Размер шрифта: инпут с кнопками − и + внутри */
+.text-toolbar-size {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    width: 120px;
+    min-width: 120px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.text-toolbar-size-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 8px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-text);
+    font-size: 14px;
+    text-align: center;
+}
+
+.text-toolbar-size-input:focus {
+    outline: none;
+}
+
+.text-toolbar-size:focus-within {
+    border-color: var(--app-accent);
+}
+
+.text-toolbar-size-btn {
+    width: 28px;
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-text);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.text-toolbar-size-btn:hover {
+    color: var(--app-accent);
+}
+
+.text-font-select {
+    width: 120px;
+    height: 32px;
+    padding: 0 28px 0 10px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318181b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+}
+
+body.theme-dark .text-font-select {
+    /* Тот же шеврон, один: цвет под тёмную тему (светлый) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Font toolbar & list in right panel */
+.text-toolbar-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Кнопка-превью цвета текста — как у шейпа по размеру (28px), круглая, без ховера */
+.text-color-trigger {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--app-border);
+    border-radius: 50%;
+    background: var(--app-surface);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    line-height: 0;
+}
+
+/* Обёртка кастомного колор-пикера */
+.color-picker-wrap {
+    position: relative;
+}
+
+.color-picker-popover {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    width: 260px;
+    padding: 12px;
+    background: var(--app-surface);
+    border-radius: var(--app-radius-panel);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.color-picker-popover.open {
+    display: block;
+}
+
+.color-picker-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.color-picker-swatch {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--app-border);
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.color-picker-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-picker-swatch.selected {
+    box-shadow: 0 0 0 2px var(--app-surface), 0 0 0 4px var(--app-accent);
+}
+
+.color-picker-main {
+    margin-bottom: 12px;
+}
+
+.color-picker-sv {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    border-radius: var(--app-radius);
+    overflow: hidden;
+    margin-bottom: 8px;
+    cursor: crosshair;
+}
+
+.color-picker-sv-hue {
+    position: absolute;
+    inset: 0;
+    background: #f00;
+}
+
+.color-picker-sv-white {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #fff, transparent);
+}
+
+.color-picker-sv-black {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, #000);
+}
+
+.color-picker-sv-cursor {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    pointer-events: none;
+    margin: -7px 0 0 -7px;
+}
+
+.color-picker-hue {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    cursor: pointer;
+}
+
+.color-picker-hue-cursor {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.color-picker-footer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.color-picker-hex {
+    flex: 1;
+    height: 32px;
+    padding: 0 12px;
+    font-family: monospace;
+}
+
+.color-picker-opacity-wrap {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--app-border);
+}
+
+.color-picker-opacity-label {
+    display: block;
+    font-size: 12px;
+    color: var(--app-text-muted);
+    margin-bottom: 6px;
+}
+
+.color-picker-opacity-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-picker-opacity-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--app-border);
+    border-radius: 3px;
+}
+
+.color-picker-opacity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--app-accent);
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.color-picker-opacity-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--app-accent);
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.color-picker-opacity-value {
+    font-size: 12px;
+    color: var(--app-text);
+    min-width: 36px;
+}
+
+.text-toolbar-btn {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: color var(--app-transition);
+}
+
+.text-toolbar-btn:hover {
+    color: var(--app-accent);
+}
+
+.text-toolbar-btn.active {
+    background: transparent;
+    border: none;
+    color: var(--app-accent);
+}
+
+.text-toolbar-btn svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.font-list {
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.font-list-item {
+    padding: 8px 12px;
+    border-radius: var(--app-radius-btn);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--app-text);
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--app-transition), border-color var(--app-transition);
+}
+
+.font-list-item:hover {
+    background: var(--app-surface-hover);
+}
+
+.font-list-item.selected {
+    background: var(--app-surface-hover);
+    border-color: var(--app-accent);
+    color: var(--app-accent);
+}
+
+/* ==========================================================================
+   COMPONENT: Tabs (вкладки)
+   ========================================================================== */
+/* ==========================================================================
+   COMPONENT: Canvas tools (курсор, рука, масштаб, рамка)
+   ========================================================================== */
+.canvas-tools-wrap {
+    position: fixed;
+    bottom: var(--panel-bottom);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+}
+
+.canvas-tools {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px;
+    height: 36px;
+    box-sizing: border-box;
+    background: var(--app-surface);
+    border-radius: 8px;
+    box-shadow: var(--app-shadow-tabs);
+}
+
+.canvas-tool-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background var(--app-transition), color var(--app-transition);
+}
+
+.canvas-tool-btn:hover {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.canvas-tool-btn.active {
+    background: var(--app-surface-hover);
+    color: var(--app-text);
+}
+
+.canvas-tool-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.canvas-zoom-value {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+    min-width: 32px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   COMPONENT: Tabs (вкладки)
+   ========================================================================== */
+.theme-tabs-wrap {
+    position: fixed;
+    bottom: var(--panel-bottom);
+    left: 24px;
+    z-index: 20;
+}
+
+.theme-tabs {
+    display: flex;
+    position: relative;
+    border-radius: calc(var(--app-radius-btn) + 2px);
+    overflow: hidden;
+    background: var(--app-surface);
+    padding: 2px;
+    height: 36px;
+    box-sizing: border-box;
+    box-shadow: var(--app-shadow-tabs);
+}
+
+.theme-tabs-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 32px;
+    height: 32px;
+    background: var(--app-surface-hover);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: transform 0.25s ease;
+}
+
+.theme-tabs button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.theme-tabs button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.theme-tabs button svg path,
+.theme-tabs button svg circle {
+    stroke: currentColor;
+}
+
+.theme-tabs button.active {
+    color: var(--app-text);
+}
+
+.theme-tabs button:hover:not(.active) {
+    color: var(--app-text);
+}
+
+/* ==========================================================================
+   MAIN AREA
+   ========================================================================== */
+.main {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    padding: 24px;
+    padding-top: 88px;
+    padding-left: 288px;
+    padding-right: 328px;
+}
+
+.main-header {
+    position: fixed;
+    top: 24px;
+    left: 288px;
+    right: 304px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    border: none;
+    z-index: 15;
+}
+
+.main-header h1 {
+    display: none;
+}
+
+.main-header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.main-header-actions-left {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.main-header-actions-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.main-header-actions-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.btn-header-center {
+    min-width: 72px;
+}
+
+/* Shape menu */
+.shape-menu-wrap {
+    position: relative;
+}
+
+.shape-menu-popover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    margin-top: 8px;
+    padding: 16px;
+    background: var(--app-surface);
+    border: none;
+    border-radius: var(--app-radius-panel);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+    min-width: 340px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+body.theme-dark .shape-menu-popover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.shape-menu-popover.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Download menu — ширина под кнопку */
+.download-menu-wrap {
+    position: relative;
+}
+
+.download-menu-popover {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    transform: translateY(-8px);
+    margin-top: 8px;
+    padding: 0;
+    min-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--app-surface);
+    border: none;
+    border-radius: var(--app-radius-panel);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+body.theme-dark .download-menu-popover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.download-menu-popover.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.download-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: var(--app-text);
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.download-menu-item:hover {
+    background: #f5f5f5;
+}
+
+body.theme-dark .download-menu-item:hover {
+    background: var(--app-surface-hover);
+}
+
+.download-menu-count {
+    color: var(--app-text-muted);
+    font-size: 12px;
+    opacity: 0.75;
+    margin-left: 8px;
+}
+
+.shape-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 8px;
+}
+
+.shape-menu-item {
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    border: none;
+    border-radius: var(--app-radius);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+    --shape-fill: rgba(37, 99, 235, 0.4);
+    --shape-stroke: var(--app-accent);
+}
+
+.shape-menu-item:hover {
+    background: #f5f5f5;
+}
+
+.shape-menu-item svg {
+    width: 64px;
+    height: 64px;
+    stroke: var(--shape-stroke);
+    fill: var(--shape-fill);
+}
+
+.shape-menu-item svg path,
+.shape-menu-item svg line {
+    fill: var(--shape-fill);
+    stroke: var(--shape-stroke);
+}
+
+.shape-menu-item[data-shape="line"] svg path,
+.shape-menu-item[data-shape="arrow"] svg path {
+    fill: none;
+    stroke: var(--shape-stroke);
+}
+
+body.theme-dark .shape-menu-item:hover {
+    background: #3f3f46;
+}
+
+body.theme-dark .shape-menu-item {
+    --shape-fill: rgba(255, 255, 255, 0.4);
+    --shape-stroke: #fff;
+}
+
+body.theme-dark .shape-menu-item svg {
+    stroke: var(--shape-stroke);
+    fill: var(--shape-fill);
+}
+
+body.theme-dark .shape-menu-item[data-shape="line"] svg path,
+body.theme-dark .shape-menu-item[data-shape="arrow"] svg path {
+    fill: none;
+    stroke: var(--shape-stroke);
+}
+
+/* Shape float toolbar — стиль как у текстовой панели */
+.shape-float-toolbar {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    width: auto;
+    pointer-events: auto;
+}
+
+.shape-float-toolbar.visible {
+    display: block;
+}
+
+.shape-toolbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 6px 12px 6px 6px;
+    background: var(--app-surface);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.shape-toolbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--app-text);
+    flex-shrink: 0;
+}
+.shape-toolbar-icon svg {
+    width: 24px;
+    height: 24px;
+}
+.shape-toolbar-icon-border {
+    color: var(--app-text);
+}
+
+.shape-toolbar-sep {
+    width: 1px;
+    height: 24px;
+    background: var(--app-border);
+    flex-shrink: 0;
+}
+
+.shape-toolbar-fill-wrap input,
+.shape-toolbar-border-wrap input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+}
+
+.shape-color-trigger {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--app-border);
+    cursor: pointer;
+    padding: 0;
+}
+
+.shape-color-trigger-border {
+    background: transparent;
+    border-width: 4px;
+    border-style: solid;
+    border-color: var(--app-accent);
+    box-shadow: inset 0 0 0 1px var(--app-border);
+}
+
+.shape-toolbar-stroke.text-toolbar-size {
+    width: 120px;
+    min-width: 120px;
+}
+
+.text-toolbar-sep {
+    width: 1px;
+    height: 24px;
+    background: var(--app-border);
+    flex-shrink: 0;
+}
+
+.shape-toolbar-rotation-icon,
+.text-toolbar-rotation-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--app-text);
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.shape-toolbar-rotation-icon svg,
+.text-toolbar-rotation-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.shape-toolbar-rotation.text-toolbar-size,
+.text-toolbar-rotation.text-toolbar-size {
+    width: 110px;
+    min-width: 110px;
+}
+
+.shape-toolbar-rotation-wrap,
+.text-toolbar-rotation-wrap {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.shape-toolbar-rotation-wrap .text-toolbar-size-input,
+.text-toolbar-rotation-wrap .text-toolbar-size-input {
+    flex: 1;
+    min-width: 28px;
+    width: 0;
+    padding-right: 0;
+}
+
+.shape-toolbar-degree,
+.text-toolbar-degree {
+    flex-shrink: 0;
+    padding-left: 2px;
+    padding-right: 6px;
+    font-size: 0.9em;
+    color: var(--app-text);
+}
+
+/* Shape Bezier corner handles — поверх шейпа в режиме редактирования точек */
+.result-container .overlay-layer .shape-item {
+    overflow: visible;
+    transform-origin: center center;
+}
+body.shape-bezier-mode .overlay-layer .shape-item {
+    z-index: 1;
+    overflow: visible;
+}
+.shape-bezier-handles {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+    overflow: visible;
+}
+
+.shape-radius-handles {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+    overflow: visible;
+}
+
+.shape-radius-dot {
+    transform: translate(-50%, -50%);
+    touch-action: none;
+    z-index: 2;
+}
+
+/* Точки концов линии/стрелки — синие, как у углов шейпов */
+.shape-line-endpoint-handles {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+    overflow: visible;
+}
+
+.shape-line-endpoint-dot {
+    transform: translate(-50%, -50%);
+    touch-action: none;
+    z-index: 2;
+}
+
+.shape-line-rotation-handle {
+    touch-action: none;
+    z-index: 2;
+}
+
+.shape-line-rotation-handle svg {
+    width: 16px;
+    height: 16px;
+}
+
+.shape-line-arrowhead-dot {
+    transform: translate(-50%, -50%);
+    touch-action: none;
+    z-index: 2;
+}
+
+.shape-line-rotation-handle:hover {
+    color: var(--app-accent);
+}
+
+body.theme-dark .shape-line-rotation-handle {
+    background: var(--app-panel-bg, #27272a);
+    border-color: var(--app-border);
+    color: var(--app-text);
+}
+
+body.theme-dark .shape-line-rotation-handle:hover {
+    color: var(--app-accent);
+}
+
+/* Точки углов — 12×12px, белый фон, красный бордер 4px снаружи */
+.shape-bezier-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 4px #FF0000;
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+    z-index: 2;
+}
+
+body.theme-dark .shape-bezier-dot {
+    background: var(--app-surface-elevated);
+}
+
+.shape-bezier-dot-selected {
+    box-shadow: 0 0 0 4px #FF0000, 0 0 0 6px var(--app-surface);
+}
+
+/* Ручки Безье на концах линий — 12×12px, красный фон, белый бордер 4px снаружи */
+.shape-bezier-handle-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: #FF0000;
+    box-shadow: 0 0 0 4px #fff;
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+    z-index: 2;
+}
+
+.shape-bezier-guides-svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+}
+
+/* Линии Безье — 2px в экранных пикселях (non-scaling-stroke), пунктир, красные */
+.shape-bezier-guides-svg .shape-bezier-guide-line {
+    stroke: #FF0000;
+    stroke-width: 2px;
+    stroke-dasharray: 6 4;
+    vector-effect: non-scaling-stroke;
+}
+
+.shape-toolbar-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--app-radius-sm);
+    background: transparent;
+    color: var(--app-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shape-toolbar-btn:hover {
+    background: var(--app-surface-hover);
+    color: var(--app-accent);
+}
+
+.shape-toolbar-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.header-icon-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: var(--app-radius-btn);
+    background: transparent;
+    color: var(--app-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--app-transition), color var(--app-transition);
+}
+
+.header-icon-btn:hover:not(:disabled) {
+    background: var(--app-surface-hover);
+    color: var(--app-accent);
+}
+
+.header-icon-btn:disabled {
+    color: var(--app-text-muted);
+    cursor: default;
+    opacity: 0.7;
+}
+
+.header-icon-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==========================================================================
+   CANVAS AREA
+   ========================================================================== */
+.canvas-wrap *,
+.canvas-wrap,
+.canvas-viewport,
+.canvas-stage,
+.canvas-scaler,
+.result-container,
+.result-container * {
+    transition: none !important;
+    transition-property: none !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+    animation-duration: 0s !important;
+}
+
+/* Над холстом, не скейлится, всегда 10px */
+.canvas-size-label {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    font-size: 10px !important;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #9ca3af;
+    background: #ffffff;
+    border: 1px solid var(--app-border);
+    border-radius: 4pt;
+    pointer-events: none;
+    z-index: 10;
+    transform: none;
+}
+
+body.theme-dark .canvas-size-label {
+    color: #6b7280;
+    background: #000000;
+    border-color: var(--app-border);
+}
+
+.canvas-wrap {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-width: 0;
+    background: #ffffff;
+    border-radius: var(--app-radius-panel);
+}
+
+body.theme-dark .canvas-wrap {
+    background: var(--app-surface);
+}
+
+.canvas-viewport {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    /* Обрезка по границе контейнера — overflow на .canvas-wrap */
+}
+
+.canvas-stage {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.canvas-scaler {
+    transform-origin: 0 0;
+    display: block;
+}
+
+.result-container {
+    position: relative;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-canvas);
+    overflow: hidden;
+}
+
+body:not(.theme-dark) .result-container {
+    border-color: #a1a1aa;
+}
+
+.result-container .bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.result-container .overlay-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    --controls-scale: 1;
+}
+
+.result-container .overlay-layer .draggable-item {
+    position: absolute;
+    pointer-events: auto;
+    cursor: move;
+    touch-action: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    box-sizing: border-box;
+}
+
+.result-container .overlay-layer .draggable-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+    user-select: none;
+}
+
+.result-container .overlay-layer .text-item {
+    position: absolute;
+    pointer-events: auto;
+    cursor: move;
+    padding: 8px 12px;
+    color: #fff;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    user-select: none;
+    max-width: 85%;
+    width: max-content;
+    min-width: 80px;
+    min-height: 1.2em;
+    height: auto;
+    overflow: visible;
+    box-sizing: border-box;
+    transform-origin: center center;
+}
+
+.result-container .overlay-layer .text-item.selected {
+    outline: none;
+}
+
+/* Selection frame with resize handles. Wrapper scales with canvas (no transform); inner frame visual is counter-scaled so border/handles stay constant size. */
+.selection-frame-wrapper {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    overflow: visible;
+}
+
+.selection-frame-wrapper .selection-frame {
+    pointer-events: none;
+}
+
+.selection-frame {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    display: none;
+}
+
+.selection-frame.visible {
+    display: block;
+}
+
+.selection-frame-border {
+    position: absolute;
+    inset: 0;
+    border: calc(2px / var(--controls-scale, 1)) solid var(--app-accent);
+    border-radius: calc(6px / var(--controls-scale, 1));
+    pointer-events: none;
+}
+
+.selection-frame .resize-handle {
+    position: absolute;
+    background: #fff;
+    border: calc(1px / var(--controls-scale, 1)) solid var(--app-accent);
+    pointer-events: auto;
+    cursor: default;
+}
+
+.selection-frame .resize-handle.handle-nw,
+.selection-frame .resize-handle.handle-ne,
+.selection-frame .resize-handle.handle-sw,
+.selection-frame .resize-handle.handle-se {
+    width: calc(8px / var(--controls-scale, 1));
+    height: calc(8px / var(--controls-scale, 1));
+    border-radius: 0;
+}
+
+.selection-frame .resize-handle.handle-n,
+.selection-frame .resize-handle.handle-s {
+    width: calc(14px / var(--controls-scale, 1));
+    height: calc(6px / var(--controls-scale, 1));
+    left: 50%;
+    margin-left: calc(-7px / var(--controls-scale, 1));
+    border-radius: 0;
+}
+
+.selection-frame .resize-handle.handle-e,
+.selection-frame .resize-handle.handle-w {
+    width: calc(6px / var(--controls-scale, 1));
+    height: calc(14px / var(--controls-scale, 1));
+    top: 50%;
+    margin-top: calc(-7px / var(--controls-scale, 1));
+    border-radius: 0;
+}
+
+.selection-frame .resize-handle.handle-nw { top: calc(-4px / var(--controls-scale, 1)); left: calc(-4px / var(--controls-scale, 1)); cursor: nwse-resize; }
+.selection-frame .resize-handle.handle-n  { top: calc(-3px / var(--controls-scale, 1)); cursor: ns-resize; }
+.selection-frame .resize-handle.handle-ne { top: calc(-4px / var(--controls-scale, 1)); right: calc(-4px / var(--controls-scale, 1)); left: auto; cursor: nesw-resize; }
+.selection-frame .resize-handle.handle-e  { right: calc(-3px / var(--controls-scale, 1)); left: auto; cursor: ew-resize; }
+.selection-frame .resize-handle.handle-se { bottom: calc(-4px / var(--controls-scale, 1)); right: calc(-4px / var(--controls-scale, 1)); left: auto; top: auto; cursor: nwse-resize; }
+.selection-frame .resize-handle.handle-s  { bottom: calc(-3px / var(--controls-scale, 1)); top: auto; cursor: ns-resize; }
+.selection-frame .resize-handle.handle-sw { bottom: calc(-4px / var(--controls-scale, 1)); left: calc(-4px / var(--controls-scale, 1)); top: auto; cursor: nesw-resize; }
+.selection-frame .resize-handle.handle-w  { left: calc(-3px / var(--controls-scale, 1)); cursor: ew-resize; }
+
+/* Зона ховера у угла — захватывает и угол, и иконку поворота, чтобы по иконке можно было кликнуть */
+.selection-frame-corner-zone {
+    position: absolute;
+    width: calc(52px / var(--controls-scale, 1));
+    height: calc(52px / var(--controls-scale, 1));
+    z-index: 1;
+}
+.selection-frame-corner-zone.handle-nw { top: calc(-28px / var(--controls-scale, 1)); left: calc(-28px / var(--controls-scale, 1)); }
+.selection-frame-corner-zone.handle-ne { top: calc(-28px / var(--controls-scale, 1)); right: calc(-28px / var(--controls-scale, 1)); left: auto; }
+.selection-frame-corner-zone.handle-se { bottom: calc(-28px / var(--controls-scale, 1)); right: calc(-28px / var(--controls-scale, 1)); top: auto; left: auto; }
+.selection-frame-corner-zone.handle-sw { bottom: calc(-28px / var(--controls-scale, 1)); left: calc(-28px / var(--controls-scale, 1)); top: auto; }
+
+/* Ручки и иконка внутри зоны — позиции относительно зоны (0,0 = угол рамки) */
+.selection-frame-corner-zone .resize-handle.handle-nw { top: calc(24px / var(--controls-scale, 1)); left: calc(24px / var(--controls-scale, 1)); }
+.selection-frame-corner-zone .resize-handle.handle-ne { top: calc(24px / var(--controls-scale, 1)); right: calc(24px / var(--controls-scale, 1)); left: auto; }
+.selection-frame-corner-zone .resize-handle.handle-se { bottom: calc(24px / var(--controls-scale, 1)); right: calc(24px / var(--controls-scale, 1)); top: auto; left: auto; }
+.selection-frame-corner-zone .resize-handle.handle-sw { bottom: calc(24px / var(--controls-scale, 1)); left: calc(24px / var(--controls-scale, 1)); top: auto; }
+
+.selection-frame-corner-zone .selection-frame-rotation-handle.handle-nw { top: calc(14px / var(--controls-scale, 1)); left: calc(14px / var(--controls-scale, 1)); transform: translate(-50%, -50%); }
+.selection-frame-corner-zone .selection-frame-rotation-handle.handle-ne { top: calc(14px / var(--controls-scale, 1)); right: calc(14px / var(--controls-scale, 1)); left: auto; transform: translate(50%, -50%); }
+.selection-frame-corner-zone .selection-frame-rotation-handle.handle-se { bottom: calc(14px / var(--controls-scale, 1)); right: calc(14px / var(--controls-scale, 1)); top: auto; left: auto; transform: translate(50%, 50%); }
+.selection-frame-corner-zone .selection-frame-rotation-handle.handle-sw { bottom: calc(14px / var(--controls-scale, 1)); left: calc(14px / var(--controls-scale, 1)); top: auto; transform: translate(-50%, 50%); }
+
+/* Иконка поворота только у того угла, на который ховер; со сдвигом по диагонали от угла; клик по иконке — поворот, по углу — скейл */
+.selection-frame-rotation-handle {
+    position: absolute;
+    width: calc(24px / var(--controls-scale, 1));
+    height: calc(24px / var(--controls-scale, 1));
+    border-radius: 50%;
+    background: #fff;
+    border: calc(1px / var(--controls-scale, 1)) solid var(--app-border);
+    color: var(--app-text);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+/* Смещение от угла по диагонали наружу ~14px */
+.selection-frame-rotation-handle.handle-nw { top: 0; left: 0; transform: translate(calc(-50% - 14px), calc(-50% - 14px)); }
+.selection-frame-rotation-handle.handle-ne { top: 0; right: 0; left: auto; transform: translate(calc(50% + 14px), calc(-50% - 14px)); }
+.selection-frame-rotation-handle.handle-se { bottom: 0; right: 0; top: auto; left: auto; transform: translate(calc(50% + 14px), calc(50% + 14px)); }
+.selection-frame-rotation-handle.handle-sw { bottom: 0; left: 0; top: auto; transform: translate(calc(-50% - 14px), calc(50% + 14px)); }
+
+.selection-frame-rotation-handle svg {
+    width: calc(16px / var(--controls-scale, 1));
+    height: calc(16px / var(--controls-scale, 1));
+}
+
+/* Иконки поворота всегда видны при выделении шейпа/текста, чтобы по ним можно было кликнуть */
+.selection-frame.has-rotation.visible .selection-frame-rotation-handle {
+    pointer-events: auto;
+    opacity: 1;
+    cursor: grab;
+}
+
+.selection-frame-rotation-handle:hover {
+    cursor: grab;
+}
+
+.selection-frame-rotation-handle:active {
+    cursor: grabbing;
+}
+
+.result-container .overlay-layer .text-item[contenteditable="true"] {
+    min-width: 80px;
+}
+
+.result-container .overlay-layer .text-item[contenteditable="true"]:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.guides-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+}
+
+.guides-layer .guide-line {
+    position: absolute;
+    background: #e00;
+}
+
+.guides-layer .guide-line.v {
+    width: 0.5px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+.guides-layer .guide-line.h {
+    height: 0.5px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.safe-zones-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    box-sizing: border-box;
+}
+
+.safe-zone-item {
+    position: absolute;
+    border: none;
+    background: rgba(255, 80, 80, 0.3);
+    box-sizing: border-box;
+}
+
+.safe-zone-item.circle {
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+}
+
+.result-container.harmonized .harmonize-overlay {
+    display: block !important;
+}
+
+.harmonize-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    background: radial-gradient(ellipse 85% 85% at 50% 50%, rgba(120, 90, 180, 0.4), transparent 65%);
+    z-index: 15;
+}
+
+/* Export progress toast */
+.export-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    padding: 10px 20px;
+    background: var(--app-text);
+    color: var(--app-surface);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--app-radius-btn);
+    box-shadow: var(--app-shadow-panel);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+}
+.export-toast.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================================================
+   MODALS & UTILITIES
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal {
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    border: 1px solid var(--app-border);
+    padding: 16px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.modal h3 {
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--app-text);
+}
+
+.modal input[type="text"],
+.modal textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: var(--input-radius);
+    background: #ffffff;
+    border: 1px solid var(--app-border);
+    color: var(--app-text);
+    font-size: 14px;
+}
+
+.modal input[type="text"]:focus,
+.modal textarea:focus {
+    outline: none;
+    border-color: var(--app-accent);
+}
+
+.modal textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+input[type="file"] {
+    display: none;
+}

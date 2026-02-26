@@ -114,7 +114,7 @@
             rw = contentSize.w;
             rh = contentSize.h;
             var ratio = (contentSize.cornerRadiusRatio != null) ? contentSize.cornerRadiusRatio : 0.15;
-            rx = Math.min(rw, rh) * Math.max(0.05, Math.min(0.5, ratio));
+            rx = Math.min(rw, rh) * Math.max(0, Math.min(0.45, ratio));
         }
         var strokeThenFill = function (strokeOnly, fillOnly) {
             return (sw > 0 && stroke !== 'none') ? (strokeOnly + fillOnly) : fillOnly;
@@ -694,7 +694,7 @@
             var texts = state.overlayTexts.map(function (t) {
                 var el = t.el;
                 var manual = el && el.dataset.manuallyResized;
-                var w = el ? parseFloat(el.style.width) : null;
+                var w = el ? (parseFloat(el.style.width) || el.offsetWidth) : null;
                 var h = el ? el.style.height : null;
                 return {
                     layerId: t.layerId,
@@ -776,6 +776,122 @@
             else stateBySlot[key] = null;
             updateSizeReadyIcons();
         }).catch(function (err) { console.error('Save slot failed:', err); });
+    }
+
+    var copyBuffer = null;
+
+    function scaleSlotData(data, sourceW, sourceH, targetW, targetH) {
+        if (!data || data.empty || !sourceW || !sourceH || !targetW || !targetH) return data;
+        var sx = targetW / sourceW;
+        var sy = targetH / sourceH;
+        var scale = Math.min(sx, sy);
+        var out = { empty: data.empty, layersOrder: data.layersOrder ? data.layersOrder.slice() : [], isHarmonized: !!data.isHarmonized };
+        if (data.bg && data.bg.dataURL) {
+            out.bg = {
+                dataURL: data.bg.dataURL,
+                offsetX: (data.bg.offsetX || 0) * sx,
+                offsetY: (data.bg.offsetY || 0) * sy,
+                zoom: data.bg.zoom != null ? data.bg.zoom : 1,
+                imageWidth: data.bg.imageWidth,
+                imageHeight: data.bg.imageHeight
+            };
+        } else out.bg = null;
+        out.overlayImages = (data.overlayImages || []).map(function (item) {
+            return {
+                slotIndex: item.slotIndex,
+                scale: item.scale || 1,
+                x: (item.x || 0) * sx,
+                y: (item.y || 0) * sy,
+                rotation: item.rotation != null ? item.rotation : 0,
+                width: item.width != null ? item.width * scale : undefined,
+                height: item.height != null ? item.height * scale : undefined,
+                dataURL: item.dataURL
+            };
+        });
+        out.overlayTexts = (data.overlayTexts || []).map(function (t) {
+            return {
+                layerId: t.layerId,
+                content: t.content,
+                fontFamily: t.fontFamily,
+                fontSize: t.fontSize,
+                color: t.color,
+                x: (t.x || 0) * sx,
+                y: (t.y || 0) * sy,
+                rotation: t.rotation != null ? t.rotation : 0,
+                manuallyResized: !!t.manuallyResized,
+                width: t.width != null ? t.width * scale : undefined,
+                height: t.height != null ? t.height * scale : undefined
+            };
+        });
+        out.overlayShapes = (data.overlayShapes || []).map(function (s) {
+            if (!s) return null;
+            var sw = (s.strokeWidth || 0) * scale;
+            if (s.cx != null || (s.x != null && s.contentW != null)) {
+                var cx = (s.cx != null ? s.cx : (s.x + (s.contentW || 0) / 2)) * sx;
+                var cy = (s.cy != null ? s.cy : (s.y + (s.contentH || 0) / 2)) * sy;
+                var w = (s.w != null ? s.w : ((s.contentW != null ? s.contentW : 80) + 2 * (s.strokeWidth || 0))) * scale;
+                var h = (s.h != null ? s.h : ((s.contentH != null ? s.contentH : 80) + 2 * (s.strokeWidth || 0))) * scale;
+                var pathModel = s.pathModel && s.pathModel.length >= 2 ? s.pathModel.map(function (p) {
+                    return {
+                        p: [(p.p[0] != null ? p.p[0] : 0) * scale, (p.p[1] != null ? p.p[1] : 0) * scale],
+                        in: [(p.in[0] != null ? p.in[0] : p.p[0]) * scale, (p.in[1] != null ? p.in[1] : p.p[1]) * scale],
+                        out: [(p.out[0] != null ? p.out[0] : p.p[0]) * scale, (p.out[1] != null ? p.out[1] : p.p[1]) * scale]
+                    };
+                }) : undefined;
+                return {
+                    layerId: s.layerId,
+                    typeId: s.typeId,
+                    cx: cx,
+                    cy: cy,
+                    w: w,
+                    h: h,
+                    rot: s.rot != null ? s.rot : (s.rotation != null ? s.rotation : 0),
+                    pathModel: pathModel,
+                    fill: s.fill,
+                    stroke: s.stroke,
+                    strokeWidth: sw,
+                    x: cx - w / 2 + sw,
+                    y: cy - h / 2 + sw,
+                    contentW: w - 2 * sw,
+                    contentH: h - 2 * sw,
+                    rotation: s.rot != null ? s.rot : (s.rotation != null ? s.rotation : 0),
+                    cornerRadiusRatio: s.cornerRadiusRatio,
+                    starInnerRatio: s.starInnerRatio,
+                    arrowHeadLen: s.arrowHeadLen != null ? s.arrowHeadLen * scale : undefined,
+                    arrowHeadW: s.arrowHeadW != null ? s.arrowHeadW * scale : undefined
+                };
+            }
+            var cw = (s.contentW != null ? s.contentW : 80) * scale;
+            var ch = (s.contentH != null ? s.contentH : 80) * scale;
+            var x = (s.x != null ? s.x : 0) * sx;
+            var y = (s.y != null ? s.y : 0) * sy;
+            return {
+                layerId: s.layerId,
+                typeId: s.typeId,
+                x: x,
+                y: y,
+                fill: s.fill,
+                stroke: s.stroke,
+                strokeWidth: sw,
+                contentW: cw,
+                contentH: ch,
+                cornerRadiusRatio: s.cornerRadiusRatio,
+                rotation: s.rotation != null ? s.rotation : 0
+            };
+        }).filter(Boolean);
+        return out;
+    }
+
+    function updateCopyPasteButtons() {
+        var copyBtn = $('btnCopySlot');
+        var pasteBtn = $('btnPasteSlot');
+        if (!copyBtn || !pasteBtn) return;
+        var key = getSlotKey(state.network, state.size);
+        var hasContent = !!state.bgUrl || state.overlayImages.some(Boolean) || state.overlayTexts.length > 0 || state.overlayShapes.length > 0;
+        var copyEnabled = hasContent;
+        var pasteEnabled = !!copyBuffer && copyBuffer.sourceKey !== key;
+        copyBtn.disabled = !copyEnabled;
+        pasteBtn.disabled = !pasteEnabled;
     }
 
     var MAX_UNDO = 10;
@@ -1520,6 +1636,10 @@
         var gap = 16;
         var left = objRect.left + objRect.width / 2;
         var top = objRect.top - tbRect.height - gap;
+        var containerTop = canvasViewport ? canvasViewport.getBoundingClientRect().top : 0;
+        if (top < containerTop) {
+            top = objRect.bottom + gap;
+        }
         top = Math.max(8, top);
         toolbar.style.left = left + 'px';
         toolbar.style.top = top + 'px';
@@ -1562,21 +1682,12 @@
 
     function applyControlsScale() {
         var scale = getCanvasScale();
-        var inv = 1 / scale;
-        var tr = 'scale(' + inv + ')';
-        var originCenter = 'center center';
         if (overlayLayer) overlayLayer.style.setProperty('--controls-scale', String(scale));
-        if (selectionFrameWrapper) {
-            selectionFrameWrapper.style.transform = '';
-            selectionFrameWrapper.style.transformOrigin = '';
-        }
-        if (selectionFrame) {
-            selectionFrame.style.transform = '';
-            selectionFrame.style.transformOrigin = '';
-        }
-        overlayLayer.querySelectorAll('.shape-bezier-handles, .shape-line-endpoint-handles, .shape-radius-handles').forEach(function (wrap) {
-            wrap.style.transform = tr;
-            wrap.style.transformOrigin = originCenter;
+        /* Line/arrow endpoint dots scale with canvas — no inverse transform; refresh positions on zoom */
+        if (lineEndpointHandlesUpdate) lineEndpointHandlesUpdate();
+        overlayLayer.querySelectorAll('.shape-radius-handles').forEach(function (wrap) {
+            wrap.style.transform = wrap.dataset.radiusRotation || '';
+            wrap.style.transformOrigin = 'center center';
         });
     }
 
@@ -1986,7 +2097,10 @@
             frame.classList.remove('visible');
             frame.style.transform = '';
             frame.style.transformOrigin = '';
-            if (selectionFrameWrapper) selectionFrameWrapper.style.display = 'none';
+            if (selectionFrameWrapper) {
+                selectionFrameWrapper.style.display = 'none';
+                selectionFrameWrapper.classList.remove('framed-text');
+            }
             hideShapeRadiusHandles();
             hideLineEndpointHandles();
             return;
@@ -2077,8 +2191,13 @@
                 frame.style.transform = rotation ? 'rotate(' + rotation + 'deg)' : '';
                 frame.classList.toggle('has-rotation', true);
                 frame.classList.add('visible');
-                if (sh && (sh.typeId === 'roundedSquare' || sh.typeId === 'hexagon' || sh.typeId === 'triangle' || sh.typeId === 'star' || sh.typeId === 'rhombus' || sh.typeId === 'parallelogram' || sh.typeId === 'squareSharpCorner')) showShapeRadiusHandles();
-                else hideShapeRadiusHandles();
+                if (selectionFrameWrapper) selectionFrameWrapper.classList.remove('framed-text');
+                if (state.radiusHandlesDragging) {
+                    updateShapeRadiusOverlayPosition();
+                } else {
+                    if (sh && (sh.typeId === 'roundedSquare' || sh.typeId === 'hexagon' || sh.typeId === 'triangle' || sh.typeId === 'star' || sh.typeId === 'rhombus' || sh.typeId === 'parallelogram' || sh.typeId === 'squareSharpCorner')) showShapeRadiusHandles();
+                    else hideShapeRadiusHandles();
+                }
                 hideLineEndpointHandles();
             }
         } else {
@@ -2091,6 +2210,7 @@
             frame.style.transform = rotation ? 'rotate(' + rotation + 'deg)' : '';
             frame.classList.toggle('has-rotation', true);
             frame.classList.add('visible');
+            if (selectionFrameWrapper) selectionFrameWrapper.classList.toggle('framed-text', state.selectedTextId !== null);
             hideShapeRadiusHandles();
             hideLineEndpointHandles();
         }
@@ -2165,36 +2285,86 @@
                         }
                         w = newW;
                         h = newH;
-                        l = l0; t = t0;
-                        if (dir.indexOf('w') >= 0) { l += (w0 - w) * cosR / 2; t += (w0 - w) * sinR / 2; }
-                        if (dir.indexOf('n') >= 0) { l -= (h0 - h) * sinR / 2; t += (h0 - h) * cosR / 2; }
+                        if (dir === 'se') { l = l0; t = t0; }
+                        else if (dir === 'sw') { l = l0 + w0 - w; t = t0; }
+                        else if (dir === 'ne') { l = l0; t = t0 + h0 - h; }
+                        else { l = l0 + w0 - w; t = t0 + h0 - h; }
+                        if (rotation !== 0) {
+                            var dW = w - w0, dH = h - h0;
+                            if (dir === 'se') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) + dW / 2 * sinR; }
+                            else if (dir === 'sw') { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) - dW / 2 * sinR; }
+                            else if (dir === 'ne') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 + cosR) + dW / 2 * sinR; }
+                            else { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 + dH / 2 * (1 + cosR) - dW / 2 * sinR; }
+                        }
                     } else {
-                        if (dir.indexOf('e') >= 0) {
-                            w += localDx;
-                            if (rotation !== 0) { l -= (localDx / 2) * (1 - cosR); t += (localDx / 2) * sinR; }
-                        }
-                        if (dir.indexOf('w') >= 0) {
-                            w -= localDx;
-                            l += (localDx / 2) * (1 + cosR); t += (localDx / 2) * sinR;
-                        }
-                        if (dir.indexOf('s') >= 0) {
-                            h += localDy;
-                            if (rotation !== 0) { l -= (localDy / 2) * sinR; t -= (localDy / 2) * (1 - cosR); }
-                        }
-                        if (dir.indexOf('n') >= 0) {
-                            h -= localDy;
-                            l -= (localDy / 2) * sinR; t += (localDy / 2) * (1 + cosR);
-                        }
-                        if (isCorner && (isShape || textIdx != null)) {
-                            var aspect = w0 / h0;
-                            if (aspect <= 0) aspect = 1;
-                            if (w / h > aspect) h = w / aspect;
-                            else w = h * aspect;
+                        if (textIdx != null) {
+                            w = w0;
+                            if (isCorner && (dir === 'se' || dir === 'ne')) w = w0 + localDx;
+                            else if (isCorner && (dir === 'sw' || dir === 'nw')) w = w0 - localDx;
+                            else if (!isCorner && dir.indexOf('e') >= 0) w = w0 + localDx;
+                            else if (!isCorner && dir.indexOf('w') >= 0) w = w0 - localDx;
                             w = Math.max(20, w);
-                            h = Math.max(20, h);
-                            l = l0 + (dir.indexOf('w') >= 0 ? (w0 - w) * cosR / 2 : 0) - (dir.indexOf('n') >= 0 ? (h0 - h) * sinR / 2 : 0);
-                            t = t0 + (dir.indexOf('w') >= 0 ? (w0 - w) * sinR / 2 : 0) + (dir.indexOf('n') >= 0 ? (h0 - h) * cosR / 2 : 0);
+                            h = h0;
+                            l = (dir === 'sw' || dir === 'nw' || dir === 'w') ? l0 + w0 - w : l0;
+                            t = t0;
+                            if (rotation !== 0 && w !== w0) {
+                                var dW = w - w0;
+                                l = l0 - (dW / 2) * (1 - cosR); t = t0 + (dW / 2) * sinR;
+                            }
+                        } else if (isCorner) {
+                            if (dir === 'se') { w = w0 + localDx; h = h0 + localDy; l = l0; t = t0; }
+                            else if (dir === 'sw') { w = w0 - localDx; h = h0 + localDy; l = l0 + w0 - w; t = t0; }
+                            else if (dir === 'ne') { w = w0 + localDx; h = h0 - localDy; l = l0; t = t0 + h0 - h; }
+                            else { w = w0 - localDx; h = h0 - localDy; l = l0 + w0 - w; t = t0 + h0 - h; }
+                            if (rotation !== 0) {
+                                var dW = w - w0, dH = h - h0;
+                                if (dir === 'se') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) + dW / 2 * sinR; }
+                                else if (dir === 'sw') { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) - dW / 2 * sinR; }
+                                else if (dir === 'ne') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 + cosR) + dW / 2 * sinR; }
+                                else { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 + dH / 2 * (1 + cosR) - dW / 2 * sinR; }
+                            }
+                            if (isShape) {
+                                var aspect = w0 / h0;
+                                if (aspect <= 0) aspect = 1;
+                                if (w / h > aspect) h = w / aspect;
+                                else w = h * aspect;
+                                w = Math.max(20, w);
+                                h = Math.max(20, h);
+                                if (dir === 'se') { l = l0; t = t0; }
+                                else if (dir === 'sw') { l = l0 + w0 - w; t = t0; }
+                                else if (dir === 'ne') { l = l0; t = t0 + h0 - h; }
+                                else { l = l0 + w0 - w; t = t0 + h0 - h; }
+                                if (rotation !== 0) {
+                                    dW = w - w0; dH = h - h0;
+                                    if (dir === 'se') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) + dW / 2 * sinR; }
+                                    else if (dir === 'sw') { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 - dH / 2 * (1 - cosR) - dW / 2 * sinR; }
+                                    else if (dir === 'ne') { l = l0 - dW / 2 * (1 - cosR) - dH / 2 * sinR; t = t0 - dH / 2 * (1 + cosR) + dW / 2 * sinR; }
+                                    else { l = l0 + dW / 2 * (1 + cosR) + dH / 2 * sinR; t = t0 + dH / 2 * (1 + cosR) - dW / 2 * sinR; }
+                                }
+                            } else {
+                                w = Math.max(20, w);
+                                h = Math.max(20, h);
+                                if (dir === 'sw') l = l0 + w0 - w;
+                                else if (dir === 'ne') t = t0 + h0 - h;
+                                else if (dir === 'nw') { l = l0 + w0 - w; t = t0 + h0 - h; }
+                            }
                         } else {
+                            if (dir.indexOf('e') >= 0) {
+                                w += localDx;
+                                if (rotation !== 0) { l -= (localDx / 2) * (1 - cosR); t += (localDx / 2) * sinR; }
+                            }
+                            if (dir.indexOf('w') >= 0) {
+                                w -= localDx;
+                                l += (localDx / 2) * (1 + cosR); t += (localDx / 2) * sinR;
+                            }
+                            if (dir.indexOf('s') >= 0) {
+                                h += localDy;
+                                if (rotation !== 0) { l -= (localDy / 2) * sinR; t -= (localDy / 2) * (1 - cosR); }
+                            }
+                            if (dir.indexOf('n') >= 0) {
+                                h -= localDy;
+                                l -= (localDy / 2) * sinR; t += (localDy / 2) * (1 + cosR);
+                            }
                             w = Math.max(20, w);
                             h = Math.max(20, h);
                         }
@@ -2224,8 +2394,13 @@
                         el.style.top = t + 'px';
                         el.style.width = w + 'px';
                         el.style.minWidth = w + 'px';
-                        el.style.height = h + 'px';
-                        el.style.overflow = isShape ? 'visible' : 'hidden';
+                        if (textIdx != null) {
+                            el.style.height = 'auto';
+                            el.style.overflow = '';
+                        } else {
+                            el.style.height = h + 'px';
+                            el.style.overflow = isShape ? 'visible' : 'hidden';
+                        }
                         el.dataset.manuallyResized = '1';
                         if (isShape && shapeIdx !== null) {
                             var sh = state.overlayShapes[shapeIdx];
@@ -2288,6 +2463,7 @@
         var hideTimer = null;
         document.addEventListener('mouseover', function (e) {
             var el = e.target.closest && e.target.closest('[data-tooltip]');
+            if (el && el.closest('.safe-zones-switch-wrap')) return;
             if (!el) {
                 if (showTimer) clearTimeout(showTimer);
                 showTimer = null;
@@ -2381,6 +2557,13 @@
             document.addEventListener('mouseup', onEnd);
         }
         if (canvasViewport) canvasViewport.addEventListener('mousedown', onViewportPanStart, true);
+        if (canvasViewport) canvasViewport.addEventListener('wheel', function (e) {
+            if (e.target.closest('#canvasStage')) return;
+            e.preventDefault();
+            var delta = e.deltaY > 0 ? -10 : 10;
+            state.canvasZoomPercent = Math.max(20, Math.min(150, (state.canvasZoomPercent || 100) + delta));
+            requestViewportUpdate();
+        }, { passive: false });
     }
 
     function initShapeMenu() {
@@ -2510,6 +2693,7 @@
         makeShapeDraggable(wrap, state.overlayShapes.length - 1);
         updateLayersList();
         updateSizeReadyIcons();
+        updateButtons();
     }
 
     function makeShapeDraggable(el, idx) {
@@ -3021,12 +3205,14 @@
 
     var shapeRadiusHandlesEl = null;
     var lineEndpointHandlesEl = null;
+    var lineEndpointHandlesUpdate = null;
 
     function hideLineEndpointHandles() {
         if (lineEndpointHandlesEl && lineEndpointHandlesEl.parentNode) {
             lineEndpointHandlesEl.parentNode.removeChild(lineEndpointHandlesEl);
         }
         lineEndpointHandlesEl = null;
+        lineEndpointHandlesUpdate = null;
     }
 
     function linePathPointToCanvas(sh, localP) {
@@ -3182,6 +3368,8 @@
                 }
             }
         }
+
+        lineEndpointHandlesUpdate = updateLineHandlesPositions;
 
         wrap.querySelectorAll('.shape-line-endpoint-dot').forEach(function (dot) {
             var pointIndex = parseInt(dot.dataset.index, 10);
@@ -3363,10 +3551,57 @@
     }
 
     function hideShapeRadiusHandles() {
+        if (state.radiusHandlesDragging) return;
         if (shapeRadiusHandlesEl && shapeRadiusHandlesEl.parentNode) {
             shapeRadiusHandlesEl.parentNode.removeChild(shapeRadiusHandlesEl);
         }
         shapeRadiusHandlesEl = null;
+    }
+
+    function updateShapeRadiusOverlayPosition() {
+        if (!shapeRadiusHandlesEl || !shapeRadiusHandlesEl.parentNode || state.selectedShapeId == null) return;
+        var sh = state.overlayShapes[state.selectedShapeId];
+        if (!sh || !sh.el) return;
+        var w, h, left, top, rot;
+        if (sh.typeId === 'roundedSquare') {
+            w = sh.contentW != null ? sh.contentW : (sh.el.offsetWidth || 80) - 2 * (sh.strokeWidth || 0);
+            h = sh.contentH != null ? sh.contentH : (sh.el.offsetHeight || 80) - 2 * (sh.strokeWidth || 0);
+            w = Math.max(1, w);
+            h = Math.max(1, h);
+            left = parseFloat(sh.el.style.left) || 0;
+            top = parseFloat(sh.el.style.top) || 0;
+            rot = (sh.rotation != null ? sh.rotation : 0);
+        } else if (sh.typeId === 'squareSharpCorner' && sh.pathModel && sh.pathModel.length >= 4 && sh.w != null && sh.h != null) {
+            w = sh.w;
+            h = sh.h;
+            left = sh.cx - w / 2;
+            top = sh.cy - h / 2;
+            rot = (sh.rot != null ? sh.rot : 0);
+        } else if ((sh.typeId === 'hexagon' || sh.typeId === 'triangle' || sh.typeId === 'rhombus' || sh.typeId === 'parallelogram') && sh.pathModel && sh.w != null && sh.h != null) {
+            w = sh.w;
+            h = sh.h;
+            left = sh.cx - w / 2;
+            top = sh.cy - h / 2;
+            rot = (sh.rot != null ? sh.rot : 0);
+        } else if (sh.typeId === 'star' && sh.pathModel && sh.pathModel.length === 10 && sh.w != null && sh.h != null) {
+            w = sh.w;
+            h = sh.h;
+            left = sh.cx - w / 2;
+            top = sh.cy - h / 2;
+            rot = (sh.rot != null ? sh.rot : 0);
+        } else {
+            return;
+        }
+        var wrap = shapeRadiusHandlesEl;
+        var stroke = sh.strokeWidth || 0;
+        wrap.style.left = left + 'px';
+        wrap.style.top = top + 'px';
+        wrap.style.width = (w + 2 * stroke) + 'px';
+        wrap.style.height = (h + 2 * stroke) + 'px';
+        wrap.style.transformOrigin = 'center center';
+        var rotTransform = rot ? 'rotate(' + rot + 'deg)' : '';
+        wrap.style.transform = rotTransform;
+        wrap.dataset.radiusRotation = rotTransform;
     }
 
     function showShapeRadiusHandles() {
@@ -3381,7 +3616,7 @@
             w = Math.max(1, w);
             h = Math.max(1, h);
             var ratio = (sh.cornerRadiusRatio != null) ? sh.cornerRadiusRatio : 0.15;
-            ratio = Math.max(0.05, Math.min(0.5, ratio));
+            ratio = Math.max(0, Math.min(0.45, ratio));
             var r = Math.min(w, h) * ratio;
             left = parseFloat(sh.el.style.left) || 0;
             top = parseFloat(sh.el.style.top) || 0;
@@ -3527,7 +3762,9 @@
         wrap.style.width = (w + 2 * (sh.strokeWidth || 0)) + 'px';
         wrap.style.height = (h + 2 * (sh.strokeWidth || 0)) + 'px';
         wrap.style.transformOrigin = 'center center';
-        wrap.style.transform = rot ? 'rotate(' + rot + 'deg)' : '';
+        var rotTransform = rot ? 'rotate(' + rot + 'deg)' : '';
+        wrap.style.transform = rotTransform;
+        wrap.dataset.radiusRotation = rotTransform;
         corners.forEach(function (c) {
             var dot = document.createElement('div');
             dot.className = 'shape-radius-dot' + (c.kind === 'thickness' ? ' shape-star-inner-dot' : '');
@@ -3537,8 +3774,8 @@
             dot.style.left = c.leftPct + '%';
             dot.style.top = c.topPct + '%';
             dot.style.transform = 'translate(-50%, -50%)';
-            dot.style.width = '12px';
-            dot.style.height = '12px';
+            dot.style.width = 'calc(12px / var(--controls-scale, 1))';
+            dot.style.height = 'calc(12px / var(--controls-scale, 1))';
             dot.style.borderRadius = '50%';
             dot.style.background = (c.kind === 'thickness') ? '#059669' : '#dc2626';
             dot.style.border = '2px solid #fff';
@@ -3589,6 +3826,7 @@
             dot.addEventListener('mousedown', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                state.radiusHandlesDragging = true;
                 pushUndoState();
                 function onMove(ev) {
                     var v = clientToShapeViewBox(ev.clientX, ev.clientY);
@@ -3596,13 +3834,17 @@
                     var vx = v[0], vy = v[1];
                     var newRatio;
                     if (sh.typeId === 'roundedSquare') {
-                        var dist = 0;
-                        if (cornerId === 'tl') dist = Math.hypot(vx, vy);
-                        else if (cornerId === 'tr') dist = Math.hypot(w - vx, vy);
-                        else if (cornerId === 'br') dist = Math.hypot(w - vx, h - vy);
-                        else dist = Math.hypot(vx, h - vy);
-                        newRatio = dist / (Math.min(w, h) * Math.SQRT2);
-                        newRatio = Math.max(0.05, Math.min(0.5, newRatio));
+                        var L = Math.hypot(w / 2, h / 2);
+                        var proj = 0;
+                        if (L > 1e-9) {
+                            if (cornerId === 'tl') proj = (vx * w + vy * h) / (2 * L);
+                            else if (cornerId === 'tr') proj = ((w - vx) * w + vy * h) / (2 * L);
+                            else if (cornerId === 'br') proj = ((w - vx) * w + (h - vy) * h) / (2 * L);
+                            else proj = (vx * w + (h - vy) * h) / (2 * L);
+                            proj = Math.max(0, Math.min(L, proj));
+                        }
+                        newRatio = (L > 1e-9) ? (proj / (2 * L)) : 0;
+                        newRatio = Math.max(0, Math.min(0.45, newRatio));
                         sh.cornerRadiusRatio = newRatio;
                         renderShapeFromModel(sh);
                         applyShapeToolbarToShape();
@@ -3615,8 +3857,13 @@
                             else { d.style.left = (rNew / w) * 100 + '%'; d.style.top = ((h - rNew) / h) * 100 + '%'; }
                         });
                     } else if (sh.typeId === 'squareSharpCorner' && cornerId === 'br') {
-                        var distBr = Math.hypot(w - vx, h - vy);
-                        newRatio = distBr / (Math.min(w, h) * Math.SQRT2);
+                        var Lbr = Math.hypot(w / 2, h / 2);
+                        var projBr = 0;
+                        if (Lbr > 1e-9) {
+                            projBr = ((w - vx) * w + (h - vy) * h) / (2 * Lbr);
+                            projBr = Math.max(0, Math.min(Lbr, projBr));
+                        }
+                        newRatio = (Lbr > 1e-9) ? (projBr / (2 * Lbr)) : 0;
                         newRatio = Math.max(0, Math.min(0.5, newRatio));
                         sh.cornerRadiusRatio = newRatio;
                         renderShapeFromModel(sh);
@@ -3626,9 +3873,12 @@
                             d.style.top = ((h - rNewComment) / h) * 100 + '%';
                         });
                     } else if ((sh.typeId === 'hexagon' || sh.typeId === 'triangle' || sh.typeId === 'rhombus' || sh.typeId === 'parallelogram') && corner.corner && corner.centroid) {
-                        var distHandle = Math.hypot(vx - corner.corner[0], vy - corner.corner[1]);
-                        var distCornerToCentroid = Math.hypot(corner.corner[0] - corner.centroid[0], corner.corner[1] - corner.centroid[1]);
-                        newRatio = distCornerToCentroid < 1e-6 ? 0 : (distHandle / (2 * distCornerToCentroid));
+                        var dx = corner.centroid[0] - corner.corner[0];
+                        var dy = corner.centroid[1] - corner.corner[1];
+                        var Lpoly = Math.hypot(dx, dy);
+                        var projPoly = Lpoly < 1e-9 ? 0 : ((vx - corner.corner[0]) * dx + (vy - corner.corner[1]) * dy) / Lpoly;
+                        projPoly = Math.max(0, Math.min(Lpoly, projPoly));
+                        newRatio = Lpoly < 1e-9 ? 0 : projPoly / (2 * Lpoly);
                         newRatio = Math.max(0, Math.min(0.5, newRatio));
                         sh.cornerRadiusRatio = newRatio;
                         renderShapeFromModel(sh);
@@ -3642,9 +3892,12 @@
                         });
                     } else if (sh.typeId === 'star' && corner.corner && corner.centroid) {
                         if (corner.kind === 'radius') {
-                            var distHandleStar = Math.hypot(vx - corner.corner[0], vy - corner.corner[1]);
-                            var distCornerToCentroidStar = Math.hypot(corner.corner[0] - corner.centroid[0], corner.corner[1] - corner.centroid[1]);
-                            newRatio = distCornerToCentroidStar < 1e-6 ? 0 : (distHandleStar / (2 * distCornerToCentroidStar));
+                            var dxStar = corner.centroid[0] - corner.corner[0];
+                            var dyStar = corner.centroid[1] - corner.corner[1];
+                            var Lstar = Math.hypot(dxStar, dyStar);
+                            var projStar = Lstar < 1e-9 ? 0 : ((vx - corner.corner[0]) * dxStar + (vy - corner.corner[1]) * dyStar) / Lstar;
+                            projStar = Math.max(0, Math.min(Lstar, projStar));
+                            newRatio = Lstar < 1e-9 ? 0 : projStar / (2 * Lstar);
                             newRatio = Math.max(0, Math.min(0.5, newRatio));
                             sh.cornerRadiusRatio = newRatio;
                         } else {
@@ -3675,6 +3928,7 @@
                     updateSelectionFrame();
                 }
                 function onEnd() {
+                    state.radiusHandlesDragging = false;
                     document.removeEventListener('mousemove', onMove);
                     document.removeEventListener('mouseup', onEnd);
                 }
@@ -3697,14 +3951,19 @@
         var gap = 16;
         var left, top;
         var frame = createSelectionFrame();
+        var frameRect;
         if (frame && frame.classList.contains('visible')) {
-            var frameRect = frame.getBoundingClientRect();
+            frameRect = frame.getBoundingClientRect();
             left = frameRect.left + frameRect.width / 2;
             top = frameRect.top - tbRect.height - gap;
         } else {
-            var objRect = s.el.getBoundingClientRect();
-            left = objRect.left + objRect.width / 2;
-            top = objRect.top - tbRect.height - gap;
+            frameRect = s.el.getBoundingClientRect();
+            left = frameRect.left + frameRect.width / 2;
+            top = frameRect.top - tbRect.height - gap;
+        }
+        var containerTop = canvasViewport ? canvasViewport.getBoundingClientRect().top : 0;
+        if (top < containerTop && frameRect) {
+            top = frameRect.bottom + gap;
         }
         top = Math.max(8, top);
         toolbar.style.left = left + 'px';
@@ -3730,7 +3989,7 @@
         $('undoBtn')?.addEventListener('click', performUndo);
         $('redoBtn')?.addEventListener('click', performRedo);
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'z' && (e.metaKey || e.ctrlKey)) {
+            if ((e.key === 'z' || e.key === 'Z') && (e.metaKey || e.ctrlKey)) {
                 var active = document.activeElement;
                 if (!active || (active.contentEditable !== 'true' && active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA' && !active.isContentEditable)) {
                     e.preventDefault();
@@ -3812,6 +4071,28 @@
             triggerImageUpload(slot);
         });
 
+        $('btnCopySlot')?.addEventListener('click', function () {
+            if (!state.size) return;
+            serializeSlotState().then(function (data) {
+                if (!data || data.empty) return;
+                copyBuffer = {
+                    data: data,
+                    sourceKey: getSlotKey(state.network, state.size),
+                    sourceW: state.size.w,
+                    sourceH: state.size.h
+                };
+                updateCopyPasteButtons();
+            });
+        });
+
+        $('btnPasteSlot')?.addEventListener('click', function () {
+            if (!copyBuffer || !state.size) return;
+            var scaled = scaleSlotData(copyBuffer.data, copyBuffer.sourceW, copyBuffer.sourceH, state.size.w, state.size.h);
+            if (!scaled) return;
+            restoreSlot(scaled);
+            updateCopyPasteButtons();
+        });
+
         fileBackground?.addEventListener('change', (e) => { if (e.target.files[0]) handleBackgroundFile(e.target.files[0]); });
         fileImage?.addEventListener('change', (e) => { if (e.target.files[0]) handleImageFile(e.target.files[0]); });
 
@@ -3832,13 +4113,7 @@
                 this.value = String(n);
                 state.overlayTexts.forEach(function (t) {
                     if (t.el.classList.contains('selected')) {
-                        t.el.style.fontSize = n + 'px';
-                        if (!t.el.dataset.manuallyResized) {
-                            t.el.style.width = '';
-                            t.el.style.minWidth = '';
-                            t.el.style.height = '';
-                            t.el.style.overflow = '';
-                        }
+                        applyFontSizeToTextBlock(t.el, n);
                         updateSelectionFrame();
                         requestToolbarLayout();
                     }
@@ -4087,6 +4362,7 @@
             clearDomOnly();
             updateButtons();
         }
+        updateCopyPasteButtons();
         resultContainer.style.width = s.w + 'px';
         resultContainer.style.height = s.h + 'px';
         canvasWrap.style.setProperty('visibility', 'hidden', '');
@@ -4252,81 +4528,119 @@
         var w = state.size.w;
         var h = state.size.h;
         safeZonesLayer.innerHTML = '';
-        list.forEach(function (z) {
-            var el = document.createElement('div');
-            var leftPct, topPct, widthPct, heightPct;
-            var isCircle = z.shape === 'circle' || z.type === 'avatar';
-            if (z.label) el.title = z.label;
 
+        var safeAreaZone = null;
+        var overlayZones = [];
+        var guideZones = [];
+        list.forEach(function (z) {
             if (z.type === 'safeArea' && z.insetsPx) {
-                var ins = z.insetsPx;
-                var x = ins.left || 0;
-                var y = ins.top || 0;
-                var rw = w - (ins.left || 0) - (ins.right || 0);
-                var rh = h - (ins.top || 0) - (ins.bottom || 0);
-                leftPct = (x / w) * 100;
-                topPct = (y / h) * 100;
-                widthPct = (rw / w) * 100;
-                heightPct = (rh / h) * 100;
-                el.className = 'safe-zone-item rect';
-            } else if (z.type === 'guide' && z.rectPx) {
+                safeAreaZone = z;
+            } else if (z.type === 'guide') {
+                guideZones.push(z);
+            } else {
+                overlayZones.push(z);
+            }
+        });
+
+        if (safeAreaZone && safeAreaZone.insetsPx) {
+            var ins = safeAreaZone.insetsPx;
+            var safeX = ins.left || 0;
+            var safeY = ins.top || 0;
+            var safeW = w - safeX - (ins.right || 0);
+            var safeH = h - safeY - (ins.bottom || 0);
+
+            var topMask = document.createElement('div');
+            topMask.className = 'safe-zone-item safe-zone-mask';
+            topMask.style.left = '0';
+            topMask.style.top = '0';
+            topMask.style.width = w + 'px';
+            topMask.style.height = safeY + 'px';
+            safeZonesLayer.appendChild(topMask);
+
+            var bottomMask = document.createElement('div');
+            bottomMask.className = 'safe-zone-item safe-zone-mask';
+            bottomMask.style.left = '0';
+            bottomMask.style.top = (safeY + safeH) + 'px';
+            bottomMask.style.width = w + 'px';
+            bottomMask.style.height = (h - safeY - safeH) + 'px';
+            safeZonesLayer.appendChild(bottomMask);
+
+            var leftMask = document.createElement('div');
+            leftMask.className = 'safe-zone-item safe-zone-mask';
+            leftMask.style.left = '0';
+            leftMask.style.top = safeY + 'px';
+            leftMask.style.width = safeX + 'px';
+            leftMask.style.height = safeH + 'px';
+            safeZonesLayer.appendChild(leftMask);
+
+            var rightMask = document.createElement('div');
+            rightMask.className = 'safe-zone-item safe-zone-mask';
+            rightMask.style.left = (safeX + safeW) + 'px';
+            rightMask.style.top = safeY + 'px';
+            rightMask.style.width = (w - safeX - safeW) + 'px';
+            rightMask.style.height = safeH + 'px';
+            safeZonesLayer.appendChild(rightMask);
+
+            var outline = document.createElement('div');
+            outline.className = 'safe-zone-item safe-area-outline';
+            outline.style.left = safeX + 'px';
+            outline.style.top = safeY + 'px';
+            outline.style.width = safeW + 'px';
+            outline.style.height = safeH + 'px';
+            if (safeAreaZone.label) outline.title = safeAreaZone.label;
+            safeZonesLayer.appendChild(outline);
+        }
+
+        overlayZones.forEach(function (z) {
+            var el = document.createElement('div');
+            el.className = 'safe-zone-item unsafe-overlay';
+            if (z.label) el.title = z.label;
+            var isCircle = z.shape === 'circle' || z.type === 'avatar';
+
+            if (isCircle && z.rectPx) {
                 var r = z.rectPx;
-                leftPct = (r.x / w) * 100;
-                topPct = (r.y / h) * 100;
-                widthPct = (r.w / w) * 100;
-                heightPct = (r.h / h) * 100;
-                el.className = 'safe-zone-item rect';
-            } else if (isCircle && z.rectPx) {
-                var r = z.rectPx;
-                leftPct = (r.x / w) * 100;
-                topPct = (r.y / h) * 100;
-                widthPct = (r.w / w) * 100;
-                heightPct = (r.h / h) * 100;
-                el.style.left = leftPct + '%';
-                el.style.top = topPct + '%';
-                el.style.width = widthPct + '%';
-                el.style.height = heightPct + '%';
-                el.className = 'safe-zone-item circle';
-                safeZonesLayer.appendChild(el);
-                return;
+                el.style.left = r.x + 'px';
+                el.style.top = r.y + 'px';
+                el.style.width = r.w + 'px';
+                el.style.height = r.h + 'px';
+                el.style.borderRadius = '50%';
             } else if (isCircle) {
                 var diameterPx = (z.size || 0.1) * Math.min(w, h);
-                var widthPctCircle = (diameterPx / w) * 100;
-                var heightPctCircle = (diameterPx / h) * 100;
-                leftPct = (z.left || 0) * 100;
-                topPct = (z.top || 0) * 100;
-                el.style.left = leftPct + '%';
-                el.style.top = topPct + '%';
-                el.style.width = widthPctCircle + '%';
-                el.style.height = heightPctCircle + '%';
-                el.className = 'safe-zone-item circle';
-                safeZonesLayer.appendChild(el);
-                return;
+                var leftPx = (z.left || 0) * w;
+                var topPx = (z.top || 0) * h;
+                el.style.left = leftPx + 'px';
+                el.style.top = topPx + 'px';
+                el.style.width = diameterPx + 'px';
+                el.style.height = diameterPx + 'px';
+                el.style.borderRadius = '50%';
             } else {
-                leftPct = ((z.left || 0) * 100);
-                topPct = ((z.top || 0) * 100);
-                widthPct = (z.width !== undefined ? z.width : 1) * 100;
-                heightPct = (z.height !== undefined ? z.height : 0.1) * 100;
-                el.className = 'safe-zone-item rect';
+                var l = (z.left || 0) * w;
+                var t = (z.top || 0) * h;
+                var rw = (z.width !== undefined ? z.width : 1) * w;
+                var rh = (z.height !== undefined ? z.height : 0.1) * h;
+                el.style.left = l + 'px';
+                el.style.top = t + 'px';
+                el.style.width = rw + 'px';
+                el.style.height = rh + 'px';
             }
-
-            el.style.left = leftPct + '%';
-            el.style.top = topPct + '%';
-            el.style.width = widthPct + '%';
-            el.style.height = heightPct + '%';
             safeZonesLayer.appendChild(el);
         });
+
+        guideZones.forEach(function (z) {
+            var el = document.createElement('div');
+            el.className = 'safe-zone-item safe-zone-guide';
+            if (z.label) el.title = z.label;
+            if (z.rectPx) {
+                var r = z.rectPx;
+                el.style.left = r.x + 'px';
+                el.style.top = r.y + 'px';
+                el.style.width = r.w + 'px';
+                el.style.height = r.h + 'px';
+            }
+            safeZonesLayer.appendChild(el);
+        });
+
         safeZonesLayer.style.display = state.safeZonesVisible ? '' : 'none';
-        var circles = safeZonesLayer.querySelectorAll('.safe-zone-item.circle');
-        if (circles.length > 0) {
-            circles.forEach(function (circleEl) {
-                var rect = circleEl.getBoundingClientRect();
-                var diff = Math.abs(rect.width - rect.height);
-                if (typeof console !== 'undefined' && console.log) {
-                    console.log('[SafeZones] circle size diff (|w-h| px):', diff.toFixed(2));
-                }
-            });
-        }
     }
 
     function handleBackgroundFile(file) {
@@ -4457,11 +4771,15 @@
     }
 
     function handleImageFile(file) {
-        if (!file.type.startsWith('image/')) return;
+        var isImage = file.type.startsWith('image/') || /\.(svg|png|jpe?g)$/i.test(file.name || '');
+        if (!isImage) return;
         const slotIndex = typeof state.currentImageSlot === 'number' ? state.currentImageSlot : state.nextImageSlot;
         pushUndoState().then(function () {
-            const url = URL.createObjectURL(file);
-            const draggable = createDraggableImage(url, slotIndex);
+            var url = URL.createObjectURL(file);
+            if (file.type === 'image/svg+xml' || (file.name && file.name.toLowerCase().endsWith('.svg'))) {
+                url = url + '#' + Date.now();
+            }
+            const draggable = createDraggableImage(url, slotIndex, file);
             state.overlayImages[slotIndex] = { url, file, el: draggable, scale: 1, x: 0, y: 0 };
             state.layersOrder.push('image-' + slotIndex);
             draggable.style.visibility = 'hidden';
@@ -4477,21 +4795,26 @@
         });
     }
 
-    function createDraggableImage(src, slotIndex) {
+    function createDraggableImage(src, slotIndex, file) {
         const wrap = document.createElement('div');
         wrap.className = 'draggable-item';
         wrap.dataset.slot = String(slotIndex);
         const img = document.createElement('img');
         img.src = src;
         img.draggable = false;
+        var isSvg = file && (file.type === 'image/svg+xml' || (file.name && file.name.toLowerCase().endsWith('.svg')));
+        if (isSvg) img.dataset.isSvg = 'true';
         wrap.appendChild(img);
         img.onload = function () {
             if (!state.size) return;
             var defaultMaxW = 320;
             var maxW = Math.min(defaultMaxW, state.size.w * 0.5);
             var maxH = state.size.h * 0.5;
-            var w = img.naturalWidth || 100;
-            var h = img.naturalHeight || 100;
+            var natW = img.naturalWidth || img.width || 0;
+            var natH = img.naturalHeight || img.height || 0;
+            if (isSvg && (natW === 0 || natH === 0)) { natW = natW || 200; natH = natH || 200; }
+            var w = natW || 100;
+            var h = natH || 100;
             if (w > maxW || h > maxH) {
                 var r = Math.min(maxW / w, maxH / h);
                 w *= r;
@@ -4500,7 +4823,7 @@
             wrap.style.width = w + 'px';
             wrap.style.height = h + 'px';
             wrap.dataset.scale = '1';
-            wrap.dataset.aspectRatio = String(img.naturalWidth / img.naturalHeight);
+            wrap.dataset.aspectRatio = (natW && natH) ? String(natW / natH) : '1';
             wrap.dataset.originalWidth = String(w);
             wrap.dataset.originalHeight = String(h);
             centerItemOnCanvas(wrap, slotIndex);
@@ -4733,6 +5056,7 @@
         var underline = (el.style.textDecoration || '').indexOf('underline') !== -1;
         var uppercase = (el.style.textTransform || '') === 'uppercase';
         var fs = parseFloat(el.style.fontSize) || 24;
+        applyFontSizeToTextBlock(el, fs);
         [textAlignLeftBtn, textAlignCenterBtn, textAlignRightBtn].forEach(function (btn) { if (btn) btn.classList.remove('active'); });
         if (textAlignLeftBtn && align === 'left') textAlignLeftBtn.classList.add('active');
         if (textAlignCenterBtn && align === 'center') textAlignCenterBtn.classList.add('active');
@@ -4905,6 +5229,16 @@
         });
     }
 
+    /** Apply one font size to the whole text block (root + all descendants) so all lines stay the same size. */
+    function applyFontSizeToTextBlock(el, sizePx) {
+        if (!el) return;
+        var value = sizePx + 'px';
+        el.style.fontSize = value;
+        el.querySelectorAll('*').forEach(function (desc) {
+            desc.style.fontSize = value;
+        });
+    }
+
     var TEXT_DEFAULT_WIDTH = 420;
     var TEXT_DEFAULT_HEIGHT = 80;
 
@@ -4934,23 +5268,40 @@
             div.style.left = left + 'px';
             div.style.top = top + 'px';
             div.style.minWidth = boxW + 'px';
-            div.style.minHeight = boxH + 'px';
+            div.style.width = boxW + 'px';
+            div.style.height = 'auto';
+            div.style.minHeight = '0';
             div.dataset.font = font;
             div.dataset.color = color;
             var layerId = 'text-' + (state.nextTextId++);
             state.overlayTexts.push({ el: div, x: left, y: top, layerId: layerId, rotation: 0 });
             state.layersOrder.push(layerId);
+            state.selectedTextId = state.overlayTexts.length - 1;
+            state.selectedImageSlot = null;
+            state.selectedShapeId = null;
+            state.overlayShapes.forEach(function (s) { if (s && s.el) s.el.classList.remove('selected'); });
+            state.overlayImages.forEach(function (it) { if (it && it.el) it.el.classList.remove('selected'); });
+            div.classList.add('selected');
             div.style.visibility = 'hidden';
             overlayLayer.appendChild(div);
-            requestAnimationFrame(function () { div.style.visibility = ''; });
-            applyLayersOrderToCanvas();
-            div.focus();
+            requestAnimationFrame(function () {
+                div.style.visibility = '';
+                applyLayersOrderToCanvas();
+                updateSelectionFrame();
+                updateTextFloatToolbarVisibility();
+                updateLayersList();
+                div.focus();
+            });
             makeTextDraggable(div, state.overlayTexts.length - 1);
             updateSizeReadyIcons();
             div.addEventListener('input', function () {
             if (!div.dataset.manuallyResized) { div.style.height = 'auto'; div.style.overflow = ''; }
             var f = div.dataset.font;
             if (f) applyFontToTextElement(f, [div]);
+            var fs = parseFloat(div.style.fontSize) || 24;
+            div.querySelectorAll('*').forEach(function (desc) {
+                desc.style.fontSize = fs + 'px';
+            });
             updateLayersList();
             updateSelectionFrame();
         });
@@ -4958,8 +5309,22 @@
             setTimeout(function () {
                 var f = div.dataset.font;
                 if (f) applyFontToTextElement(f, [div]);
+                var fs = parseFloat(div.style.fontSize) || 24;
+                div.querySelectorAll('*').forEach(function (desc) {
+                    desc.style.fontSize = fs + 'px';
+                });
                 updateLayersList();
             }, 0);
+        });
+        div.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                setTimeout(function () {
+                    var fs = parseFloat(div.style.fontSize) || 24;
+                    div.querySelectorAll('*').forEach(function (desc) {
+                        desc.style.fontSize = fs + 'px';
+                    });
+                }, 0);
+            }
         });
         div.addEventListener('wheel', function (e) {
             e.preventDefault();
@@ -5019,14 +5384,8 @@
                 var el = t.el;
                 var fs = parseFloat(el.style.fontSize) || 24;
                 fs = Math.max(12, Math.min(120, fs + delta));
-                el.style.fontSize = fs + 'px';
+                applyFontSizeToTextBlock(el, fs);
                 if (textSizeValue) textSizeValue.value = String(Math.round(fs));
-                if (!el.dataset.manuallyResized) {
-                    el.style.width = '';
-                    el.style.minWidth = '';
-                    el.style.height = '';
-                    el.style.overflow = '';
-                }
                 updateSelectionFrame();
                 requestToolbarLayout();
             }
@@ -5069,7 +5428,7 @@
             }
             return;
         }
-        if (e.target.closest('.text-item') || e.target.closest('.draggable-item') || e.target.closest('.text-float-toolbar') || e.target.closest('.shape-float-toolbar') || e.target.closest('.selection-frame')) return;
+        if (e.target.closest('.text-item') || e.target.closest('.draggable-item') || e.target.closest('.text-float-toolbar') || e.target.closest('.shape-float-toolbar') || e.target.closest('.selection-frame') || e.target.closest('.shape-bezier-handles') || e.target.closest('.shape-radius-handles') || e.target.closest('.shape-line-endpoint-handles')) return;
         if (e.target.closest('.shape-item')) {
             var shapeEl = e.target.closest('.shape-item');
             var layerId = shapeEl.dataset.layerId;
@@ -5107,7 +5466,7 @@
             return;
         }
         if (e.target.closest('#canvasWrap')) {
-            if (!e.target.closest('.text-item') && !e.target.closest('.draggable-item') && !e.target.closest('.shape-item') && !e.target.closest('.selection-frame') && !e.target.closest('.text-float-toolbar') && !e.target.closest('.shape-float-toolbar')) {
+            if (!e.target.closest('.text-item') && !e.target.closest('.draggable-item') && !e.target.closest('.shape-item') && !e.target.closest('.selection-frame') && !e.target.closest('.text-float-toolbar') && !e.target.closest('.shape-float-toolbar') && !e.target.closest('.shape-bezier-handles') && !e.target.closest('.shape-radius-handles') && !e.target.closest('.shape-line-endpoint-handles')) {
                 deselectAll();
             }
             return;
@@ -5455,35 +5814,24 @@
 
     function clearAll() {
         pushUndoState().then(function () {
-            var key = getSlotKey(state.network, state.size);
-            if (key) stateBySlot[key] = null;
-            resetFilters();
-            clearBackground(true);
-            updateSizeReadyIcons();
-            state.overlayImages.forEach((data, i) => {
-                if (data) removeImageSlot(i);
-            });
-            state.overlayImages = [];
+            Object.keys(stateBySlot).forEach(function (k) { stateBySlot[k] = null; });
+            Object.keys(undoBySlot).forEach(function (k) { undoBySlot[k] = []; });
+            Object.keys(redoBySlot).forEach(function (k) { redoBySlot[k] = []; });
+            copyBuffer = null;
+            clearDomOnly();
             state.nextImageSlot = 0;
             state.visibleImageSlotsCount = 1;
-            state.overlayTexts.forEach(t => {
-                if (t.el && t.el.parentNode) t.el.parentNode.removeChild(t.el);
-            });
-            state.overlayTexts = [];
-            state.selectedTextId = null;
-            state.selectedImageSlot = null;
-            state.layersOrder = ['background'];
-            updateTextFloatToolbarVisibility();
-            updateSelectionFrame();
-            updateLayersList();
+            updateSizeReadyIcons();
+            updateUndoRedoButtons();
+            updateCopyPasteButtons();
             updateButtons();
         });
     }
 
     function updateButtons() {
-        var hasContent = !!state.bgUrl || state.overlayImages.some(Boolean) || state.overlayTexts.length > 0;
+        var hasContent = !!state.bgUrl || state.overlayImages.some(Boolean) || state.overlayTexts.length > 0 || state.overlayShapes.length > 0;
         var hasAnySlotContent = hasContent || Object.keys(stateBySlot).some(function (k) { var d = stateBySlot[k]; return d && !d.empty; });
-        if (clearBtn) clearBtn.disabled = !hasContent;
+        if (clearBtn) clearBtn.disabled = !hasAnySlotContent;
         if (downloadBtn) downloadBtn.disabled = !hasAnySlotContent;
         updateUndoRedoButtons();
         if (harmonizeBtn) {
@@ -5497,6 +5845,7 @@
             resetFiltersBtn.disabled = !state.isHarmonized;
             resetFiltersBtn.classList.toggle('harmonize-active', !!state.isHarmonized);
         }
+        updateCopyPasteButtons();
     }
 
     function harmonizeImages() {

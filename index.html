@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="application-name" content="SocialFrame">
     <title>SocialFrame — social image builder</title>
+    <link rel="icon" type="image/x-icon" href="src/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="src/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="src/favicon/site.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -74,32 +79,32 @@
                 <div class="main-header-actions-left">
                     <div class="safe-zones-switch-wrap">
                         <span class="switch-label">Safe zones</span>
-                        <button type="button" class="switch" id="safeZonesBtn" role="switch" aria-checked="false" data-tooltip="Safe zones" aria-label="Safe zones">
+                        <button type="button" class="switch" id="safeZonesBtn" role="switch" aria-checked="false">
                             <span class="switch-thumb"></span>
                         </button>
                     </div>
-                    <button type="button" class="header-icon-btn" id="undoBtn" data-tooltip="Undo" aria-label="Undo" disabled>
+                    <button type="button" class="header-icon-btn" id="undoBtn" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8H15C18.3137 8 21 10.6863 21 14C21 17.3137 18.3137 20 15 20H11" /><path d="M7 4L5.8462 4.87652C3.94873 6.31801 3 7.03875 3 8C3 8.96125 3.94873 9.68199 5.8462 11.1235L7 12" /></svg>
                     </button>
-                    <button type="button" class="header-icon-btn" id="redoBtn" data-tooltip="Redo" aria-label="Redo" disabled>
+                    <button type="button" class="header-icon-btn" id="redoBtn" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8H9C5.68629 8 3 10.6863 3 14C3 17.3137 5.68629 20 9 20H13" /><path d="M17 4L18.1538 4.87652C20.0513 6.31801 21 7.03875 21 8C21 8.96125 20.0513 9.68199 18.1538 11.1235L17 12" /></svg>
                     </button>
                 </div>
                 <div class="main-header-actions-center">
-                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddBackground" title="Background">Background</button>
-                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddImage" title="Image">Image</button>
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddBackground">Background</button>
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddImage">Image</button>
                     <div class="shape-menu-wrap">
-                        <button type="button" class="btn btn-secondary btn-header-center" id="btnShape" title="Shape" aria-haspopup="true" aria-expanded="false">Shape</button>
+                        <button type="button" class="btn btn-secondary btn-header-center" id="btnShape" aria-haspopup="true" aria-expanded="false">Shape</button>
                         <div class="shape-menu-popover" id="shapeMenuPopover" role="menu" aria-hidden="true">
                             <div class="shape-menu-grid" id="shapeMenuGrid"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddText" title="Text">Text</button>
+                    <button type="button" class="btn btn-secondary btn-header-center" id="btnAddText">Text</button>
                 </div>
                 <div class="main-header-actions-right">
                     <button type="button" class="btn btn-secondary btn-harmonize" id="harmonizeBtn" disabled>Harmonize</button>
                     <button type="button" class="btn btn-secondary" id="resetFiltersBtn" style="display: none;" disabled>Undo harmony</button>
-                    <button type="button" class="btn btn-secondary" id="clearBtn" disabled>Clear</button>
+                    <button type="button" class="btn btn-secondary" id="clearBtn" disabled>Clear all</button>
                     <div class="download-menu-wrap">
                         <button type="button" class="btn btn-primary btn-download-full" id="downloadBtn" disabled aria-haspopup="true" aria-expanded="false">Download</button>
                         <div class="download-menu-popover" id="downloadMenuPopover" role="menu" aria-hidden="true">
@@ -113,20 +118,30 @@
         </header>
 
         <div class="canvas-wrap" id="canvasWrap">
-            <div class="canvas-viewport" id="canvasViewport">
-                <div class="canvas-stage" id="canvasStage">
-                <div class="canvas-size-label" id="canvasSizeLabel" data-export-ignore></div>
-                <div class="canvas-scaler" id="canvasScaler">
-                    <div class="result-container" id="resultContainer">
-                        <div class="bg-layer" id="bgLayer"></div>
-                        <div class="overlay-layer" id="overlayLayer"></div>
-                        <div class="guides-layer" id="guidesLayer" data-export-ignore></div>
-                        <div class="safe-zones-layer" id="safeZonesLayer" data-export-ignore></div>
-                        <div class="harmonize-overlay" id="harmonizeOverlay" aria-hidden="true"></div>
+            <div class="canvas-viewport-row">
+                <div class="canvas-viewport" id="canvasViewport">
+                    <div class="canvas-stage" id="canvasStage">
+                    <div class="canvas-size-label" id="canvasSizeLabel" data-export-ignore></div>
+                    <div class="canvas-scaler" id="canvasScaler">
+                        <div class="result-container" id="resultContainer">
+                            <div class="bg-layer" id="bgLayer"></div>
+                            <div class="overlay-layer" id="overlayLayer"></div>
+                            <div class="guides-layer" id="guidesLayer" data-export-ignore></div>
+                            <div class="safe-zones-layer" id="safeZonesLayer" data-export-ignore></div>
+                            <div class="harmonize-overlay" id="harmonizeOverlay" aria-hidden="true"></div>
+                        </div>
+                        </div>
                     </div>
                     </div>
                 </div>
-                </div>
+                <div class="canvas-copy-paste-wrap" data-export-ignore>
+                <button type="button" class="canvas-copy-paste-btn" id="btnCopySlot" disabled data-tooltip="Copy layers" aria-label="Copy layers">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.9637 8.98209C16.9613 6.03194 16.9167 4.50384 16.0578 3.45753C15.892 3.25546 15.7067 3.07019 15.5047 2.90436C14.4008 1.99854 12.7609 1.99854 9.48087 1.99854C6.20089 1.99854 4.5609 1.99854 3.45708 2.90436C3.255 3.07018 3.06971 3.25546 2.90387 3.45753C1.99799 4.56128 1.99799 6.20116 1.99799 9.48091C1.99799 12.7607 1.99799 14.4005 2.90387 15.5043C3.0697 15.7063 3.255 15.8916 3.45708 16.0574C4.50346 16.9162 6.03167 16.9608 8.98201 16.9632" /><path d="M14.0283 9.02455L16.994 8.98193M14.0143 22.0013L16.9799 21.9586M21.9716 14.0221L21.9436 16.9818M9.01033 14.0357L8.98236 16.9953M11.4873 9.02455C10.6545 9.17371 9.31781 9.32713 9.01033 11.0488M19.4946 21.9586C20.3296 21.8223 21.6685 21.6894 22.0025 19.9726M19.4946 9.02455C20.3274 9.17371 21.6641 9.32713 21.9716 11.0488M11.5 21.9573C10.6672 21.8086 9.33039 21.6559 9.02197 19.9344" /></svg>
+                </button>
+                <button type="button" class="canvas-copy-paste-btn" id="btnPasteSlot" disabled data-tooltip="Paste layers" aria-label="Paste layers">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15C9 12.1716 9 10.7574 9.87868 9.87868C10.7574 9 12.1716 9 15 9L16 9C18.8284 9 20.2426 9 21.1213 9.87868C22 10.7574 22 12.1716 22 15V16C22 18.8284 22 20.2426 21.1213 21.1213C20.2426 22 18.8284 22 16 22H15C12.1716 22 10.7574 22 9.87868 21.1213C9 20.2426 9 18.8284 9 16L9 15Z" /><path d="M16.9999 9C16.9975 6.04291 16.9528 4.51121 16.092 3.46243C15.9258 3.25989 15.7401 3.07418 15.5376 2.90796C14.4312 2 12.7875 2 9.5 2C6.21252 2 4.56878 2 3.46243 2.90796C3.25989 3.07417 3.07418 3.25989 2.90796 3.46243C2 4.56878 2 6.21252 2 9.5C2 12.7875 2 14.4312 2.90796 15.5376C3.07417 15.7401 3.25989 15.9258 3.46243 16.092C4.51121 16.9528 6.04291 16.9975 9 16.9999" /></svg>
+                </button>
+            </div>
             </div>
             <div class="text-float-toolbar" id="textFloatToolbar" data-export-ignore>
                 <div class="text-float-toolbar-inner">
@@ -266,11 +281,29 @@
     <aside class="sidebar-right">
         <div class="layers-panel-inner">
             <div class="layers-list" id="layersList" role="list"></div>
+            <div class="canvas-hints" data-export-ignore aria-hidden="true">
+                <div class="canvas-hint">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M4.74061 17.0888C4.93047 19.4803 6.82417 21.511 9.26502 21.8118C10.1626 21.9223 11.0752 22 12 22C12.9247 22 13.8373 21.9223 14.7349 21.8118C17.1758 21.511 19.0694 19.4803 19.2593 17.0888C19.3909 15.4317 19.5 13.732 19.5 12C19.5 10.268 19.3909 8.56832 19.2593 6.91118C19.0694 4.51965 17.1758 2.48893 14.7349 2.1882C13.8373 2.07762 12.9247 2 12 2C11.0752 2 10.1626 2.07762 9.26502 2.1882C6.82417 2.48893 4.93047 4.51965 4.74061 6.91118C4.60903 8.56832 4.5 10.268 4.5 12C4.5 13.732 4.60903 15.4317 4.74061 17.0888Z"/>
+                        <path d="M12 6L12 9" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="canvas-hint-label">Zoom:</span>
+                    <span class="canvas-hint-value">Mouse Wheel</span>
+                </div>
+                <div class="canvas-hint">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M14.5352 11.0865L18.5575 12.6605C20.8775 13.5683 22.0375 14.0222 21.9991 14.7422C21.9606 15.4622 20.75 15.7924 18.3288 16.4527C17.6079 16.6493 17.2475 16.7476 16.9976 16.9976C16.7476 17.2475 16.6493 17.6079 16.4527 18.3288C15.7924 20.75 15.4622 21.9606 14.7422 21.9991C14.0222 22.0375 13.5683 20.8775 12.6605 18.5575L11.0865 14.5352C10.136 12.1062 9.6608 10.8918 10.2763 10.2763C10.8918 9.6608 12.1062 10.136 14.5352 11.0865Z" stroke-linejoin="round"/>
+                        <path d="M2 8.5V11.5M11.5 2H8.5M8.5 18H9M18 9V8.5M4.5 18C3.11929 18 2 16.8807 2 15.5M2 4.5C2 3.11929 3.11929 2 4.5 2M18 4.5C18 3.11929 16.8807 2 15.5 2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="canvas-hint-label">Drag:</span>
+                    <span class="canvas-hint-value">LMB</span>
+                </div>
+            </div>
         </div>
     </aside>
 
     <input type="file" id="fileBackground" accept="image/*">
-    <input type="file" id="fileImage" accept="image/*">
+    <input type="file" id="fileImage" accept="image/jpeg,image/png,image/svg+xml,.jpg,.jpeg,.png,.svg">
 
     <script src="config.js"></script>
     <script src="script.js"></script>

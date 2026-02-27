@@ -36,17 +36,17 @@
         {
           "w": 1080,
           "h": 1080,
-          "label": "Квадрат 1080×1080"
+          "label": "Square 1080×1080"
         },
         {
           "w": 1080,
           "h": 1359,
-          "label": "Вертикаль 1080×1359"
+          "label": "Portrait 1080×1359"
         },
         {
           "w": 1080,
           "h": 566,
-          "label": "Горизонталь 1080×566"
+          "label": "Landscape 1080×566"
         },
         {
           "w": 1080,
@@ -81,17 +81,17 @@
         {
           "w": 1280,
           "h": 720,
-          "label": "Горизонталь 1280×720"
+          "label": "Landscape 1280×720"
         },
         {
           "w": 720,
           "h": 1280,
-          "label": "Вертикаль 720×1280"
+          "label": "Portrait 720×1280"
         },
         {
           "w": 720,
           "h": 720,
-          "label": "Квадрат 720×720"
+          "label": "Square 720×720"
         },
         {
           "w": 1500,
@@ -106,12 +106,12 @@
         {
           "w": 1200,
           "h": 1200,
-          "label": "Квадрат 1200×1200"
+          "label": "Square 1200×1200"
         },
         {
           "w": 720,
           "h": 900,
-          "label": "Вертикаль 720×900"
+          "label": "Portrait 720×900"
         },
         {
           "w": 1200,
@@ -211,7 +211,7 @@
           "width": 0.244,
           "height": 0.556,
           "shape": "rect",
-          "label": "Аватар"
+          "label": "Avatar"
         },
         {
           "type": "safeArea",
@@ -235,7 +235,7 @@
             "h": 56.6
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -244,7 +244,7 @@
           "width": 1,
           "height": 0.14,
           "shape": "rect",
-          "label": "Контролы"
+          "label": "Controls"
         }
       ],
       "1080x1080": [
@@ -257,7 +257,7 @@
             "h": 108
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -266,7 +266,7 @@
           "width": 1,
           "height": 0.14,
           "shape": "rect",
-          "label": "Контролы"
+          "label": "Controls"
         }
       ],
       "1080x1359": [
@@ -279,7 +279,7 @@
             "h": 108
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -288,7 +288,7 @@
           "width": 1,
           "height": 0.14,
           "shape": "rect",
-          "label": "Контролы"
+          "label": "Controls"
         }
       ],
       "1080x1920": [
@@ -299,7 +299,7 @@
           "width": 1,
           "height": 0.1,
           "shape": "rect",
-          "label": "Ответ"
+          "label": "Reply"
         },
         {
           "type": "safeArea",
@@ -319,7 +319,7 @@
           "width": 1,
           "height": 0.06,
           "shape": "rect",
-          "label": "Прогресс"
+          "label": "Progress"
         }
       ],
       "1200x630": [
@@ -419,7 +419,7 @@
           "width": 1,
           "height": 0.1,
           "shape": "rect",
-          "label": "Ответ"
+          "label": "Reply"
         },
         {
           "type": "safeArea",
@@ -439,7 +439,7 @@
           "width": 1,
           "height": 0.06,
           "shape": "rect",
-          "label": "Прогресс"
+          "label": "Progress"
         }
       ]
     },
@@ -454,7 +454,7 @@
             "h": 72
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -463,7 +463,7 @@
           "width": 1,
           "height": 0.16,
           "shape": "rect",
-          "label": "Контролы"
+          "label": "Controls"
         }
       ],
       "1200x627": [
@@ -489,7 +489,7 @@
             "h": 120
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -498,7 +498,7 @@
           "width": 1,
           "height": 0.16,
           "shape": "rect",
-          "label": "Контролы"
+          "label": "Controls"
         }
       ],
       "1584x396": [
@@ -716,7 +716,7 @@
             "h": 86.4
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -725,7 +725,7 @@
           "width": 1,
           "height": 0.18,
           "shape": "rect",
-          "label": "Действия"
+          "label": "Actions"
         }
       ],
       "720x1280": [
@@ -738,7 +738,7 @@
             "h": 86.4
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -747,7 +747,7 @@
           "width": 1,
           "height": 0.18,
           "shape": "rect",
-          "label": "Действия"
+          "label": "Actions"
         }
       ],
       "1280x720": [
@@ -760,7 +760,7 @@
             "h": 86.4
           },
           "shape": "circle",
-          "label": "Юзерпик"
+          "label": "Profile picture"
         },
         {
           "type": "bottom",
@@ -769,7 +769,7 @@
           "width": 1,
           "height": 0.18,
           "shape": "rect",
-          "label": "Действия"
+          "label": "Actions"
         }
       ],
       "1500x500": [
@@ -780,7 +780,7 @@
           "width": 0.267,
           "height": 0.8,
           "shape": "rect",
-          "label": "Аватар"
+          "label": "Avatar"
         },
         {
           "type": "safeArea",

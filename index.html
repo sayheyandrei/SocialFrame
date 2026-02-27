@@ -381,6 +381,24 @@
         </div>
     </div>
 
+    <div class="mobile-add-curtain-backdrop" id="mobileAddCurtainBackdrop" aria-hidden="true"></div>
+    <div class="mobile-add-curtain" id="mobileAddCurtain" aria-hidden="true">
+        <div class="mobile-add-curtain-header">
+            <button type="button" class="mobile-add-curtain-close" id="mobileAddCurtainClose" aria-label="Close"></button>
+        </div>
+        <div class="mobile-add-curtain-body">
+            <button type="button" class="mobile-add-curtain-item" data-action="background">Background</button>
+            <button type="button" class="mobile-add-curtain-item" data-action="image">Image</button>
+            <div class="mobile-add-curtain-row mobile-add-shape-row">
+                <button type="button" class="mobile-add-curtain-item mobile-add-shape-trigger" data-action="shape" aria-expanded="false">Shape</button>
+                <div class="mobile-add-shapes-block" id="mobileAddShapesBlock" aria-hidden="true">
+                    <div class="mobile-add-shapes-grid" id="mobileAddShapesGrid"></div>
+                </div>
+            </div>
+            <button type="button" class="mobile-add-curtain-item" data-action="text">Text</button>
+        </div>
+    </div>
+
     <div class="mobile-layers-overlay" id="mobileLayersOverlay" aria-hidden="true">
         <div class="mobile-layers-header">
             <h2 class="mobile-layers-title">Layers</h2>

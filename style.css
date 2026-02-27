@@ -2804,7 +2804,9 @@ input[type="file"] {
 .mobile-right-fabs,
 .mobile-layers-overlay,
 .mobile-download-curtain-backdrop,
-.mobile-download-curtain {
+.mobile-download-curtain,
+.mobile-add-curtain-backdrop,
+.mobile-add-curtain {
     display: none !important;
 }
 
@@ -2825,7 +2827,10 @@ input[type="file"] {
     .mobile-drawer-close:hover,
     .mobile-layers-close:hover,
     .mobile-download-curtain-close:hover,
-    .mobile-download-curtain-item:hover {
+    .mobile-download-curtain-item:hover,
+    .mobile-add-curtain-close:hover,
+    .mobile-add-curtain-item:hover,
+    .mobile-add-shapes-grid .shape-menu-item:hover {
         background: inherit;
         color: inherit;
         opacity: inherit;
@@ -2846,6 +2851,12 @@ input[type="file"] {
         display: block !important;
     }
     .mobile-download-curtain {
+        display: flex !important;
+    }
+    .mobile-add-curtain-backdrop {
+        display: block !important;
+    }
+    .mobile-add-curtain {
         display: flex !important;
     }
     .mobile-layers-overlay {
@@ -3241,6 +3252,147 @@ input[type="file"] {
         text-align: left;
         cursor: pointer;
         border-radius: 8px;
+    }
+
+    /* Add curtain: full-width rows, expandable shapes */
+    .mobile-add-curtain-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 200;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .mobile-add-curtain-backdrop.open {
+        pointer-events: auto;
+        opacity: 1;
+    }
+    .mobile-add-curtain {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 201;
+        background: var(--app-surface);
+        border-radius: 24px 24px 0 0;
+        padding-bottom: 40px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .mobile-add-curtain.open {
+        transform: translateY(0);
+    }
+    .mobile-add-curtain-header {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 16px 16px 0;
+    }
+    .mobile-add-curtain-close {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        color: var(--app-text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .mobile-add-curtain-close::before,
+    .mobile-add-curtain-close::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 1px;
+    }
+    .mobile-add-curtain-close::before { transform: rotate(45deg); }
+    .mobile-add-curtain-close::after { transform: rotate(-45deg); }
+    .mobile-add-curtain-body {
+        padding: 8px 0 0;
+        overflow-y: auto;
+    }
+    .mobile-add-curtain-item {
+        display: block;
+        width: 100%;
+        padding: 16px 20px;
+        border: none;
+        background: transparent;
+        color: var(--app-text);
+        font-size: 16px;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 0;
+        border-bottom: 1px solid var(--app-border);
+    }
+    .mobile-add-curtain-row {
+        border-bottom: 1px solid var(--app-border);
+    }
+    .mobile-add-shape-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .mobile-add-shape-trigger::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.2s ease;
+    }
+    .mobile-add-curtain-row.open .mobile-add-shape-trigger::after {
+        transform: rotate(-135deg);
+    }
+    .mobile-add-shapes-block {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.25s ease;
+    }
+    .mobile-add-curtain-row.open .mobile-add-shapes-block {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    .mobile-add-shapes-block[aria-hidden="false"] {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    .mobile-add-shapes-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 12px 20px 16px;
+    }
+    .mobile-add-shapes-grid .shape-menu-item {
+        width: 100%;
+        aspect-ratio: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        background: var(--app-surface-hover);
+        color: var(--app-text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mobile-add-shapes-grid .shape-menu-item svg {
+        width: 100%;
+        height: 100%;
+        max-width: 48px;
+        max-height: 48px;
     }
 
     /* Layers: full-screen curtain from right, on top of everything, blocks content */

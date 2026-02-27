@@ -6063,7 +6063,7 @@
             }
             if (format === 'png' || format === 'jpg') {
                 var ext = format === 'jpg' ? 'jpg' : 'png';
-                var hideToast = showExportToast('Скачивание…');
+                var hideToast = showExportToast('Downloading…');
                 if (keys.length === 1) {
                     var k = keys[0];
                     exportCurrentPNG(k, format).then(function (dataUrl) {
@@ -6104,7 +6104,7 @@
                                 target.file(name, base64, { base64: true });
                                 done++;
                                 var toastEl = document.getElementById('exportToast');
-                                if (toastEl) toastEl.textContent = 'Скачивание ' + done + '/' + total + '…';
+                                if (toastEl) toastEl.textContent = 'Downloading ' + done + '/' + total + '…';
                             });
                         });
                     });
@@ -6126,7 +6126,7 @@
                 return;
             }
             if (format === 'pdf') {
-                var hideToast = showExportToast('Скачивание PDF…');
+                var hideToast = showExportToast('Downloading PDF…');
                 var seq = Promise.resolve();
                 var dataUrls = [];
                 keys.forEach(function (k) {
@@ -6243,6 +6243,11 @@
         var mobileDownloadCurtainBackdrop = $('mobileDownloadCurtainBackdrop');
         var mobileDownloadCurtain = $('mobileDownloadCurtain');
         var mobileDownloadCurtainClose = $('mobileDownloadCurtainClose');
+        var mobileAddCurtainBackdrop = $('mobileAddCurtainBackdrop');
+        var mobileAddCurtain = $('mobileAddCurtain');
+        var mobileAddCurtainClose = $('mobileAddCurtainClose');
+        var mobileAddShapesBlock = $('mobileAddShapesBlock');
+        var mobileAddShapesGrid = $('mobileAddShapesGrid');
         var themeLightBtn = $('themeLight');
         var themeDarkBtn = $('themeDark');
 
@@ -6305,36 +6310,16 @@
         if (mobileUndoBtn) mobileUndoBtn.addEventListener('click', performUndo);
         if (mobileRedoBtn) mobileRedoBtn.addEventListener('click', performRedo);
 
-        if (mobileDownloadBtn && mobileDownloadPopover) {
+        if (mobileDownloadBtn) {
             mobileDownloadBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                var open = mobileDownloadPopover.classList.toggle('open');
-                mobileDownloadBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-                if (open) {
-                    var count = getDownloadableSlotsCount();
-                    var pngEl = $('mobileDownloadMenuCountPng');
-                    var jpgEl = $('mobileDownloadMenuCountJpg');
-                    if (pngEl) pngEl.textContent = String(count);
-                    if (jpgEl) jpgEl.textContent = String(count);
-                }
-            });
-            document.addEventListener('mousedown', function (e) {
-                if (mobileDownloadPopover.classList.contains('open') && !mobileDownloadPopover.contains(e.target) && !mobileDownloadBtn.contains(e.target)) {
-                    mobileDownloadPopover.classList.remove('open');
-                    mobileDownloadBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
-            mobileDownloadPopover.querySelectorAll('.download-menu-item').forEach(function (item) {
-                item.addEventListener('click', function () {
-                    var format = this.getAttribute('data-format') || 'png';
-                    mobileDownloadPopover.classList.remove('open');
-                    mobileDownloadBtn.setAttribute('aria-expanded', 'false');
-                    downloadWithFormat(format);
-                });
+                if (mobileDownloadBtn.disabled) return;
+                openDownloadCurtain();
             });
         }
 
         function openDownloadCurtain() {
+            if (mobileAddCurtain && mobileAddCurtain.classList.contains('open')) closeAddCurtain();
             if (mobileAddPopover) mobileAddPopover.classList.remove('open');
             if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
             if (mobileDownloadCurtainBackdrop) mobileDownloadCurtainBackdrop.classList.add('open');
@@ -6355,10 +6340,90 @@
                 mobileDownloadCurtain.setAttribute('aria-hidden', 'true');
             }
         }
+        function openAddCurtain() {
+            if (mobileDownloadCurtain && mobileDownloadCurtain.classList.contains('open')) closeDownloadCurtain();
+            if (mobileAddPopover) mobileAddPopover.classList.remove('open');
+            if (mobileAddCurtainBackdrop) mobileAddCurtainBackdrop.classList.add('open');
+            if (mobileAddCurtain) {
+                mobileAddCurtain.classList.add('open');
+                mobileAddCurtain.setAttribute('aria-hidden', 'false');
+            }
+            var row = mobileAddCurtain && mobileAddCurtain.querySelector('.mobile-add-shape-row');
+            if (row) row.classList.remove('open');
+            if (mobileAddShapesBlock) mobileAddShapesBlock.setAttribute('aria-hidden', 'true');
+            var trigger = mobileAddCurtain && mobileAddCurtain.querySelector('.mobile-add-shape-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+            if (mobileAddShapesGrid && typeof SHAPE_TYPES !== 'undefined' && mobileAddShapesGrid.children.length === 0) {
+                function svgToIcon(svgText) {
+                    if (!svgText) return '';
+                    return svgText.replace(/\bfill="white"\b/gi, 'fill="currentColor"').replace(/\bstroke="white"\b/gi, 'stroke="currentColor"').replace(/\bfill-opacity="[^"]*"/gi, '');
+                }
+                SHAPE_TYPES.forEach(function (def) {
+                    var rawSvg = (typeof SHAPE_MENU_ICONS_INLINE !== 'undefined' && SHAPE_MENU_ICONS_INLINE[def.id]) || '';
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'shape-menu-item';
+                    btn.dataset.shape = def.id;
+                    btn.setAttribute('aria-label', def.name);
+                    btn.innerHTML = svgToIcon(rawSvg) || def.name;
+                    btn.addEventListener('click', function () {
+                        if (!state.size || !overlayLayer || !canvasStage) return;
+                        var stageRect = canvasStage.getBoundingClientRect();
+                        var viewportCenterX = stageRect.left + stageRect.width / 2;
+                        var viewportCenterY = stageRect.top + stageRect.height / 2;
+                        var center = screenToModel(viewportCenterX, viewportCenterY);
+                        createShape(def.id, center.x, center.y);
+                        closeAddCurtain();
+                    });
+                    mobileAddShapesGrid.appendChild(btn);
+                });
+            }
+        }
+        function closeAddCurtain() {
+            if (mobileAddCurtainBackdrop) mobileAddCurtainBackdrop.classList.remove('open');
+            if (mobileAddCurtain) {
+                mobileAddCurtain.classList.remove('open');
+                mobileAddCurtain.setAttribute('aria-hidden', 'true');
+            }
+            var row = mobileAddCurtain && mobileAddCurtain.querySelector('.mobile-add-shape-row');
+            if (row) row.classList.remove('open');
+            if (mobileAddShapesBlock) mobileAddShapesBlock.setAttribute('aria-hidden', 'true');
+            var trigger = mobileAddCurtain && mobileAddCurtain.querySelector('.mobile-add-shape-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        }
         if (mobileFabAdd) {
             mobileFabAdd.addEventListener('click', function (e) {
                 e.stopPropagation();
-                openDownloadCurtain();
+                openAddCurtain();
+            });
+        }
+        if (mobileAddCurtainBackdrop) mobileAddCurtainBackdrop.addEventListener('click', closeAddCurtain);
+        if (mobileAddCurtainClose) mobileAddCurtainClose.addEventListener('click', closeAddCurtain);
+        if (mobileAddCurtain) {
+            var shapeTrigger = mobileAddCurtain.querySelector('.mobile-add-shape-trigger');
+            var shapeRow = mobileAddCurtain.querySelector('.mobile-add-shape-row');
+            if (shapeTrigger && shapeRow && mobileAddShapesBlock) {
+                shapeTrigger.addEventListener('click', function (e) {
+                    if (e.target.closest('.mobile-add-shapes-block')) return;
+                    var open = shapeRow.classList.toggle('open');
+                    shapeTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    mobileAddShapesBlock.setAttribute('aria-hidden', open ? 'false' : 'true');
+                });
+            }
+            mobileAddCurtain.querySelectorAll('.mobile-add-curtain-item[data-action]').forEach(function (item) {
+                var action = item.getAttribute('data-action');
+                if (action === 'shape') return;
+                item.addEventListener('click', function () {
+                    if (action === 'background' && fileBackground) { fileBackground.click(); closeAddCurtain(); }
+                    else if (action === 'image') {
+                        var slot = state.nextImageSlot < MAX_OVERLAY_IMAGES ? state.nextImageSlot : (function () {
+                            for (var i = 0; i < MAX_OVERLAY_IMAGES; i++) { if (!state.overlayImages[i]) return i; }
+                            return MAX_OVERLAY_IMAGES - 1;
+                        })();
+                        triggerImageUpload(slot);
+                        closeAddCurtain();
+                    } else if (action === 'text') { toggleAddTextMode(); closeAddCurtain(); }
+                });
             });
         }
         if (mobileDownloadCurtainBackdrop) mobileDownloadCurtainBackdrop.addEventListener('click', closeDownloadCurtain);
@@ -6369,32 +6434,6 @@
                     var format = this.getAttribute('data-format') || 'png';
                     closeDownloadCurtain();
                     downloadWithFormat(format);
-                });
-            });
-        }
-        if (mobileAddPopover) {
-            document.addEventListener('mousedown', function (e) {
-                if (mobileAddPopover.classList.contains('open') && !mobileAddPopover.contains(e.target) && !mobileFabAdd.contains(e.target)) {
-                    mobileAddPopover.classList.remove('open');
-                    if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
-                }
-            });
-            mobileAddPopover.querySelectorAll('.mobile-add-item').forEach(function (item) {
-                item.addEventListener('click', function () {
-                    var action = this.getAttribute('data-action');
-                    mobileAddPopover.classList.remove('open');
-                    if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
-                    if (action === 'background' && fileBackground) fileBackground.click();
-                    else if (action === 'image') {
-                        var slot = state.nextImageSlot < MAX_OVERLAY_IMAGES ? state.nextImageSlot : (function () {
-                            for (var i = 0; i < MAX_OVERLAY_IMAGES; i++) { if (!state.overlayImages[i]) return i; }
-                            return MAX_OVERLAY_IMAGES - 1;
-                        })();
-                        triggerImageUpload(slot);
-                    } else if (action === 'shape') {
-                        var btnShape = $('btnShape');
-                        if (btnShape) btnShape.click();
-                    } else if (action === 'text') toggleAddTextMode();
                 });
             });
         }

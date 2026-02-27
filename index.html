@@ -24,7 +24,16 @@
 
 <body>
     <div id="app-tooltip" class="app-tooltip" role="tooltip" aria-hidden="true"></div>
-    <aside class="sidebar-left">
+    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 5L16 5" />
+            <path d="M4 12L20 12" />
+            <path d="M4 19L12 19" />
+        </svg>
+    </button>
+    <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+    <aside class="sidebar-left" id="sidebarLeft">
+        <button type="button" class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close menu"></button>
         <div class="sidebar-left-logo">
             <img src="src/logo-dark.svg" alt="" class="sidebar-logo sidebar-logo-dark" height="32">
             <img src="src/logo-light.svg" alt="" class="sidebar-logo sidebar-logo-light" height="32">
@@ -39,18 +48,20 @@
                 <button type="button" class="btn btn-primary" id="customCreateBtn" disabled>Create</button>
             </div>
         </div>
-    </aside>
-
-    <div class="canvas-tools-wrap" id="canvasToolsWrap">
-        <div class="canvas-tools">
-            <button type="button" class="canvas-tool-btn active" id="canvasToolCursor" data-tool="cursor" data-tooltip="Select" aria-label="Select"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M9.80282 4.62973L15.8364 6.99069C19.3164 8.35243 21.0564 9.03329 20.9987 10.1133C20.941 11.1934 19.1251 11.6886 15.4933 12.6791C14.412 12.974 13.8713 13.1215 13.4964 13.4963C13.1215 13.8712 12.9741 14.4119 12.6791 15.4933C11.6887 19.125 11.1934 20.9409 10.1134 20.9986C9.03335 21.0563 8.35249 19.3163 6.99075 15.8363L4.62979 9.80276C3.20411 6.15934 2.49127 4.33764 3.41448 3.41442C4.3377 2.49121 6.15941 3.20405 9.80282 4.62973Z" /></svg></button>
-            <button type="button" class="canvas-tool-btn" id="canvasToolHand" data-tool="hand" data-tooltip="Pan" aria-label="Pan"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 9.5V14.1667C20.5 16.34 20.5 17.4267 20.1689 18.2918C19.6627 19.6148 18.6207 20.6601 17.3019 21.1679C16.4395 21.5 15.3562 21.5 13.1896 21.5C12.0534 21.5 11.4853 21.5 10.9566 21.3834C10.1499 21.2056 9.40001 20.8294 8.77419 20.2888C8.36398 19.9344 8.02311 19.4785 7.34137 18.5667L4.33738 14.5487C3.8758 13.9314 3.88907 13.0789 4.36965 12.4763C4.99772 11.6888 6.16877 11.6237 6.8797 12.3369L8.5011 13.9634V10.5V6C8.5011 5.17157 9.17267 4.5 10.0011 4.5C10.8295 4.5 11.5011 5.17157 11.5011 6M11.5011 6V4C11.5011 3.17157 12.1727 2.5 13.0011 2.5C13.8295 2.5 14.5011 3.17157 14.5011 4V6M11.5011 6V10.5M14.5011 6C14.5011 5.17157 15.1727 4.5 16.0011 4.5C16.8295 4.5 17.5011 5.17157 17.5011 6V8M14.5011 6V10.5M20.5011 10.5V8C20.5011 7.17157 19.8295 6.5 19.0011 6.5C18.1727 6.5 17.5011 7.17157 17.5011 8M17.5011 8V10.5" /></svg></button>
-            <button type="button" class="canvas-tool-btn" id="canvasZoomMinus" data-tooltip="Zoom out" aria-label="Zoom out"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
-            <span class="canvas-zoom-value" id="canvasZoomValue">100%</span>
-            <button type="button" class="canvas-tool-btn" id="canvasZoomPlus" data-tooltip="Zoom in" aria-label="Zoom in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V16M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
-            <button type="button" class="canvas-tool-btn" id="canvasToolFrame" data-tooltip="Fit to view" aria-label="Fit to view"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2V4M22 20H20M16.5 20H10C7.17157 20 5.75736 20 4.87868 19.1213C4 18.2426 4 16.8284 4 14V7.5" /><path d="M20 22L20 12C20 8.22877 20 6.34315 18.8284 5.17158C17.6569 4 15.7712 4 12 4L2 4" /></svg></button>
+        <div class="mobile-menu-footer" id="mobileMenuFooter">
+            <div class="mobile-menu-actions">
+                <button type="button" class="btn btn-secondary btn-harmonize mobile-harmonize-btn" id="mobileHarmonizeBtn" disabled>Harmonize</button>
+                <button type="button" class="btn btn-secondary mobile-clear-btn" id="mobileClearBtn" disabled>Clear all</button>
+            </div>
+            <div class="mobile-theme-tabs theme-tabs-wrap">
+                <div class="theme-tabs">
+                    <span class="theme-tabs-slider mobile-theme-slider" id="mobileThemeTabsSlider" aria-hidden="true"></span>
+                    <button type="button" class="mobile-theme-light" id="mobileThemeLight" aria-label="Light theme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"/><path d="M12 2V3.5M12 20.5V22M19.0708 19.0713L18.0101 18.0106M5.98926 5.98926L4.9286 4.9286M22 12H20.5M3.5 12H2M19.0713 4.92871L18.0106 5.98937M5.98975 18.0107L4.92909 19.0714"/></svg></button>
+                    <button type="button" class="mobile-theme-dark" id="mobileThemeDark" aria-label="Dark theme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 14.0784C20.3003 14.7189 18.9301 15.0821 17.4751 15.0821C12.7491 15.0821 8.91792 11.2509 8.91792 6.52485C8.91792 5.06986 9.28105 3.69968 9.92163 2.5C5.66765 3.49698 2.5 7.31513 2.5 11.8731C2.5 17.1899 6.8101 21.5 12.1269 21.5C16.6849 21.5 20.503 18.3324 21.5 14.0784Z"/></svg></button>
+                </div>
+            </div>
         </div>
-    </div>
+    </aside>
 
     <div class="theme-tabs-wrap">
         <div class="theme-tabs">
@@ -118,6 +129,16 @@
         </header>
 
         <div class="canvas-wrap" id="canvasWrap">
+            <div class="canvas-tools-wrap" id="canvasToolsWrap">
+                <div class="canvas-tools">
+                    <button type="button" class="canvas-tool-btn active" id="canvasToolCursor" data-tool="cursor" data-tooltip="Select" aria-label="Select"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M9.80282 4.62973L15.8364 6.99069C19.3164 8.35243 21.0564 9.03329 20.9987 10.1133C20.941 11.1934 19.1251 11.6886 15.4933 12.6791C14.412 12.974 13.8713 13.1215 13.4964 13.4963C13.1215 13.8712 12.9741 14.4119 12.6791 15.4933C11.6887 19.125 11.1934 20.9409 10.1134 20.9986C9.03335 21.0563 8.35249 19.3163 6.99075 15.8363L4.62979 9.80276C3.20411 6.15934 2.49127 4.33764 3.41448 3.41442C4.3377 2.49121 6.15941 3.20405 9.80282 4.62973Z" /></svg></button>
+                    <button type="button" class="canvas-tool-btn" id="canvasToolHand" data-tool="hand" data-tooltip="Pan" aria-label="Pan"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 9.5V14.1667C20.5 16.34 20.5 17.4267 20.1689 18.2918C19.6627 19.6148 18.6207 20.6601 17.3019 21.1679C16.4395 21.5 15.3562 21.5 13.1896 21.5C12.0534 21.5 11.4853 21.5 10.9566 21.3834C10.1499 21.2056 9.40001 20.8294 8.77419 20.2888C8.36398 19.9344 8.02311 19.4785 7.34137 18.5667L4.33738 14.5487C3.8758 13.9314 3.88907 13.0789 4.36965 12.4763C4.99772 11.6888 6.16877 11.6237 6.8797 12.3369L8.5011 13.9634V10.5V6C8.5011 5.17157 9.17267 4.5 10.0011 4.5C10.8295 4.5 11.5011 5.17157 11.5011 6M11.5011 6V4C11.5011 3.17157 12.1727 2.5 13.0011 2.5C13.8295 2.5 14.5011 3.17157 14.5011 4V6M11.5011 6V10.5M14.5011 6C14.5011 5.17157 15.1727 4.5 16.0011 4.5C16.8295 4.5 17.5011 5.17157 17.5011 6V8M14.5011 6V10.5M20.5011 10.5V8C20.5011 7.17157 19.8295 6.5 19.0011 6.5C18.1727 6.5 17.5011 7.17157 17.5011 8M17.5011 8V10.5" /></svg></button>
+                    <button type="button" class="canvas-tool-btn" id="canvasZoomMinus" data-tooltip="Zoom out" aria-label="Zoom out"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
+                    <span class="canvas-zoom-value" id="canvasZoomValue">100%</span>
+                    <button type="button" class="canvas-tool-btn" id="canvasZoomPlus" data-tooltip="Zoom in" aria-label="Zoom in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V16M16 12H8" /><circle cx="12" cy="12" r="10" /></svg></button>
+                    <button type="button" class="canvas-tool-btn" id="canvasToolFrame" data-tooltip="Fit to view" aria-label="Fit to view"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2V4M22 20H20M16.5 20H10C7.17157 20 5.75736 20 4.87868 19.1213C4 18.2426 4 16.8284 4 14V7.5" /><path d="M20 22L20 12C20 8.22877 20 6.34315 18.8284 5.17158C17.6569 4 15.7712 4 12 4L2 4" /></svg></button>
+                </div>
+            </div>
             <div class="canvas-viewport-row">
                 <div class="canvas-viewport" id="canvasViewport">
                     <div class="canvas-stage" id="canvasStage">
@@ -301,6 +322,72 @@
             </div>
         </div>
     </aside>
+
+    <div class="mobile-bottom-bar" id="mobileBottomBar">
+        <button type="button" class="mobile-bottom-btn" id="mobileUndoBtn" disabled aria-label="Undo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8H15C18.3137 8 21 10.6863 21 14C21 17.3137 18.3137 20 15 20H11"/><path d="M7 4L5.8462 4.87652C3.94873 6.31801 3 7.03875 3 8C3 8.96125 3.94873 9.68199 5.8462 11.1235L7 12"/></svg>
+        </button>
+        <div class="mobile-download-wrap download-menu-wrap">
+            <button type="button" class="btn btn-primary btn-download-full mobile-download-btn" id="mobileDownloadBtn" disabled aria-haspopup="true" aria-expanded="false">Download</button>
+            <div class="download-menu-popover mobile-download-popover" id="mobileDownloadMenuPopover" role="menu" aria-hidden="true">
+                <button type="button" class="download-menu-item" data-format="png">PNG <span class="download-menu-count" id="mobileDownloadMenuCountPng">0</span></button>
+                <button type="button" class="download-menu-item" data-format="jpg">JPG <span class="download-menu-count" id="mobileDownloadMenuCountJpg">0</span></button>
+                <button type="button" class="download-menu-item" data-format="pdf">PDF</button>
+            </div>
+        </div>
+        <button type="button" class="mobile-bottom-btn" id="mobileRedoBtn" disabled aria-label="Redo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8H9C5.68629 8 3 10.6863 3 14C3 17.3137 5.68629 20 9 20H13"/><path d="M17 4L18.1538 4.87652C20.0513 6.31801 21 7.03875 21 8C21 8.96125 20.0513 9.68199 18.1538 11.1235L17 12"/></svg>
+        </button>
+    </div>
+
+    <div class="mobile-right-fabs" id="mobileRightFabs">
+        <div class="mobile-fab-column">
+            <div class="mobile-fab-add-wrap">
+                <button type="button" class="mobile-fab mobile-fab-add" id="mobileFabAdd" aria-label="Add" aria-haspopup="true" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5V19"/><path d="M5 12H19"/></svg>
+                </button>
+                <div class="mobile-add-popover" id="mobileAddPopover" role="menu" aria-hidden="true">
+                    <button type="button" class="mobile-add-item" data-action="background">Background</button>
+                    <button type="button" class="mobile-add-item" data-action="image">Image</button>
+                    <button type="button" class="mobile-add-item" data-action="shape">Shape</button>
+                    <button type="button" class="mobile-add-item" data-action="text">Text</button>
+                </div>
+            </div>
+            <button type="button" class="mobile-fab" id="mobileFabCopy" disabled aria-label="Copy layers">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.9637 8.98209C16.9613 6.03194 16.9167 4.50384 16.0578 3.45753C15.892 3.25546 15.7067 3.07019 15.5047 2.90436C14.4008 1.99854 12.7609 1.99854 9.48087 1.99854C6.20089 1.99854 4.5609 1.99854 3.45708 2.90436C3.255 3.07018 3.06971 3.25546 2.90387 3.45753C1.99799 4.56128 1.99799 6.20116 1.99799 9.48091C1.99799 12.7607 1.99799 14.4005 2.90387 15.5043C3.0697 15.7063 3.255 15.8916 3.45708 16.0574C4.50346 16.9162 6.03167 16.9608 8.98201 16.9632"/><path d="M14.0283 9.02455L16.994 8.98193M14.0143 22.0013L16.9799 21.9586M21.9716 14.0221L21.9436 16.9818M9.01033 14.0357L8.98236 16.9953M11.4873 9.02455C10.6545 9.17371 9.31781 9.32713 9.01033 11.0488M19.4946 21.9586C20.3296 21.8223 21.6685 21.6894 22.0025 19.9726M19.4946 9.02455C20.3274 9.17371 21.6641 9.32713 21.9716 11.0488M11.5 21.9573C10.6672 21.8086 9.33039 21.6559 9.02197 19.9344"/></svg>
+            </button>
+            <button type="button" class="mobile-fab" id="mobileFabPaste" disabled aria-label="Paste layers">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15C9 12.1716 9 10.7574 9.87868 9.87868C10.7574 9 12.1716 9 15 9L16 9C18.8284 9 20.2426 9 21.1213 9.87868C22 10.7574 22 12.1716 22 15V16C22 18.8284 22 20.2426 21.1213 21.1213C20.2426 22 18.8284 22 16 22H15C12.1716 22 10.7574 22 9.87868 21.1213C9 20.2426 9 18.8284 9 16L9 15Z"/><path d="M16.9999 9C16.9975 6.04291 16.9528 4.51121 16.092 3.46243C15.9258 3.25989 15.7401 3.07418 15.5376 2.90796C14.4312 2 12.7875 2 9.5 2C6.21252 2 4.56878 2 3.46243 2.90796C3.25989 3.07417 3.07418 3.25989 2.90796 3.46243C2 4.56878 2 6.21252 2 9.5C2 12.7875 2 14.4312 2.90796 15.5376C3.07417 15.7401 3.25989 15.9258 3.46243 16.092C4.51121 16.9528 6.04291 16.9975 9 16.9999"/></svg>
+            </button>
+            <button type="button" class="mobile-fab mobile-fab-layers" id="mobileFabLayers" aria-label="Layers">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8.64298 3.14559L6.93816 3.93362C4.31272 5.14719 3 5.75397 3 6.75C3 7.74603 4.31272 8.35281 6.93817 9.56638L8.64298 10.3544C10.2952 11.1181 11.1214 11.5 12 11.5C12.8786 11.5 13.7048 11.1181 15.357 10.3544L17.0618 9.56638C19.6873 8.35281 21 7.74603 21 6.75C21 5.75397 19.6873 5.14719 17.0618 3.93362L15.357 3.14559C13.7048 2.38186 12.8786 2 12 2C11.1214 2 10.2952 2.38186 8.64298 3.14559Z" />
+                    <path d="M20.788 11.0972C20.9293 11.2959 21 11.5031 21 11.7309C21 12.7127 19.6873 13.3109 17.0618 14.5072L15.357 15.284C13.7048 16.0368 12.8786 16.4133 12 16.4133C11.1214 16.4133 10.2952 16.0368 8.64298 15.284L6.93817 14.5072C4.31272 13.3109 3 12.7127 3 11.7309C3 11.5031 3.07067 11.2959 3.212 11.0972" />
+                    <path d="M20.3767 16.2661C20.7922 16.5971 21 16.927 21 17.3176C21 18.2995 19.6873 18.8976 17.0618 20.0939L15.357 20.8707C13.7048 21.6236 12.8786 22 12 22C11.1214 22 10.2952 21.6236 8.64298 20.8707L6.93817 20.0939C4.31272 18.8976 3 18.2995 3 17.3176C3 16.927 3.20778 16.5971 3.62334 16.2661" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-download-curtain-backdrop" id="mobileDownloadCurtainBackdrop" aria-hidden="true"></div>
+    <div class="mobile-download-curtain" id="mobileDownloadCurtain" aria-hidden="true">
+        <div class="mobile-download-curtain-header">
+            <button type="button" class="mobile-download-curtain-close" id="mobileDownloadCurtainClose" aria-label="Close"></button>
+        </div>
+        <div class="mobile-download-curtain-body">
+            <button type="button" class="mobile-download-curtain-item" data-format="png">PNG <span class="download-menu-count" id="mobileCurtainCountPng">0</span></button>
+            <button type="button" class="mobile-download-curtain-item" data-format="jpg">JPG <span class="download-menu-count" id="mobileCurtainCountJpg">0</span></button>
+            <button type="button" class="mobile-download-curtain-item" data-format="pdf">PDF</button>
+        </div>
+    </div>
+
+    <div class="mobile-layers-overlay" id="mobileLayersOverlay" aria-hidden="true">
+        <div class="mobile-layers-header">
+            <h2 class="mobile-layers-title">Layers</h2>
+            <button type="button" class="mobile-layers-close" id="mobileLayersClose" aria-label="Close"></button>
+        </div>
+        <div class="mobile-layers-inner" id="mobileLayersInner"></div>
+    </div>
 
     <input type="file" id="fileBackground" accept="image/*">
     <input type="file" id="fileImage" accept="image/jpeg,image/png,image/svg+xml,.jpg,.jpeg,.png,.svg">

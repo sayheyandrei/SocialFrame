@@ -3,24 +3,24 @@
 
     var DEFAULT_DATA = {
         socialNetworks: {
-            instagram: { name: 'Instagram', sizes: [{ w: 1080, h: 1080, label: 'Post square 1080×1080' }, { w: 1080, h: 1350, label: 'Post portrait 1080×1350' }, { w: 1080, h: 566, label: 'Post landscape 1080×566' }, { w: 1080, h: 1920, label: 'Stories/Reels 1080×1920' }] },
-            facebook: { name: 'Facebook', sizes: [{ w: 1080, h: 1080, label: 'Square 1080×1080' }, { w: 1080, h: 1359, label: 'Portrait 1080×1359' }, { w: 1080, h: 566, label: 'Landscape 1080×566' }, { w: 1080, h: 1920, label: 'Reels/Stories 1080×1920' }, { w: 820, h: 360, label: 'Page cover 820×360' }] },
-            twitter: { name: 'X (Twitter)', sizes: [{ w: 1280, h: 720, label: 'Landscape 1280×720' }, { w: 720, h: 1280, label: 'Portrait 720×1280' }, { w: 720, h: 720, label: 'Square 720×720' }, { w: 1500, h: 500, label: 'Header 1500×500' }] },
+            instagram: { name: 'Instagram', sizes: [{ w: 1080, h: 1080, label: 'Post square 1080×1080' }, { w: 1080, h: 1350, label: 'Post portrait 1080×1350 (4:5)' }, { w: 1080, h: 1440, label: 'Post portrait 1080×1440 (3:4)' }, { w: 1080, h: 566, label: 'Post landscape 1080×566' }, { w: 1080, h: 1920, label: 'Stories/Reels 1080×1920' }] },
+            facebook: { name: 'Facebook', sizes: [{ w: 1080, h: 1080, label: 'Square 1080×1080' }, { w: 1080, h: 1359, label: 'Portrait 1080×1359' }, { w: 1080, h: 566, label: 'Landscape 1080×566' }, { w: 1080, h: 1920, label: 'Reels/Stories 1080×1920' }, { w: 820, h: 360, label: 'Page cover 820×360' }, { w: 1200, h: 630, label: 'Link/Shared 1200×630 (1.91:1)' }] },
+            twitter: { name: 'X (Twitter)', sizes: [{ w: 1600, h: 900, label: 'Post 1600×900 (16:9)' }, { w: 1200, h: 675, label: 'Post 1200×675 (16:9)' }, { w: 1280, h: 720, label: 'Landscape 1280×720' }, { w: 720, h: 1280, label: 'Portrait 720×1280' }, { w: 720, h: 720, label: 'Square 720×720' }, { w: 1500, h: 500, label: 'Header 1500×500' }] },
             linkedin: { name: 'LinkedIn', sizes: [{ w: 1200, h: 1200, label: 'Square 1200×1200' }, { w: 720, h: 900, label: 'Portrait 720×900' }, { w: 1200, h: 627, label: 'Link preview 1200×627' }, { w: 4200, h: 700, label: 'Company cover 4200×700' }, { w: 1584, h: 396, label: 'Profile banner 1584×396' }] },
             tiktok: { name: 'TikTok', sizes: [{ w: 1080, h: 1920, label: 'Video 1080×1920' }] },
-            youtube: { name: 'YouTube', sizes: [{ w: 1080, h: 1920, label: 'Shorts 1080×1920' }, { w: 2560, h: 1440, label: 'Channel banner 2560×1440' }] },
-            pinterest: { name: 'Pinterest', sizes: [{ w: 1000, h: 1500, label: 'Standard pin 1000×1500' }] },
+            youtube: { name: 'YouTube', sizes: [{ w: 1280, h: 720, label: 'Thumbnail 1280×720' }, { w: 1080, h: 1920, label: 'Shorts 1080×1920' }, { w: 2560, h: 1440, label: 'Channel banner 2560×1440' }] },
+            pinterest: { name: 'Pinterest', sizes: [{ w: 1000, h: 1500, label: 'Standard pin 1000×1500' }, { w: 1080, h: 1920, label: 'Idea Pin 1080×1920' }] },
             snapchat: { name: 'Snapchat', sizes: [{ w: 1080, h: 1920, label: 'Story/Ads 1080×1920' }] },
             threads: { name: 'Threads', sizes: [{ w: 1080, h: 1080, label: 'Square 1080×1080' }, { w: 1080, h: 1350, label: 'Portrait 1080×1350' }] }
         },
         safeZones: {
-            instagram: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.1, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.88, width: 1, height: 0.12, shape: 'rect', label: 'Controls' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 320, right: 35, bottom: 320, left: 35 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.06, shape: 'rect', label: 'Progress' }, { type: 'bottom', left: 0, top: 0.9, width: 1, height: 0.1, shape: 'rect', label: 'Reply' }], '1080x1080': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '1080x1350': [{ type: 'safeArea', insetsPx: { top: 80, right: 80, bottom: 80, left: 80 }, label: 'Safe area', shape: 'rect' }, { type: 'guide', rectPx: { x: 0, y: 135, w: 1080, h: 1080 }, label: 'Preview in profile (square)' }], '1080x566': [{ type: 'safeArea', insetsPx: { top: 40, right: 60, bottom: 40, left: 60 }, label: 'Safe area', shape: 'rect' }] },
-            facebook: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.1, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.86, width: 1, height: 0.14, shape: 'rect', label: 'Controls' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 320, right: 35, bottom: 320, left: 35 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.06, shape: 'rect', label: 'Progress' }, { type: 'bottom', left: 0, top: 0.9, width: 1, height: 0.1, shape: 'rect', label: 'Reply' }], '820x360': [{ type: 'safeArea', insetsPx: { top: 24, right: 90, bottom: 24, left: 90 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0, top: 0.444, width: 0.244, height: 0.556, shape: 'rect', label: 'Avatar' }] },
-            twitter: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.12, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.82, width: 1, height: 0.18, shape: 'rect', label: 'Actions' }], '1500x500': [{ type: 'safeArea', insetsPx: { top: 50, right: 150, bottom: 50, left: 150 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0, top: 0.2, width: 0.267, height: 0.8, shape: 'rect', label: 'Avatar' }] },
+            instagram: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.1, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.88, width: 1, height: 0.12, shape: 'rect', label: 'Controls' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 320, right: 35, bottom: 320, left: 35 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.06, shape: 'rect', label: 'Progress' }, { type: 'bottom', left: 0, top: 0.9, width: 1, height: 0.1, shape: 'rect', label: 'Reply' }], '1080x1080': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '1080x1350': [{ type: 'safeArea', insetsPx: { top: 80, right: 80, bottom: 80, left: 80 }, label: 'Safe area', shape: 'rect' }, { type: 'guide', rectPx: { x: 0, y: 135, w: 1080, h: 1080 }, label: 'Preview in profile (square)' }], '1080x1440': [{ type: 'guide', rectPx: { x: 0, y: 180, w: 1080, h: 1080 }, label: 'ProfileGridPreview', shape: 'rect' }, { type: 'safeArea', insetsPx: { top: 80, right: 80, bottom: 80, left: 80 }, label: 'Safe area', shape: 'rect' }], '1080x566': [{ type: 'safeArea', insetsPx: { top: 40, right: 60, bottom: 40, left: 60 }, label: 'Safe area', shape: 'rect' }] },
+            facebook: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.1, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.86, width: 1, height: 0.14, shape: 'rect', label: 'Controls' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 320, right: 35, bottom: 320, left: 35 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.06, shape: 'rect', label: 'Progress' }, { type: 'bottom', left: 0, top: 0.9, width: 1, height: 0.1, shape: 'rect', label: 'Reply' }], '820x360': [{ type: 'safeArea', insetsPx: { top: 24, right: 90, bottom: 24, left: 90 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0, top: 0.444, width: 0.244, height: 0.556, shape: 'rect', label: 'Avatar' }], '1200x630': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }] },
+            twitter: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.12, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.82, width: 1, height: 0.18, shape: 'rect', label: 'Actions' }], '1600x900': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '1200x675': [{ type: 'safeArea', insetsPx: { top: 50, right: 50, bottom: 50, left: 50 }, label: 'Safe area', shape: 'rect' }], '1500x500': [{ type: 'safeArea', insetsPx: { top: 50, right: 150, bottom: 50, left: 150 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0, top: 0.2, width: 0.267, height: 0.8, shape: 'rect', label: 'Avatar' }] },
             linkedin: { default: [{ type: 'avatar', left: 0.04, top: 0.04, size: 0.1, shape: 'circle', label: 'Avatar' }, { type: 'bottom', left: 0, top: 0.84, width: 1, height: 0.16, shape: 'rect', label: 'Controls' }], '1200x627': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '4200x700': [{ type: 'safeArea', insetsPx: { top: 35, right: 210, bottom: 35, left: 210 }, label: 'Safe area', shape: 'rect' }], '1584x396': [{ type: 'safeArea', insetsPx: { top: 24, right: 80, bottom: 24, left: 80 }, label: 'Safe area', shape: 'rect' }] },
             tiktok: { '1080x1920': [{ type: 'safeArea', insetsPx: { top: 131, right: 120, bottom: 367, left: 120 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0.78, top: 0, width: 0.22, height: 1, shape: 'rect', label: 'Right UI' }, { type: 'bottom', left: 0, top: 0.8, width: 1, height: 0.2, shape: 'rect', label: 'Caption' }] },
-            youtube: { '1080x1920': [{ type: 'safeArea', insetsPx: { top: 150, right: 150, bottom: 450, left: 50 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0.78, top: 0, width: 0.22, height: 1, shape: 'rect', label: 'Right UI' }, { type: 'bottom', left: 0, top: 0.76, width: 1, height: 0.24, shape: 'rect', label: 'Bottom' }], '2560x1440': [{ type: 'safeArea', insetsPx: { top: 509, right: 507, bottom: 508, left: 507 }, label: 'Safe area', shape: 'rect' }] },
-            pinterest: { '1000x1500': [{ type: 'safeArea', insetsPx: { top: 50, right: 50, bottom: 150, left: 50 }, label: 'Safe area', shape: 'rect' }] },
+            youtube: { '1280x720': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 150, right: 150, bottom: 450, left: 50 }, label: 'Safe area', shape: 'rect' }, { type: 'bottom', left: 0.78, top: 0, width: 0.22, height: 1, shape: 'rect', label: 'Right UI' }, { type: 'bottom', left: 0, top: 0.76, width: 1, height: 0.24, shape: 'rect', label: 'Bottom' }], '2560x1440': [{ type: 'safeArea', insetsPx: { top: 509, right: 507, bottom: 508, left: 507 }, label: 'Safe area', shape: 'rect' }] },
+            pinterest: { '1000x1500': [{ type: 'safeArea', insetsPx: { top: 50, right: 50, bottom: 150, left: 50 }, label: 'Safe area', shape: 'rect' }], '1080x1920': [{ type: 'safeArea', insetsPx: { top: 220, right: 64, bottom: 260, left: 64 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.10, shape: 'rect', label: 'Top UI' }, { type: 'bottom', left: 0, top: 0.88, width: 1, height: 0.12, shape: 'rect', label: 'Bottom UI' }] },
             snapchat: { '1080x1920': [{ type: 'safeArea', insetsPx: { top: 250, right: 64, bottom: 250, left: 64 }, label: 'Safe area', shape: 'rect' }, { type: 'top', left: 0, top: 0, width: 1, height: 0.1, shape: 'rect', label: 'Top UI' }, { type: 'bottom', left: 0, top: 0.9, width: 1, height: 0.1, shape: 'rect', label: 'Bottom UI' }] },
             threads: { '1080x1080': [{ type: 'safeArea', insetsPx: { top: 60, right: 60, bottom: 60, left: 60 }, label: 'Safe area', shape: 'rect' }], '1080x1350': [{ type: 'safeArea', insetsPx: { top: 80, right: 80, bottom: 80, left: 80 }, label: 'Safe area', shape: 'rect' }, { type: 'guide', rectPx: { x: 0, y: 135, w: 1080, h: 1080 }, label: 'Square preview' }] }
         }
@@ -892,6 +892,10 @@
         var pasteEnabled = !!copyBuffer && copyBuffer.sourceKey !== key;
         copyBtn.disabled = !copyEnabled;
         pasteBtn.disabled = !pasteEnabled;
+        var mobileCopy = $('mobileFabCopy');
+        var mobilePaste = $('mobileFabPaste');
+        if (mobileCopy) mobileCopy.disabled = !copyEnabled;
+        if (mobilePaste) mobilePaste.disabled = !pasteEnabled;
     }
 
     var MAX_UNDO = 10;
@@ -974,6 +978,10 @@
         var redoBtnEl = $('redoBtn');
         if (undoBtnEl) undoBtnEl.disabled = !canUndo;
         if (redoBtnEl) redoBtnEl.disabled = !canRedo;
+        var mobileUndo = $('mobileUndoBtn');
+        var mobileRedo = $('mobileRedoBtn');
+        if (mobileUndo) mobileUndo.disabled = !canUndo;
+        if (mobileRedo) mobileRedo.disabled = !canRedo;
     }
 
     function clearDomOnly() {
@@ -2462,6 +2470,7 @@
         var showTimer = null;
         var hideTimer = null;
         document.addEventListener('mouseover', function (e) {
+            if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) return;
             var el = e.target.closest && e.target.closest('[data-tooltip]');
             if (el && el.closest('.safe-zones-switch-wrap')) return;
             if (!el) {
@@ -3986,6 +3995,7 @@
         resetFiltersBtn?.addEventListener('click', resetFilters);
         clearBtn?.addEventListener('click', clearAll);
         initDownloadMenu();
+        initMobile();
         $('undoBtn')?.addEventListener('click', performUndo);
         $('redoBtn')?.addEventListener('click', performRedo);
         document.addEventListener('keydown', function (e) {
@@ -4257,6 +4267,7 @@
                 subBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     selectSize(network, parseInt(subBtn.dataset.sizeIndex, 10));
+                    if (window.innerWidth <= 768) document.body.classList.remove('mobile-drawer-open');
                 });
                 body.appendChild(subBtn);
             });
@@ -4306,6 +4317,7 @@
             customWidthEl.value = '';
             customHeightEl.value = '';
             customCreateBtn.disabled = true;
+            if (window.innerWidth <= 768) document.body.classList.remove('mobile-drawer-open');
         });
     }
 
@@ -5563,11 +5575,20 @@
             var isImage = /^image-\d+$/.test(layerId);
             var canMoveUp = layerId !== 'background' && currIdx < state.layersOrder.length - 1;
             var canMoveDown = layerId !== 'background' && currIdx > 1;
-            row.innerHTML = '<div class="layer-preview">' + previewHtml + '</div>' +
-                '<span class="layer-label" title="' + (label || '').replace(/"/g, '&quot;') + '">' + (label || '—') + '</span>' +
-                (layerId !== 'background' ? '<button type="button" class="btn-layer-up' + (canMoveUp ? '' : ' disabled') + '" data-tooltip="Move up" aria-label="Move up">↑</button>' +
-                '<button type="button" class="btn-layer-down' + (canMoveDown ? '' : ' disabled') + '" data-tooltip="Move down" aria-label="Move down">↓</button>' : '') +
-                (layerId !== 'background' || state.bgUrl ? '<button type="button" class="btn-remove" data-tooltip="Remove" aria-label="Remove"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" /><path d="M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5" /></svg></button>' : '');
+            var labelEsc = (label || '—').replace(/"/g, '&quot;');
+            var removeBtnHtml = (layerId !== 'background' || state.bgUrl) ? '<button type="button" class="btn-remove" data-tooltip="Remove" aria-label="Remove"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" /><path d="M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5" /></svg></button>' : '';
+            if (layerId === 'background') {
+                row.innerHTML = '<label for="fileBackground" class="layer-row-label">' +
+                    '<div class="layer-preview">' + previewHtml + '</div>' +
+                    '<span class="layer-label" title="' + labelEsc + '">' + (label || '—') + '</span>' +
+                    '</label>' + removeBtnHtml;
+            } else {
+                row.innerHTML = '<div class="layer-preview">' + previewHtml + '</div>' +
+                    '<span class="layer-label" title="' + labelEsc + '">' + (label || '—') + '</span>' +
+                    '<button type="button" class="btn-layer-up' + (canMoveUp ? '' : ' disabled') + '" data-tooltip="Move up" aria-label="Move up">↑</button>' +
+                    '<button type="button" class="btn-layer-down' + (canMoveDown ? '' : ' disabled') + '" data-tooltip="Move down" aria-label="Move down">↓</button>' +
+                    removeBtnHtml;
+            }
 
             var upBtn = row.querySelector('.btn-layer-up');
             var downBtn = row.querySelector('.btn-layer-down');
@@ -5594,10 +5615,7 @@
 
             row.addEventListener('click', function (e) {
                 if (e.target.closest && (e.target.closest('.btn-remove') || e.target.closest('.btn-layer-up') || e.target.closest('.btn-layer-down'))) return;
-                if (layerId === 'background') {
-                    if (fileBackground) fileBackground.click();
-                    return;
-                }
+                if (layerId === 'background') return;
                 var m = layerId.match(/^image-(\d+)$/);
                 if (m) {
                     var slot = parseInt(m[1], 10);
@@ -5845,6 +5863,19 @@
             resetFiltersBtn.disabled = !state.isHarmonized;
             resetFiltersBtn.classList.toggle('harmonize-active', !!state.isHarmonized);
         }
+        var mobileHarmonize = $('mobileHarmonizeBtn');
+        var mobileClear = $('mobileClearBtn');
+        var mobileDownload = $('mobileDownloadBtn');
+        if (mobileHarmonize) {
+            mobileHarmonize.style.display = state.isHarmonized ? 'none' : '';
+            mobileHarmonize.disabled = !(!!state.bgUrl && state.overlayImages.filter(Boolean).length === 1);
+        }
+        if (mobileClear) mobileClear.disabled = !hasAnySlotContent;
+        if (mobileDownload) mobileDownload.disabled = !hasAnySlotContent;
+        var mobilePng = $('mobileDownloadMenuCountPng');
+        var mobileJpg = $('mobileDownloadMenuCountJpg');
+        if (mobilePng) mobilePng.textContent = String(getDownloadableSlotsCount());
+        if (mobileJpg) mobileJpg.textContent = String(getDownloadableSlotsCount());
         updateCopyPasteButtons();
     }
 
@@ -6186,6 +6217,210 @@
                 downloadWithFormat(format);
             });
         });
+    }
+
+    function initMobile() {
+        var mobileMenuBtn = $('mobileMenuBtn');
+        var mobileDrawerClose = $('mobileDrawerClose');
+        var backdrop = $('mobileDrawerBackdrop');
+        var mobileHarmonizeBtn = $('mobileHarmonizeBtn');
+        var mobileClearBtn = $('mobileClearBtn');
+        var mobileThemeLight = $('mobileThemeLight');
+        var mobileThemeDark = $('mobileThemeDark');
+        var mobileThemeSlider = $('mobileThemeTabsSlider');
+        var mobileUndoBtn = $('mobileUndoBtn');
+        var mobileRedoBtn = $('mobileRedoBtn');
+        var mobileDownloadBtn = $('mobileDownloadBtn');
+        var mobileDownloadPopover = $('mobileDownloadMenuPopover');
+        var mobileFabAdd = $('mobileFabAdd');
+        var mobileAddPopover = $('mobileAddPopover');
+        var mobileFabCopy = $('mobileFabCopy');
+        var mobileFabPaste = $('mobileFabPaste');
+        var mobileFabLayers = $('mobileFabLayers');
+        var mobileLayersOverlay = $('mobileLayersOverlay');
+        var mobileLayersClose = $('mobileLayersClose');
+        var mobileLayersInner = $('mobileLayersInner');
+        var mobileDownloadCurtainBackdrop = $('mobileDownloadCurtainBackdrop');
+        var mobileDownloadCurtain = $('mobileDownloadCurtain');
+        var mobileDownloadCurtainClose = $('mobileDownloadCurtainClose');
+        var themeLightBtn = $('themeLight');
+        var themeDarkBtn = $('themeDark');
+
+        function closeDrawer() {
+            document.body.classList.remove('mobile-drawer-open');
+            if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+        function openDrawer() {
+            document.body.classList.add('mobile-drawer-open');
+            if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            positionMobileThemeSlider();
+        }
+        function positionMobileThemeSlider() {
+            if (!mobileThemeSlider || !mobileThemeLight || !mobileThemeDark) return;
+            var isDark = document.body.classList.contains('theme-dark');
+            var pad = 2;
+            if (isDark) {
+                mobileThemeDark.classList.add('active');
+                mobileThemeLight.classList.remove('active');
+                mobileThemeSlider.style.transform = 'translateX(' + (mobileThemeDark.offsetLeft - pad) + 'px)';
+            } else {
+                mobileThemeLight.classList.add('active');
+                mobileThemeDark.classList.remove('active');
+                mobileThemeSlider.style.transform = 'translateX(' + (mobileThemeLight.offsetLeft - pad) + 'px)';
+            }
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+        if (mobileDrawerClose) mobileDrawerClose.addEventListener('click', closeDrawer);
+        if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+        if (mobileHarmonizeBtn) mobileHarmonizeBtn.addEventListener('click', function () { harmonizeImages(); });
+        if (mobileClearBtn) mobileClearBtn.addEventListener('click', function () { clearAll(); });
+
+        if (mobileThemeDark) {
+            mobileThemeDark.addEventListener('click', function () {
+                document.body.classList.add('theme-dark');
+                mobileThemeDark.classList.add('active');
+                if (mobileThemeLight) mobileThemeLight.classList.remove('active');
+                if (themeDarkBtn) themeDarkBtn.classList.add('active');
+                if (themeLightBtn) themeLightBtn.classList.remove('active');
+                positionThemeTabsSlider();
+                positionMobileThemeSlider();
+                try { localStorage.setItem('socialframe-theme', 'dark'); } catch (e) { }
+            });
+        }
+        if (mobileThemeLight) {
+            mobileThemeLight.addEventListener('click', function () {
+                document.body.classList.remove('theme-dark');
+                mobileThemeLight.classList.add('active');
+                if (mobileThemeDark) mobileThemeDark.classList.remove('active');
+                if (themeLightBtn) themeLightBtn.classList.add('active');
+                if (themeDarkBtn) themeDarkBtn.classList.remove('active');
+                positionThemeTabsSlider();
+                positionMobileThemeSlider();
+                try { localStorage.setItem('socialframe-theme', 'light'); } catch (e) { }
+            });
+        }
+
+        if (mobileUndoBtn) mobileUndoBtn.addEventListener('click', performUndo);
+        if (mobileRedoBtn) mobileRedoBtn.addEventListener('click', performRedo);
+
+        if (mobileDownloadBtn && mobileDownloadPopover) {
+            mobileDownloadBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var open = mobileDownloadPopover.classList.toggle('open');
+                mobileDownloadBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (open) {
+                    var count = getDownloadableSlotsCount();
+                    var pngEl = $('mobileDownloadMenuCountPng');
+                    var jpgEl = $('mobileDownloadMenuCountJpg');
+                    if (pngEl) pngEl.textContent = String(count);
+                    if (jpgEl) jpgEl.textContent = String(count);
+                }
+            });
+            document.addEventListener('mousedown', function (e) {
+                if (mobileDownloadPopover.classList.contains('open') && !mobileDownloadPopover.contains(e.target) && !mobileDownloadBtn.contains(e.target)) {
+                    mobileDownloadPopover.classList.remove('open');
+                    mobileDownloadBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+            mobileDownloadPopover.querySelectorAll('.download-menu-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var format = this.getAttribute('data-format') || 'png';
+                    mobileDownloadPopover.classList.remove('open');
+                    mobileDownloadBtn.setAttribute('aria-expanded', 'false');
+                    downloadWithFormat(format);
+                });
+            });
+        }
+
+        function openDownloadCurtain() {
+            if (mobileAddPopover) mobileAddPopover.classList.remove('open');
+            if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
+            if (mobileDownloadCurtainBackdrop) mobileDownloadCurtainBackdrop.classList.add('open');
+            if (mobileDownloadCurtain) {
+                mobileDownloadCurtain.classList.add('open');
+                mobileDownloadCurtain.setAttribute('aria-hidden', 'false');
+            }
+            var count = getDownloadableSlotsCount();
+            var pngEl = $('mobileCurtainCountPng');
+            var jpgEl = $('mobileCurtainCountJpg');
+            if (pngEl) pngEl.textContent = String(count);
+            if (jpgEl) jpgEl.textContent = String(count);
+        }
+        function closeDownloadCurtain() {
+            if (mobileDownloadCurtainBackdrop) mobileDownloadCurtainBackdrop.classList.remove('open');
+            if (mobileDownloadCurtain) {
+                mobileDownloadCurtain.classList.remove('open');
+                mobileDownloadCurtain.setAttribute('aria-hidden', 'true');
+            }
+        }
+        if (mobileFabAdd) {
+            mobileFabAdd.addEventListener('click', function (e) {
+                e.stopPropagation();
+                openDownloadCurtain();
+            });
+        }
+        if (mobileDownloadCurtainBackdrop) mobileDownloadCurtainBackdrop.addEventListener('click', closeDownloadCurtain);
+        if (mobileDownloadCurtainClose) mobileDownloadCurtainClose.addEventListener('click', closeDownloadCurtain);
+        if (mobileDownloadCurtain) {
+            mobileDownloadCurtain.querySelectorAll('.mobile-download-curtain-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var format = this.getAttribute('data-format') || 'png';
+                    closeDownloadCurtain();
+                    downloadWithFormat(format);
+                });
+            });
+        }
+        if (mobileAddPopover) {
+            document.addEventListener('mousedown', function (e) {
+                if (mobileAddPopover.classList.contains('open') && !mobileAddPopover.contains(e.target) && !mobileFabAdd.contains(e.target)) {
+                    mobileAddPopover.classList.remove('open');
+                    if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
+                }
+            });
+            mobileAddPopover.querySelectorAll('.mobile-add-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var action = this.getAttribute('data-action');
+                    mobileAddPopover.classList.remove('open');
+                    if (mobileFabAdd) mobileFabAdd.setAttribute('aria-expanded', 'false');
+                    if (action === 'background' && fileBackground) fileBackground.click();
+                    else if (action === 'image') {
+                        var slot = state.nextImageSlot < MAX_OVERLAY_IMAGES ? state.nextImageSlot : (function () {
+                            for (var i = 0; i < MAX_OVERLAY_IMAGES; i++) { if (!state.overlayImages[i]) return i; }
+                            return MAX_OVERLAY_IMAGES - 1;
+                        })();
+                        triggerImageUpload(slot);
+                    } else if (action === 'shape') {
+                        var btnShape = $('btnShape');
+                        if (btnShape) btnShape.click();
+                    } else if (action === 'text') toggleAddTextMode();
+                });
+            });
+        }
+
+        if (mobileFabCopy) mobileFabCopy.addEventListener('click', function () { $('btnCopySlot') && $('btnCopySlot').click(); });
+        if (mobileFabPaste) mobileFabPaste.addEventListener('click', function () { $('btnPasteSlot') && $('btnPasteSlot').click(); });
+
+        if (mobileFabLayers && mobileLayersOverlay && mobileLayersInner && layersList) {
+            var layersPanelInner = document.querySelector('.sidebar-right .layers-panel-inner');
+            mobileFabLayers.addEventListener('click', function () {
+                mobileLayersOverlay.classList.add('open');
+                mobileLayersOverlay.setAttribute('aria-hidden', 'false');
+                if (layersList.parentNode) layersList.parentNode.removeChild(layersList);
+                mobileLayersInner.appendChild(layersList);
+            });
+            function closeLayersOverlay() {
+                mobileLayersOverlay.classList.remove('open');
+                mobileLayersOverlay.setAttribute('aria-hidden', 'true');
+                if (layersList.parentNode) layersList.parentNode.removeChild(layersList);
+                var inner = document.querySelector('.sidebar-right .layers-panel-inner');
+                if (inner) inner.insertBefore(layersList, inner.firstChild);
+            }
+            mobileLayersClose.addEventListener('click', closeLayersOverlay);
+        }
+
+        window.addEventListener('resize', positionMobileThemeSlider);
     }
 
     function applyLoadedData(data) {
